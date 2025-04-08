@@ -1,37 +1,42 @@
-# Agrio (agrio)
-With our APIs, you can access data on weather patterns, pest and disease predictions, and more to build a more accurate crop advisory tool.
+# Freepik (freepik)
+Freepik is a leading platform that provides high-quality graphic resources for designers, marketers, and creative professionals. They offer a vast collection of vector graphics, illustrations, photos, and templates that can be used for a wide range of projects, from web design to marketing campaigns. Freepik's user-friendly interface allows users to easily search and download the resources they need, making it a go-to destination for anyone looking to add visual flair to their work. Additionally, Freepik offers a premium subscription service that grants access to exclusive content and additional features, making it a valuable tool for those looking to elevate their design projects.
 
-**URL:** [Visit APIs.json URL](https://example.com/apis/agriculture-api-agrio.yml)
+**URL:** [Visit APIs.json URL](https://raw.githubusercontent.com/api-evangelist/freepik/refs/heads/main/apis.yml)
 
 ## Scope
 
+- **Type:** Index 
+- **Position:** Consumer 
+- **Access:** 3rd-Party 
 
 ## Tags:
 
- - Agriculture
+ - Graphics, Illustrations, Photos
 
 ## Timestamps
 
-- **Created:** 2024-07-11 
-- **Modified:** 2024-11-10 
+- **Created:** 2025-01-07 
+- **Modified:** 2025-04-07 
 
 ## APIs
 
-### Agrio
-With our APIs, you can access data on weather patterns, pest and disease predictions, and more to build a more accurate crop advisory tool.  
+### Freepik
+Freepik is a leading platform that provides high-quality graphic resources for designers, marketers, and creative professionals. They offer a vast collection of vector graphics, illustrations, photos, and templates that can be used for a wide range of projects, from web design to marketing campaigns. Freepik's user-friendly interface allows users to easily search and download the resources they need, making it a go-to destination for anyone looking to add visual flair to their work. Additionally, Freepik offers a premium subscription service that grants access to exclusive content and additional features, making it a valuable tool for those looking to elevate their design projects.
 
-**Human URL:** [https://agrio.app/Agriculture-API/](https://agrio.app/Agriculture-API/)
+**Human URL:** [ https://www.freepik.com/api]( https://www.freepik.com/api)
 
 
+#### Tags:
+
+ - Graphics, Illustrations, Photos
 
 #### Properties
 
-- [Documentation](https://agrio.app/Agriculture-API/)
-- [OpenAPI](openapi/agrio-openapi-original.yml)
+- [Documentation]( https://www.freepik.com/api)
 
 ## Maintainers
 
-**FN:** API Evangelist
+**FN:** Kin Lane
 
 **Email:** info@apievangelist.com
 
