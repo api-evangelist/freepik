@@ -1,0 +1,784 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Freepik / Magnific API
+  description: Freepik's developer platform (operated through Magnific) provides AI-powered image generation, video generation,
+    image editing, audio generation, and access to Freepik's stock library of vectors, photos, icons, and templates. Asynchronous
+    tasks are polled by task ID.
+  tags:
+  - Freepik
+  - API
+  created: '2026-05-06'
+  modified: '2026-05-06'
+capability:
+  consumes:
+  - type: http
+    namespace: freepik
+    baseUri: https://api.magnific.com
+    description: Freepik / Magnific API HTTP API.
+    authentication:
+      type: apikey
+      in: header
+      name: x-magnific-api-key
+      value: '{{FREEPIK_TOKEN}}'
+    resources:
+    - name: v1-resources
+      path: /v1/resources
+      operations:
+      - name: listresources
+        method: GET
+        description: Search stock resources
+        inputParameters:
+        - name: Accept-Language
+          in: header
+          type: string
+        - name: page
+          in: query
+          type: integer
+        - name: limit
+          in: query
+          type: integer
+        - name: term
+          in: query
+          type: string
+        - name: order
+          in: query
+          type: string
+        - name: filters
+          in: query
+          type: string
+          description: Advanced filters (orientation, content_type, license, color, author, ai-generated, vector, psd, people).
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-ai-mystic
+      path: /v1/ai/mystic
+      operations:
+      - name: generatemystic
+        method: POST
+        description: Generate image with Mystic
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-ai-flux-2-pro
+      path: /v1/ai/flux-2-pro
+      operations:
+      - name: generateflux2pro
+        method: POST
+        description: Generate image with Flux 2 Pro
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-ai-flux-2-turbo
+      path: /v1/ai/flux-2-turbo
+      operations:
+      - name: generateflux2turbo
+        method: POST
+        description: Generate image with Flux 2 Turbo
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-ai-flux-pro-v1-1
+      path: /v1/ai/flux-pro-v1-1
+      operations:
+      - name: generatefluxprov11
+        method: POST
+        description: Generate image with Flux Pro v1.1
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-ai-flux-dev
+      path: /v1/ai/flux-dev
+      operations:
+      - name: generatefluxdev
+        method: POST
+        description: Generate image with Flux Dev
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-ai-hyperflux
+      path: /v1/ai/hyperflux
+      operations:
+      - name: generatehyperflux
+        method: POST
+        description: Generate image with HyperFlux
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-ai-seedream-v4-5
+      path: /v1/ai/seedream-v4-5
+      operations:
+      - name: generateseedream
+        method: POST
+        description: Generate image with Seedream v4.5
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-ai-runway
+      path: /v1/ai/runway
+      operations:
+      - name: generaterunway
+        method: POST
+        description: Generate image with Runway
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-ai-kling-v2-1-pro
+      path: /v1/ai/kling-v2.1-pro
+      operations:
+      - name: generatekling21pro
+        method: POST
+        description: Generate video with Kling v2.1 Pro
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-ai-kling-v2-5-pro
+      path: /v1/ai/kling-v2.5-pro
+      operations:
+      - name: generatekling25pro
+        method: POST
+        description: Generate video with Kling v2.5 Pro
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-ai-minimax-hailuo-02-1080p
+      path: /v1/ai/minimax-hailuo-02-1080p
+      operations:
+      - name: generateminimaxhailuo
+        method: POST
+        description: Generate video with Minimax Hailuo 02 1080p
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-ai-image-upscaler
+      path: /v1/ai/image-upscaler
+      operations:
+      - name: imageupscaler
+        method: POST
+        description: Creative image upscaler
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-ai-image-relight
+      path: /v1/ai/image-relight
+      operations:
+      - name: imagerelight
+        method: POST
+        description: Relight image
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-ai-image-styletransfer
+      path: /v1/ai/image-styletransfer
+      operations:
+      - name: imagestyletransfer
+        method: POST
+        description: Apply style transfer
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-ai-remove-background
+      path: /v1/ai/remove-background
+      operations:
+      - name: removebackground
+        method: POST
+        description: Remove background
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-ai-image-expand
+      path: /v1/ai/image-expand
+      operations:
+      - name: imageexpand
+        method: POST
+        description: Expand image
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-ai-music-generation
+      path: /v1/ai/music-generation
+      operations:
+      - name: generatemusic
+        method: POST
+        description: Generate music
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: listmusictasks
+        method: GET
+        description: List music generation tasks
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-ai-sound-effects
+      path: /v1/ai/sound-effects
+      operations:
+      - name: generatesoundeffects
+        method: POST
+        description: Generate sound effects
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-ai-audio-isolation
+      path: /v1/ai/audio-isolation
+      operations:
+      - name: audioisolation
+        method: POST
+        description: Audio isolation from audio or video
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-ai-endpoint-taskid
+      path: /v1/ai/{endpoint}/{taskId}
+      operations:
+      - name: gettask
+        method: GET
+        description: Poll task status
+        inputParameters:
+        - name: endpoint
+          in: path
+          type: string
+          required: true
+        - name: taskId
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    port: 8080
+    namespace: freepik-rest
+    description: REST adapter for Freepik / Magnific API.
+    resources:
+    - path: /v1/resources
+      name: listresources
+      operations:
+      - method: GET
+        name: listresources
+        description: Search stock resources
+        call: freepik.listresources
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/ai/mystic
+      name: generatemystic
+      operations:
+      - method: POST
+        name: generatemystic
+        description: Generate image with Mystic
+        call: freepik.generatemystic
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/ai/flux-2-pro
+      name: generateflux2pro
+      operations:
+      - method: POST
+        name: generateflux2pro
+        description: Generate image with Flux 2 Pro
+        call: freepik.generateflux2pro
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/ai/flux-2-turbo
+      name: generateflux2turbo
+      operations:
+      - method: POST
+        name: generateflux2turbo
+        description: Generate image with Flux 2 Turbo
+        call: freepik.generateflux2turbo
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/ai/flux-pro-v1-1
+      name: generatefluxprov11
+      operations:
+      - method: POST
+        name: generatefluxprov11
+        description: Generate image with Flux Pro v1.1
+        call: freepik.generatefluxprov11
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/ai/flux-dev
+      name: generatefluxdev
+      operations:
+      - method: POST
+        name: generatefluxdev
+        description: Generate image with Flux Dev
+        call: freepik.generatefluxdev
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/ai/hyperflux
+      name: generatehyperflux
+      operations:
+      - method: POST
+        name: generatehyperflux
+        description: Generate image with HyperFlux
+        call: freepik.generatehyperflux
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/ai/seedream-v4-5
+      name: generateseedream
+      operations:
+      - method: POST
+        name: generateseedream
+        description: Generate image with Seedream v4.5
+        call: freepik.generateseedream
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/ai/runway
+      name: generaterunway
+      operations:
+      - method: POST
+        name: generaterunway
+        description: Generate image with Runway
+        call: freepik.generaterunway
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/ai/kling-v2.1-pro
+      name: generatekling21pro
+      operations:
+      - method: POST
+        name: generatekling21pro
+        description: Generate video with Kling v2.1 Pro
+        call: freepik.generatekling21pro
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/ai/kling-v2.5-pro
+      name: generatekling25pro
+      operations:
+      - method: POST
+        name: generatekling25pro
+        description: Generate video with Kling v2.5 Pro
+        call: freepik.generatekling25pro
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/ai/minimax-hailuo-02-1080p
+      name: generateminimaxhailuo
+      operations:
+      - method: POST
+        name: generateminimaxhailuo
+        description: Generate video with Minimax Hailuo 02 1080p
+        call: freepik.generateminimaxhailuo
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/ai/image-upscaler
+      name: imageupscaler
+      operations:
+      - method: POST
+        name: imageupscaler
+        description: Creative image upscaler
+        call: freepik.imageupscaler
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/ai/image-relight
+      name: imagerelight
+      operations:
+      - method: POST
+        name: imagerelight
+        description: Relight image
+        call: freepik.imagerelight
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/ai/image-styletransfer
+      name: imagestyletransfer
+      operations:
+      - method: POST
+        name: imagestyletransfer
+        description: Apply style transfer
+        call: freepik.imagestyletransfer
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/ai/remove-background
+      name: removebackground
+      operations:
+      - method: POST
+        name: removebackground
+        description: Remove background
+        call: freepik.removebackground
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/ai/image-expand
+      name: imageexpand
+      operations:
+      - method: POST
+        name: imageexpand
+        description: Expand image
+        call: freepik.imageexpand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/ai/music-generation
+      name: generatemusic
+      operations:
+      - method: POST
+        name: generatemusic
+        description: Generate music
+        call: freepik.generatemusic
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/ai/music-generation
+      name: listmusictasks
+      operations:
+      - method: GET
+        name: listmusictasks
+        description: List music generation tasks
+        call: freepik.listmusictasks
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/ai/sound-effects
+      name: generatesoundeffects
+      operations:
+      - method: POST
+        name: generatesoundeffects
+        description: Generate sound effects
+        call: freepik.generatesoundeffects
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/ai/audio-isolation
+      name: audioisolation
+      operations:
+      - method: POST
+        name: audioisolation
+        description: Audio isolation from audio or video
+        call: freepik.audioisolation
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/ai/{endpoint}/{taskId}
+      name: gettask
+      operations:
+      - method: GET
+        name: gettask
+        description: Poll task status
+        call: freepik.gettask
+        with:
+          endpoint: rest.endpoint
+          taskId: rest.taskId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    port: 9090
+    namespace: freepik-mcp
+    transport: http
+    description: MCP adapter for Freepik / Magnific API for AI agent use.
+    tools:
+    - name: listresources
+      description: Search stock resources
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: freepik.listresources
+      with:
+        page: tools.page
+        limit: tools.limit
+        term: tools.term
+        order: tools.order
+        filters: tools.filters
+      inputParameters:
+      - name: page
+        type: integer
+        description: page
+      - name: limit
+        type: integer
+        description: limit
+      - name: term
+        type: string
+        description: term
+      - name: order
+        type: string
+        description: order
+      - name: filters
+        type: string
+        description: Advanced filters (orientation, content_type, license, color, author, ai-generated, vector, psd, people).
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: generatemystic
+      description: Generate image with Mystic
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: freepik.generatemystic
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: generateflux2pro
+      description: Generate image with Flux 2 Pro
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: freepik.generateflux2pro
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: generateflux2turbo
+      description: Generate image with Flux 2 Turbo
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: freepik.generateflux2turbo
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: generatefluxprov11
+      description: Generate image with Flux Pro v1.1
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: freepik.generatefluxprov11
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: generatefluxdev
+      description: Generate image with Flux Dev
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: freepik.generatefluxdev
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: generatehyperflux
+      description: Generate image with HyperFlux
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: freepik.generatehyperflux
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: generateseedream
+      description: Generate image with Seedream v4.5
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: freepik.generateseedream
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: generaterunway
+      description: Generate image with Runway
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: freepik.generaterunway
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: generatekling21pro
+      description: Generate video with Kling v2.1 Pro
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: freepik.generatekling21pro
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: generatekling25pro
+      description: Generate video with Kling v2.5 Pro
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: freepik.generatekling25pro
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: generateminimaxhailuo
+      description: Generate video with Minimax Hailuo 02 1080p
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: freepik.generateminimaxhailuo
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: imageupscaler
+      description: Creative image upscaler
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: freepik.imageupscaler
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: imagerelight
+      description: Relight image
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: freepik.imagerelight
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: imagestyletransfer
+      description: Apply style transfer
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: freepik.imagestyletransfer
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: removebackground
+      description: Remove background
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: freepik.removebackground
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: imageexpand
+      description: Expand image
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: freepik.imageexpand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: generatemusic
+      description: Generate music
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: freepik.generatemusic
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listmusictasks
+      description: List music generation tasks
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: freepik.listmusictasks
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: generatesoundeffects
+      description: Generate sound effects
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: freepik.generatesoundeffects
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: audioisolation
+      description: Audio isolation from audio or video
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: freepik.audioisolation
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: gettask
+      description: Poll task status
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: freepik.gettask
+      with:
+        endpoint: tools.endpoint
+        taskId: tools.taskId
+      inputParameters:
+      - name: endpoint
+        type: string
+        description: endpoint
+        required: true
+      - name: taskId
+        type: string
+        description: taskId
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+binds:
+- namespace: env
+  keys:
+    FREEPIK_TOKEN: FREEPIK_TOKEN
