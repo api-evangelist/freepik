@@ -48,7 +48,7 @@ common:
     url: https://www.freepik.com/
   - type: Documentation
     url: https://docs.freepik.com/
-  - type: Sign Up
+  - type: SignUp
     url: https://www.freepik.com/profile/signup
 maintainers:
   - FN: Kin Lane
