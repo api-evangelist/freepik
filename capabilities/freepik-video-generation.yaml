@@ -1,0 +1,166 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Freepik / Magnific API — Video Generation
+  description: 'Freepik / Magnific API — Video Generation. 3 operations. Lead operation: Generate video with Kling v2.1 Pro.
+    Self-contained Naftiko capability covering one Freepik business surface.'
+  tags:
+  - Freepik
+  - Video Generation
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    FREEPIK_API_KEY: FREEPIK_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: freepik-video-generation
+    baseUri: https://api.magnific.com
+    description: Freepik / Magnific API — Video Generation business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-ai-kling-v2.1-pro
+      path: /v1/ai/kling-v2.1-pro
+      operations:
+      - name: generatekling21pro
+        method: POST
+        description: Generate video with Kling v2.1 Pro
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-ai-kling-v2.5-pro
+      path: /v1/ai/kling-v2.5-pro
+      operations:
+      - name: generatekling25pro
+        method: POST
+        description: Generate video with Kling v2.5 Pro
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-ai-minimax-hailuo-02-1080p
+      path: /v1/ai/minimax-hailuo-02-1080p
+      operations:
+      - name: generateminimaxhailuo
+        method: POST
+        description: Generate video with Minimax Hailuo 02 1080p
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    authentication:
+      type: apikey
+      key: x-magnific-api-key
+      value: '{{env.FREEPIK_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: freepik-video-generation-rest
+    port: 8080
+    description: REST adapter for Freepik / Magnific API — Video Generation. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/v1/ai/kling-v2-1-pro
+      name: v1-ai-kling-v2-1-pro
+      description: REST surface for v1-ai-kling-v2.1-pro.
+      operations:
+      - method: POST
+        name: generatekling21pro
+        description: Generate video with Kling v2.1 Pro
+        call: freepik-video-generation.generatekling21pro
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/ai/kling-v2-5-pro
+      name: v1-ai-kling-v2-5-pro
+      description: REST surface for v1-ai-kling-v2.5-pro.
+      operations:
+      - method: POST
+        name: generatekling25pro
+        description: Generate video with Kling v2.5 Pro
+        call: freepik-video-generation.generatekling25pro
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/ai/minimax-hailuo-02-1080p
+      name: v1-ai-minimax-hailuo-02-1080p
+      description: REST surface for v1-ai-minimax-hailuo-02-1080p.
+      operations:
+      - method: POST
+        name: generateminimaxhailuo
+        description: Generate video with Minimax Hailuo 02 1080p
+        call: freepik-video-generation.generateminimaxhailuo
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: freepik-video-generation-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Freepik / Magnific API — Video Generation. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: generate-video-kling-v2-1-pro
+      description: Generate video with Kling v2.1 Pro
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: freepik-video-generation.generatekling21pro
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: generate-video-kling-v2-5-pro
+      description: Generate video with Kling v2.5 Pro
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: freepik-video-generation.generatekling25pro
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: generate-video-minimax-hailuo-02
+      description: Generate video with Minimax Hailuo 02 1080p
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: freepik-video-generation.generateminimaxhailuo
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

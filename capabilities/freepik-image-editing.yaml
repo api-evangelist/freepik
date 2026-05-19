@@ -1,0 +1,250 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Freepik / Magnific API — Image Editing
+  description: 'Freepik / Magnific API — Image Editing. 5 operations. Lead operation: Expand image. Self-contained Naftiko
+    capability covering one Freepik business surface.'
+  tags:
+  - Freepik
+  - Image Editing
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    FREEPIK_API_KEY: FREEPIK_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: freepik-image-editing
+    baseUri: https://api.magnific.com
+    description: Freepik / Magnific API — Image Editing business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-ai-image-expand
+      path: /v1/ai/image-expand
+      operations:
+      - name: imageexpand
+        method: POST
+        description: Expand image
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-ai-image-relight
+      path: /v1/ai/image-relight
+      operations:
+      - name: imagerelight
+        method: POST
+        description: Relight image
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-ai-image-styletransfer
+      path: /v1/ai/image-styletransfer
+      operations:
+      - name: imagestyletransfer
+        method: POST
+        description: Apply style transfer
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-ai-image-upscaler
+      path: /v1/ai/image-upscaler
+      operations:
+      - name: imageupscaler
+        method: POST
+        description: Creative image upscaler
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-ai-remove-background
+      path: /v1/ai/remove-background
+      operations:
+      - name: removebackground
+        method: POST
+        description: Remove background
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    authentication:
+      type: apikey
+      key: x-magnific-api-key
+      value: '{{env.FREEPIK_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: freepik-image-editing-rest
+    port: 8080
+    description: REST adapter for Freepik / Magnific API — Image Editing. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v1/ai/image-expand
+      name: v1-ai-image-expand
+      description: REST surface for v1-ai-image-expand.
+      operations:
+      - method: POST
+        name: imageexpand
+        description: Expand image
+        call: freepik-image-editing.imageexpand
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/ai/image-relight
+      name: v1-ai-image-relight
+      description: REST surface for v1-ai-image-relight.
+      operations:
+      - method: POST
+        name: imagerelight
+        description: Relight image
+        call: freepik-image-editing.imagerelight
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/ai/image-styletransfer
+      name: v1-ai-image-styletransfer
+      description: REST surface for v1-ai-image-styletransfer.
+      operations:
+      - method: POST
+        name: imagestyletransfer
+        description: Apply style transfer
+        call: freepik-image-editing.imagestyletransfer
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/ai/image-upscaler
+      name: v1-ai-image-upscaler
+      description: REST surface for v1-ai-image-upscaler.
+      operations:
+      - method: POST
+        name: imageupscaler
+        description: Creative image upscaler
+        call: freepik-image-editing.imageupscaler
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/ai/remove-background
+      name: v1-ai-remove-background
+      description: REST surface for v1-ai-remove-background.
+      operations:
+      - method: POST
+        name: removebackground
+        description: Remove background
+        call: freepik-image-editing.removebackground
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: freepik-image-editing-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Freepik / Magnific API — Image Editing. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: expand-image
+      description: Expand image
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: freepik-image-editing.imageexpand
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: relight-image
+      description: Relight image
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: freepik-image-editing.imagerelight
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: apply-style-transfer
+      description: Apply style transfer
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: freepik-image-editing.imagestyletransfer
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: creative-image-upscaler
+      description: Creative image upscaler
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: freepik-image-editing.imageupscaler
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: remove-background
+      description: Remove background
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: freepik-image-editing.removebackground
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

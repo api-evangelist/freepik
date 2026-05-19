@@ -1,0 +1,191 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Freepik / Magnific API — Audio
+  description: 'Freepik / Magnific API — Audio. 4 operations. Lead operation: Audio isolation from audio or video. Self-contained
+    Naftiko capability covering one Freepik business surface.'
+  tags:
+  - Freepik
+  - Audio
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    FREEPIK_API_KEY: FREEPIK_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: freepik-audio
+    baseUri: https://api.magnific.com
+    description: Freepik / Magnific API — Audio business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-ai-audio-isolation
+      path: /v1/ai/audio-isolation
+      operations:
+      - name: audioisolation
+        method: POST
+        description: Audio isolation from audio or video
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-ai-music-generation
+      path: /v1/ai/music-generation
+      operations:
+      - name: generatemusic
+        method: POST
+        description: Generate music
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: listmusictasks
+        method: GET
+        description: List music generation tasks
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-ai-sound-effects
+      path: /v1/ai/sound-effects
+      operations:
+      - name: generatesoundeffects
+        method: POST
+        description: Generate sound effects
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    authentication:
+      type: apikey
+      key: x-magnific-api-key
+      value: '{{env.FREEPIK_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: freepik-audio-rest
+    port: 8080
+    description: REST adapter for Freepik / Magnific API — Audio. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v1/ai/audio-isolation
+      name: v1-ai-audio-isolation
+      description: REST surface for v1-ai-audio-isolation.
+      operations:
+      - method: POST
+        name: audioisolation
+        description: Audio isolation from audio or video
+        call: freepik-audio.audioisolation
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/ai/music-generation
+      name: v1-ai-music-generation
+      description: REST surface for v1-ai-music-generation.
+      operations:
+      - method: POST
+        name: generatemusic
+        description: Generate music
+        call: freepik-audio.generatemusic
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: listmusictasks
+        description: List music generation tasks
+        call: freepik-audio.listmusictasks
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/ai/sound-effects
+      name: v1-ai-sound-effects
+      description: REST surface for v1-ai-sound-effects.
+      operations:
+      - method: POST
+        name: generatesoundeffects
+        description: Generate sound effects
+        call: freepik-audio.generatesoundeffects
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: freepik-audio-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Freepik / Magnific API — Audio. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: audio-isolation-audio-video
+      description: Audio isolation from audio or video
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: freepik-audio.audioisolation
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: generate-music
+      description: Generate music
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: freepik-audio.generatemusic
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-music-generation-tasks
+      description: List music generation tasks
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: freepik-audio.listmusictasks
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: generate-sound-effects
+      description: Generate sound effects
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: freepik-audio.generatesoundeffects
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
