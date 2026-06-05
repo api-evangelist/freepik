@@ -1,7 +1,8 @@
 # Freepik (freepik)
-Freepik is a leading platform for high-quality graphic resources used by designers, marketers, and creative professionals. Its developer platform (operated through Magnific) offers AI-powered image generation, video generation, image editing, audio generation, and programmatic access to Freepik's stock library of vectors, photos, icons, and templates.
 
-**URL:** [Visit APIs.json URL](https://raw.githubusercontent.com/api-evangelist/freepik/refs/heads/main/apis.yml)
+Freepik is a leading platform that provides high-quality graphic resources for designers, marketers, and creative professionals. Its developer platform (operated through Magnific) offers AI image, video, audio generation, image editing, and access to the Freepik stock library.
+
+**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/freepik/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/freepik/refs/heads/main/apis.yml)
 
 ## Scope
 
@@ -9,35 +10,49 @@ Freepik is a leading platform for high-quality graphic resources used by designe
 - **Position:** Consumer
 - **Access:** 3rd-Party
 
-## Tags:
+## Tags
 
- - AI, Graphics, Illustrations, Image Generation, Photos, Video Generation
+- AI
+- Graphics
+- Illustrations
+- Image Generation
+- Photos
+- Video Generation
 
 ## Timestamps
 
 - **Created:** 2025-01-07
-- **Modified:** 2026-04-28
+- **Modified:** 2026-05-19
 
 ## APIs
 
 ### Freepik
-The Freepik / Magnific API base URL is `https://api.magnific.com`. Authentication uses the `x-magnific-api-key` header. Endpoints cover image generation (Mystic, Flux 2 Pro / Turbo, Flux Pro v1.1, Flux Dev, HyperFlux, Seedream, Runway), video generation (Kling v2.1/v2.5 Pro, Minimax Hailuo, Wan, LTX), image editing (upscaler, relight, style transfer, remove background, expand), audio generation (music, sound effects, isolation), and stock resources (`/v1/resources`). Long-running tasks are polled via `GET /v1/ai/{endpoint}/{taskId}`.
 
-**Human URL:** [https://docs.freepik.com/](https://docs.freepik.com/)
+Freepik's developer platform provides AI-powered image generation, video generation, image editing, audio generation, and access to a vast stock library of vectors, photos, icons, and templates.
 
-**Base URL:** `https://api.magnific.com`
+- **Human URL:** [https://docs.freepik.com/](https://docs.freepik.com/)
+- **Base URL:** `https://api.magnific.com`
 
-#### Tags:
+#### Tags
 
- - AI, Graphics, Illustrations, Image Generation, Photos, Video Generation
+- AI
+- Graphics
+- Illustrations
+- Image Generation
+- Photos
+- Video Generation
 
 #### Properties
 
 - [Documentation](https://docs.freepik.com/)
-- [OpenAPI](openapi/freepik-openapi.yml)
+- [OpenAPI](https://raw.githubusercontent.com/api-evangelist/freepik/refs/heads/main/openapi/freepik-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
+- [Postman Collection](collections/freepik.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/freepik.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
 
 ## Common Properties
 
+- [GitHub Organization](https://github.com/freepik-company)
+- [LinkedIn](https://www.linkedin.com/company/freepik-company)
 - [Website](https://www.freepik.com/)
 - [Documentation](https://docs.freepik.com/)
 - [Sign Up](https://www.freepik.com/profile/signup)
@@ -45,5 +60,4 @@ The Freepik / Magnific API base URL is `https://api.magnific.com`. Authenticatio
 ## Maintainers
 
 **FN:** Kin Lane
-
 **Email:** kin@apievangelist.com
