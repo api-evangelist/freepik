@@ -1,0 +1,2206 @@
+{
+  "item": [
+    {
+      "id": "ecfe7273-69e4-47fb-98de-b7eb2f3cfc48",
+      "name": "Image Generation",
+      "description": {
+        "content": "Generate images from text or reference inputs.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c9e22012-13c1-4150-8ae5-0b8f99e56d63",
+          "name": "Generate image with Mystic",
+          "request": {
+            "name": "Generate image with Mystic",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "ai",
+                "mystic"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"prompt\": \"<string>\",\n  \"aspect_ratio\": \"<string>\",\n  \"num_images\": \"<integer>\",\n  \"webhook_url\": \"<uri>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "084f4928-486d-4551-927a-058affd532d7",
+              "name": "Task accepted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "ai",
+                    "mystic"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-magnific-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"task_id\": \"string\",\n    \"status\": \"CREATED\",\n    \"generated\": [\n      \"http://qCg.mgoD5h0,Kv1.ojuazxTGi2KzWMN65ZTuQkCVPkGaprinuME7jHP\",\n      \"https://qZzkgfy.frvhUFINO7cN7z.JZpcrYybyOUGCpRqbFziT7FRukXTxqEfKjDJVc5ItS7p-d.o1KK\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "102b0a5a-a0b0-4522-9326-dc309f99fff9",
+          "name": "Generate image with Flux 2 Pro",
+          "request": {
+            "name": "Generate image with Flux 2 Pro",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "ai",
+                "flux-2-pro"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"prompt\": \"<string>\",\n  \"aspect_ratio\": \"<string>\",\n  \"num_images\": \"<integer>\",\n  \"webhook_url\": \"<uri>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "9d608d58-ba0c-4e16-bc1e-22fed71f54ee",
+              "name": "Task accepted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "ai",
+                    "flux-2-pro"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-magnific-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"task_id\": \"string\",\n    \"status\": \"CREATED\",\n    \"generated\": [\n      \"http://qCg.mgoD5h0,Kv1.ojuazxTGi2KzWMN65ZTuQkCVPkGaprinuME7jHP\",\n      \"https://qZzkgfy.frvhUFINO7cN7z.JZpcrYybyOUGCpRqbFziT7FRukXTxqEfKjDJVc5ItS7p-d.o1KK\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ff1606b2-99f4-442f-9dab-b15589ec6d8d",
+          "name": "Generate image with Flux 2 Turbo",
+          "request": {
+            "name": "Generate image with Flux 2 Turbo",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "ai",
+                "flux-2-turbo"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"prompt\": \"<string>\",\n  \"aspect_ratio\": \"<string>\",\n  \"num_images\": \"<integer>\",\n  \"webhook_url\": \"<uri>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "aa41d63a-f0b5-4e47-b8f3-ac3dfba95afb",
+              "name": "Task accepted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "ai",
+                    "flux-2-turbo"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-magnific-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"task_id\": \"string\",\n    \"status\": \"CREATED\",\n    \"generated\": [\n      \"http://qCg.mgoD5h0,Kv1.ojuazxTGi2KzWMN65ZTuQkCVPkGaprinuME7jHP\",\n      \"https://qZzkgfy.frvhUFINO7cN7z.JZpcrYybyOUGCpRqbFziT7FRukXTxqEfKjDJVc5ItS7p-d.o1KK\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1748697f-74d2-4420-8226-6a2f2fcf9598",
+          "name": "Generate image with Flux Pro v1.1",
+          "request": {
+            "name": "Generate image with Flux Pro v1.1",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "ai",
+                "flux-pro-v1-1"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"prompt\": \"<string>\",\n  \"aspect_ratio\": \"<string>\",\n  \"num_images\": \"<integer>\",\n  \"webhook_url\": \"<uri>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "6741246b-9de6-485d-a6be-f748d1a80fbf",
+              "name": "Task accepted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "ai",
+                    "flux-pro-v1-1"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-magnific-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"task_id\": \"string\",\n    \"status\": \"CREATED\",\n    \"generated\": [\n      \"http://qCg.mgoD5h0,Kv1.ojuazxTGi2KzWMN65ZTuQkCVPkGaprinuME7jHP\",\n      \"https://qZzkgfy.frvhUFINO7cN7z.JZpcrYybyOUGCpRqbFziT7FRukXTxqEfKjDJVc5ItS7p-d.o1KK\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f292c5ef-7e79-4bf3-a6b7-b8de4ebe1538",
+          "name": "Generate image with Flux Dev",
+          "request": {
+            "name": "Generate image with Flux Dev",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "ai",
+                "flux-dev"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"prompt\": \"<string>\",\n  \"aspect_ratio\": \"<string>\",\n  \"num_images\": \"<integer>\",\n  \"webhook_url\": \"<uri>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a9d69b14-cb14-4a10-a5ca-2cc737afaa33",
+              "name": "Task accepted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "ai",
+                    "flux-dev"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-magnific-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"task_id\": \"string\",\n    \"status\": \"CREATED\",\n    \"generated\": [\n      \"http://qCg.mgoD5h0,Kv1.ojuazxTGi2KzWMN65ZTuQkCVPkGaprinuME7jHP\",\n      \"https://qZzkgfy.frvhUFINO7cN7z.JZpcrYybyOUGCpRqbFziT7FRukXTxqEfKjDJVc5ItS7p-d.o1KK\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0c909b45-3e75-489c-958d-dbd5b3ea02c7",
+          "name": "Generate image with HyperFlux",
+          "request": {
+            "name": "Generate image with HyperFlux",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "ai",
+                "hyperflux"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"prompt\": \"<string>\",\n  \"aspect_ratio\": \"<string>\",\n  \"num_images\": \"<integer>\",\n  \"webhook_url\": \"<uri>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "77540b61-3165-409c-8eac-bf80d18b607c",
+              "name": "Task accepted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "ai",
+                    "hyperflux"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-magnific-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"task_id\": \"string\",\n    \"status\": \"CREATED\",\n    \"generated\": [\n      \"http://qCg.mgoD5h0,Kv1.ojuazxTGi2KzWMN65ZTuQkCVPkGaprinuME7jHP\",\n      \"https://qZzkgfy.frvhUFINO7cN7z.JZpcrYybyOUGCpRqbFziT7FRukXTxqEfKjDJVc5ItS7p-d.o1KK\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "60d2833a-4ef6-4c33-9576-4edad3a7d372",
+          "name": "Generate image with Seedream v4.5",
+          "request": {
+            "name": "Generate image with Seedream v4.5",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "ai",
+                "seedream-v4-5"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"prompt\": \"<string>\",\n  \"aspect_ratio\": \"<string>\",\n  \"num_images\": \"<integer>\",\n  \"webhook_url\": \"<uri>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b4a67523-7aa5-45a9-abe4-2bde84b83b67",
+              "name": "Task accepted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "ai",
+                    "seedream-v4-5"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-magnific-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"task_id\": \"string\",\n    \"status\": \"CREATED\",\n    \"generated\": [\n      \"http://qCg.mgoD5h0,Kv1.ojuazxTGi2KzWMN65ZTuQkCVPkGaprinuME7jHP\",\n      \"https://qZzkgfy.frvhUFINO7cN7z.JZpcrYybyOUGCpRqbFziT7FRukXTxqEfKjDJVc5ItS7p-d.o1KK\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "374763d9-55dc-4a5e-88cb-39bdbaedbf1a",
+          "name": "Generate image with Runway",
+          "request": {
+            "name": "Generate image with Runway",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "ai",
+                "runway"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"prompt\": \"<string>\",\n  \"aspect_ratio\": \"<string>\",\n  \"num_images\": \"<integer>\",\n  \"webhook_url\": \"<uri>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "538505e2-c7cd-49d1-a2ad-4ee9abfab186",
+              "name": "Task accepted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "ai",
+                    "runway"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-magnific-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"task_id\": \"string\",\n    \"status\": \"CREATED\",\n    \"generated\": [\n      \"http://qCg.mgoD5h0,Kv1.ojuazxTGi2KzWMN65ZTuQkCVPkGaprinuME7jHP\",\n      \"https://qZzkgfy.frvhUFINO7cN7z.JZpcrYybyOUGCpRqbFziT7FRukXTxqEfKjDJVc5ItS7p-d.o1KK\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "6a452c84-c961-4837-8aee-d7e5aed0fe8f",
+      "name": "Video Generation",
+      "description": {
+        "content": "Generate video from images or text.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "3f0bfeef-de56-4e0a-874e-0029345139b2",
+          "name": "Generate video with Kling v2.1 Pro",
+          "request": {
+            "name": "Generate video with Kling v2.1 Pro",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "ai",
+                "kling-v2.1-pro"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"image\": \"<string>\",\n  \"prompt\": \"<string>\",\n  \"duration\": \"<integer>\",\n  \"webhook_url\": \"<uri>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "673049cf-3b42-43b4-b93b-3a15f3c349f0",
+              "name": "Task accepted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "ai",
+                    "kling-v2.1-pro"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-magnific-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"task_id\": \"string\",\n    \"status\": \"CREATED\",\n    \"generated\": [\n      \"http://qCg.mgoD5h0,Kv1.ojuazxTGi2KzWMN65ZTuQkCVPkGaprinuME7jHP\",\n      \"https://qZzkgfy.frvhUFINO7cN7z.JZpcrYybyOUGCpRqbFziT7FRukXTxqEfKjDJVc5ItS7p-d.o1KK\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "00839292-1e67-4f89-9f3a-edd5870888b7",
+          "name": "Generate video with Kling v2.5 Pro",
+          "request": {
+            "name": "Generate video with Kling v2.5 Pro",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "ai",
+                "kling-v2.5-pro"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"image\": \"<string>\",\n  \"prompt\": \"<string>\",\n  \"duration\": \"<integer>\",\n  \"webhook_url\": \"<uri>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "34a52355-b722-47e1-a85a-a2fe4896ffdd",
+              "name": "Task accepted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "ai",
+                    "kling-v2.5-pro"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-magnific-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"task_id\": \"string\",\n    \"status\": \"CREATED\",\n    \"generated\": [\n      \"http://qCg.mgoD5h0,Kv1.ojuazxTGi2KzWMN65ZTuQkCVPkGaprinuME7jHP\",\n      \"https://qZzkgfy.frvhUFINO7cN7z.JZpcrYybyOUGCpRqbFziT7FRukXTxqEfKjDJVc5ItS7p-d.o1KK\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fb8263e9-d846-4497-8ecc-ddf33e411e76",
+          "name": "Generate video with Minimax Hailuo 02 1080p",
+          "request": {
+            "name": "Generate video with Minimax Hailuo 02 1080p",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "ai",
+                "minimax-hailuo-02-1080p"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"image\": \"<string>\",\n  \"prompt\": \"<string>\",\n  \"duration\": \"<integer>\",\n  \"webhook_url\": \"<uri>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "9e904b7f-15b4-49a1-a80e-7f35bf410e11",
+              "name": "Task accepted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "ai",
+                    "minimax-hailuo-02-1080p"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-magnific-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"task_id\": \"string\",\n    \"status\": \"CREATED\",\n    \"generated\": [\n      \"http://qCg.mgoD5h0,Kv1.ojuazxTGi2KzWMN65ZTuQkCVPkGaprinuME7jHP\",\n      \"https://qZzkgfy.frvhUFINO7cN7z.JZpcrYybyOUGCpRqbFziT7FRukXTxqEfKjDJVc5ItS7p-d.o1KK\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "95e60885-7ddd-4273-a00d-165989f80606",
+      "name": "Image Editing",
+      "description": {
+        "content": "Upscale, relight, restyle, or edit images.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b7fdf410-4327-4615-95f4-eca30455a234",
+          "name": "Creative image upscaler",
+          "request": {
+            "name": "Creative image upscaler",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "ai",
+                "image-upscaler"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"image\": \"<string>\",\n  \"webhook_url\": \"<uri>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e929acbc-fa23-44e0-af29-42d7a9d41023",
+              "name": "Task accepted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "ai",
+                    "image-upscaler"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-magnific-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"task_id\": \"string\",\n    \"status\": \"CREATED\",\n    \"generated\": [\n      \"http://qCg.mgoD5h0,Kv1.ojuazxTGi2KzWMN65ZTuQkCVPkGaprinuME7jHP\",\n      \"https://qZzkgfy.frvhUFINO7cN7z.JZpcrYybyOUGCpRqbFziT7FRukXTxqEfKjDJVc5ItS7p-d.o1KK\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "db41a8a3-b978-44f1-a85f-13dded85cfef",
+          "name": "Relight image",
+          "request": {
+            "name": "Relight image",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "ai",
+                "image-relight"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"image\": \"<string>\",\n  \"webhook_url\": \"<uri>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "8f5ee015-416d-480d-b6c0-bbf4d9de4992",
+              "name": "Task accepted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "ai",
+                    "image-relight"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-magnific-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"task_id\": \"string\",\n    \"status\": \"CREATED\",\n    \"generated\": [\n      \"http://qCg.mgoD5h0,Kv1.ojuazxTGi2KzWMN65ZTuQkCVPkGaprinuME7jHP\",\n      \"https://qZzkgfy.frvhUFINO7cN7z.JZpcrYybyOUGCpRqbFziT7FRukXTxqEfKjDJVc5ItS7p-d.o1KK\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d8dde807-1c4c-49aa-bbb0-df71ab431322",
+          "name": "Apply style transfer",
+          "request": {
+            "name": "Apply style transfer",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "ai",
+                "image-styletransfer"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"image\": \"<string>\",\n  \"webhook_url\": \"<uri>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2384d935-d10d-4764-bfeb-dac81a54a2be",
+              "name": "Task accepted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "ai",
+                    "image-styletransfer"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-magnific-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"task_id\": \"string\",\n    \"status\": \"CREATED\",\n    \"generated\": [\n      \"http://qCg.mgoD5h0,Kv1.ojuazxTGi2KzWMN65ZTuQkCVPkGaprinuME7jHP\",\n      \"https://qZzkgfy.frvhUFINO7cN7z.JZpcrYybyOUGCpRqbFziT7FRukXTxqEfKjDJVc5ItS7p-d.o1KK\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b4dff4e7-ac26-4fdf-aa8f-ec994525e895",
+          "name": "Remove background",
+          "request": {
+            "name": "Remove background",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "ai",
+                "remove-background"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"image\": \"<string>\",\n  \"webhook_url\": \"<uri>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "bb1bfa48-4dd1-4c22-9a5b-b9a795b7e1b6",
+              "name": "Task accepted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "ai",
+                    "remove-background"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-magnific-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"task_id\": \"string\",\n    \"status\": \"CREATED\",\n    \"generated\": [\n      \"http://qCg.mgoD5h0,Kv1.ojuazxTGi2KzWMN65ZTuQkCVPkGaprinuME7jHP\",\n      \"https://qZzkgfy.frvhUFINO7cN7z.JZpcrYybyOUGCpRqbFziT7FRukXTxqEfKjDJVc5ItS7p-d.o1KK\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "aa73a8ba-3f74-42e6-b871-1b8c2ab8ecc8",
+          "name": "Expand image",
+          "request": {
+            "name": "Expand image",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "ai",
+                "image-expand"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"image\": \"<string>\",\n  \"webhook_url\": \"<uri>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "3a690257-c25a-49bf-a88e-809fd6de2f3d",
+              "name": "Task accepted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "ai",
+                    "image-expand"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-magnific-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"task_id\": \"string\",\n    \"status\": \"CREATED\",\n    \"generated\": [\n      \"http://qCg.mgoD5h0,Kv1.ojuazxTGi2KzWMN65ZTuQkCVPkGaprinuME7jHP\",\n      \"https://qZzkgfy.frvhUFINO7cN7z.JZpcrYybyOUGCpRqbFziT7FRukXTxqEfKjDJVc5ItS7p-d.o1KK\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "bfdffa4f-3815-4e59-93c9-751c9f611e8a",
+      "name": "Audio",
+      "description": {
+        "content": "Generate music and sound effects.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "0176525a-9ada-4383-ade4-360c58f0522e",
+          "name": "Generate music",
+          "request": {
+            "name": "Generate music",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "ai",
+                "music-generation"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"prompt\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "72e2cccc-f369-4638-8121-d449023cbe98",
+              "name": "Task accepted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "ai",
+                    "music-generation"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-magnific-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"prompt\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"task_id\": \"string\",\n    \"status\": \"CREATED\",\n    \"generated\": [\n      \"http://qCg.mgoD5h0,Kv1.ojuazxTGi2KzWMN65ZTuQkCVPkGaprinuME7jHP\",\n      \"https://qZzkgfy.frvhUFINO7cN7z.JZpcrYybyOUGCpRqbFziT7FRukXTxqEfKjDJVc5ItS7p-d.o1KK\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a9d06464-68e3-452a-a38a-f7502c4540cb",
+          "name": "List music generation tasks",
+          "request": {
+            "name": "List music generation tasks",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "ai",
+                "music-generation"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "abf05a6e-12e7-40e7-acee-5269ea7f3b8e",
+              "name": "Music tasks list.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "ai",
+                    "music-generation"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-magnific-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8676d819-7e2b-4813-9210-bc9b273a6507",
+          "name": "Generate sound effects",
+          "request": {
+            "name": "Generate sound effects",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "ai",
+                "sound-effects"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"prompt\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d302752c-bbc0-4f53-b2b5-872a9ae166fb",
+              "name": "Task accepted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "ai",
+                    "sound-effects"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-magnific-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"prompt\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"task_id\": \"string\",\n    \"status\": \"CREATED\",\n    \"generated\": [\n      \"http://qCg.mgoD5h0,Kv1.ojuazxTGi2KzWMN65ZTuQkCVPkGaprinuME7jHP\",\n      \"https://qZzkgfy.frvhUFINO7cN7z.JZpcrYybyOUGCpRqbFziT7FRukXTxqEfKjDJVc5ItS7p-d.o1KK\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "09286878-d03c-40be-96f0-58f1f1210852",
+          "name": "Audio isolation from audio or video",
+          "request": {
+            "name": "Audio isolation from audio or video",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "ai",
+                "audio-isolation"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "<object>",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "9c963005-6faf-4367-a090-a3efea79c0d1",
+              "name": "Task accepted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "ai",
+                    "audio-isolation"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-magnific-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<object>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"task_id\": \"string\",\n    \"status\": \"CREATED\",\n    \"generated\": [\n      \"http://qCg.mgoD5h0,Kv1.ojuazxTGi2KzWMN65ZTuQkCVPkGaprinuME7jHP\",\n      \"https://qZzkgfy.frvhUFINO7cN7z.JZpcrYybyOUGCpRqbFziT7FRukXTxqEfKjDJVc5ItS7p-d.o1KK\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "d239ea51-672d-48b5-8b7c-ff1125895128",
+      "name": "Resources",
+      "description": {
+        "content": "Search Freepik's stock library.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c225b397-b058-4c5e-ae63-09ec62f83fde",
+          "name": "Search stock resources",
+          "request": {
+            "name": "Search stock resources",
+            "description": {
+              "content": "Search Freepik's stock library of vectors, photos, icons, and templates.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "resources"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "term",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "relevance"
+                },
+                {
+                  "disabled": false,
+                  "key": "filters",
+                  "value": "<string>",
+                  "description": "Advanced filters (orientation, content_type, license, color, author, ai-generated, vector, psd, people)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "key": "Accept-Language",
+                "value": "en-US",
+                "description": ""
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e2adfa77-c64d-4445-aa30-df805bc2271d",
+              "name": "Resources listing.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "resources"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "term",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "order",
+                      "value": "relevance"
+                    },
+                    {
+                      "key": "filters",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-magnific-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "Accept-Language",
+                    "value": "en-US",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": 512,\n      \"title\": \"string\",\n      \"url\": \"https://gclhxwuftGZNLgSAdq.gaokpLsIkJlbBMev-GI+ImMpZCn1rG.6W0f-rkWC4Zjgt6tNtuq0IIDr\",\n      \"filename\": \"string\",\n      \"image\": {},\n      \"author\": {},\n      \"stats\": {}\n    },\n    {\n      \"id\": 7387,\n      \"title\": \"string\",\n      \"url\": \"https://lzINen.lilJPq,7Ugmj8pRBRMh\",\n      \"filename\": \"string\",\n      \"image\": {},\n      \"author\": {},\n      \"stats\": {}\n    }\n  ],\n  \"meta\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "201eb795-fe06-40ac-bb0b-71c26041acec",
+      "name": "Tasks",
+      "description": {
+        "content": "Poll asynchronous task status.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "ae141b8d-9554-480e-9146-a5884db40a59",
+          "name": "Poll task status",
+          "request": {
+            "name": "Poll task status",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "ai",
+                ":endpoint",
+                ":taskId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "endpoint",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "taskId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d5574dae-24db-4fd4-b7f6-e05b6360269f",
+              "name": "Task status.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "ai",
+                    ":endpoint",
+                    ":taskId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "endpoint",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "taskId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-magnific-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"task_id\": \"string\",\n    \"status\": \"CREATED\",\n    \"generated\": [\n      \"http://qCg.mgoD5h0,Kv1.ojuazxTGi2KzWMN65ZTuQkCVPkGaprinuME7jHP\",\n      \"https://qZzkgfy.frvhUFINO7cN7z.JZpcrYybyOUGCpRqbFziT7FRukXTxqEfKjDJVc5ItS7p-d.o1KK\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.magnific.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "x-magnific-api-key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "f8025ea9-8c17-46a9-af93-cf5b21016189",
+    "name": "Freepik / Magnific API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Freepik's developer platform (operated through Magnific) provides AI-powered image generation, video generation, image editing, audio generation, and access to Freepik's stock library of vectors, photos, icons, and templates. Asynchronous tasks are polled by task ID.\n\nContact Support:\n Name: Freepik / Magnific",
+      "type": "text/plain"
+    }
+  }
+}

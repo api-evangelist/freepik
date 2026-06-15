@@ -1,0 +1,430 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Freepik / Magnific API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-magnific-api-key",
+      "value": "{{x-magnific-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Resources",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search stock resources",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.magnific.com/v1/resources",
+            "headers": [
+              {
+                "name": "Accept-Language",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "term",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "filters",
+                "value": "",
+                "type": "query",
+                "description": "Advanced filters (orientation, content_type, license, color, author, ai-generated, vector, psd, people)."
+              }
+            ]
+          },
+          "docs": "Search Freepik's stock library of vectors, photos, icons, and templates."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Image Generation",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Generate image with Mystic",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.magnific.com/v1/ai/mystic",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate image with Mystic"
+        },
+        {
+          "info": {
+            "name": "Generate image with Flux 2 Pro",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.magnific.com/v1/ai/flux-2-pro",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate image with Flux 2 Pro"
+        },
+        {
+          "info": {
+            "name": "Generate image with Flux 2 Turbo",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.magnific.com/v1/ai/flux-2-turbo",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate image with Flux 2 Turbo"
+        },
+        {
+          "info": {
+            "name": "Generate image with Flux Pro v1.1",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.magnific.com/v1/ai/flux-pro-v1-1",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate image with Flux Pro v1.1"
+        },
+        {
+          "info": {
+            "name": "Generate image with Flux Dev",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.magnific.com/v1/ai/flux-dev",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate image with Flux Dev"
+        },
+        {
+          "info": {
+            "name": "Generate image with HyperFlux",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.magnific.com/v1/ai/hyperflux",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate image with HyperFlux"
+        },
+        {
+          "info": {
+            "name": "Generate image with Seedream v4.5",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.magnific.com/v1/ai/seedream-v4-5",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate image with Seedream v4.5"
+        },
+        {
+          "info": {
+            "name": "Generate image with Runway",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.magnific.com/v1/ai/runway",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate image with Runway"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Video Generation",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Generate video with Kling v2.1 Pro",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.magnific.com/v1/ai/kling-v2.1-pro",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate video with Kling v2.1 Pro"
+        },
+        {
+          "info": {
+            "name": "Generate video with Kling v2.5 Pro",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.magnific.com/v1/ai/kling-v2.5-pro",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate video with Kling v2.5 Pro"
+        },
+        {
+          "info": {
+            "name": "Generate video with Minimax Hailuo 02 1080p",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.magnific.com/v1/ai/minimax-hailuo-02-1080p",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate video with Minimax Hailuo 02 1080p"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Image Editing",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Creative image upscaler",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.magnific.com/v1/ai/image-upscaler",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creative image upscaler"
+        },
+        {
+          "info": {
+            "name": "Relight image",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.magnific.com/v1/ai/image-relight",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Relight image"
+        },
+        {
+          "info": {
+            "name": "Apply style transfer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.magnific.com/v1/ai/image-styletransfer",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Apply style transfer"
+        },
+        {
+          "info": {
+            "name": "Remove background",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.magnific.com/v1/ai/remove-background",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Remove background"
+        },
+        {
+          "info": {
+            "name": "Expand image",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.magnific.com/v1/ai/image-expand",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Expand image"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Audio",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List music generation tasks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.magnific.com/v1/ai/music-generation"
+          },
+          "docs": "List music generation tasks"
+        },
+        {
+          "info": {
+            "name": "Generate music",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.magnific.com/v1/ai/music-generation",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate music"
+        },
+        {
+          "info": {
+            "name": "Generate sound effects",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.magnific.com/v1/ai/sound-effects",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate sound effects"
+        },
+        {
+          "info": {
+            "name": "Audio isolation from audio or video",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.magnific.com/v1/ai/audio-isolation",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Audio isolation from audio or video"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Tasks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Poll task status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.magnific.com/v1/ai/:endpoint/:taskId",
+            "params": [
+              {
+                "name": "endpoint",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "taskId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Poll task status"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
