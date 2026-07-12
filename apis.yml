@@ -40,6 +40,10 @@ apis:
       Freepik's developer platform provides AI-powered image generation, video generation, image editing, audio
       generation, and access to a vast stock library of vectors, photos, icons, and templates.
 common:
+  - type: DomainSecurity
+    url: security/freepik-domain-security.yml
+  - type: Authentication
+    url: authentication/freepik-authentication.yml
   - type: GitHubOrganization
     url: https://github.com/freepik-company
   - type: LinkedIn
