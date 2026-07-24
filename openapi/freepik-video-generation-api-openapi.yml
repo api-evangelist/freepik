@@ -1,0 +1,107 @@
+openapi: 3.1.0
+info:
+  title: Freepik / Magnific Audio Video Generation API
+  description: Freepik's developer platform (operated through Magnific) provides AI-powered image generation, video generation, image editing, audio generation, and access to Freepik's stock library of vectors, photos, icons, and templates. Asynchronous tasks are polled by task ID.
+  version: '1.0'
+  contact:
+    name: Freepik / Magnific
+    url: https://docs.freepik.com/
+servers:
+- url: https://api.magnific.com
+  description: Magnific API (Freepik developer platform)
+security:
+- ApiKey: []
+tags:
+- name: Video Generation
+  description: Generate video from images or text.
+paths:
+  /v1/ai/kling-v2.1-pro:
+    post:
+      summary: Generate video with Kling v2.1 Pro
+      operationId: generateKling21Pro
+      tags:
+      - Video Generation
+      requestBody:
+        $ref: '#/components/requestBodies/VideoGenerationRequest'
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+  /v1/ai/kling-v2.5-pro:
+    post:
+      summary: Generate video with Kling v2.5 Pro
+      operationId: generateKling25Pro
+      tags:
+      - Video Generation
+      requestBody:
+        $ref: '#/components/requestBodies/VideoGenerationRequest'
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+  /v1/ai/minimax-hailuo-02-1080p:
+    post:
+      summary: Generate video with Minimax Hailuo 02 1080p
+      operationId: generateMinimaxHailuo
+      tags:
+      - Video Generation
+      requestBody:
+        $ref: '#/components/requestBodies/VideoGenerationRequest'
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+components:
+  requestBodies:
+    VideoGenerationRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              image:
+                type: string
+                description: Image URL or base64.
+              prompt:
+                type: string
+              duration:
+                type: integer
+              webhook_url:
+                type: string
+                format: uri
+  schemas:
+    TaskResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            task_id:
+              type: string
+            status:
+              type: string
+              enum:
+              - CREATED
+              - IN_PROGRESS
+              - COMPLETED
+              - FAILED
+            generated:
+              type: array
+              items:
+                type: string
+                format: uri
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: x-magnific-api-key

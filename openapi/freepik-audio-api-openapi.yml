@@ -1,0 +1,116 @@
+openapi: 3.1.0
+info:
+  title: Freepik / Magnific Audio API
+  description: Freepik's developer platform (operated through Magnific) provides AI-powered image generation, video generation, image editing, audio generation, and access to Freepik's stock library of vectors, photos, icons, and templates. Asynchronous tasks are polled by task ID.
+  version: '1.0'
+  contact:
+    name: Freepik / Magnific
+    url: https://docs.freepik.com/
+servers:
+- url: https://api.magnific.com
+  description: Magnific API (Freepik developer platform)
+security:
+- ApiKey: []
+tags:
+- name: Audio
+  description: Generate music and sound effects.
+paths:
+  /v1/ai/music-generation:
+    post:
+      summary: Generate music
+      operationId: generateMusic
+      tags:
+      - Audio
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+    get:
+      summary: List music generation tasks
+      operationId: listMusicTasks
+      tags:
+      - Audio
+      responses:
+        '200':
+          description: Music tasks list.
+          content:
+            application/json:
+              schema:
+                type: object
+  /v1/ai/sound-effects:
+    post:
+      summary: Generate sound effects
+      operationId: generateSoundEffects
+      tags:
+      - Audio
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+  /v1/ai/audio-isolation:
+    post:
+      summary: Audio isolation from audio or video
+      operationId: audioIsolation
+      tags:
+      - Audio
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+components:
+  schemas:
+    TaskResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            task_id:
+              type: string
+            status:
+              type: string
+              enum:
+              - CREATED
+              - IN_PROGRESS
+              - COMPLETED
+              - FAILED
+            generated:
+              type: array
+              items:
+                type: string
+                format: uri
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: x-magnific-api-key

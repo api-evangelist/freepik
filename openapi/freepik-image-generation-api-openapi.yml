@@ -1,0 +1,181 @@
+openapi: 3.1.0
+info:
+  title: Freepik / Magnific Audio Image Generation API
+  description: Freepik's developer platform (operated through Magnific) provides AI-powered image generation, video generation, image editing, audio generation, and access to Freepik's stock library of vectors, photos, icons, and templates. Asynchronous tasks are polled by task ID.
+  version: '1.0'
+  contact:
+    name: Freepik / Magnific
+    url: https://docs.freepik.com/
+servers:
+- url: https://api.magnific.com
+  description: Magnific API (Freepik developer platform)
+security:
+- ApiKey: []
+tags:
+- name: Image Generation
+  description: Generate images from text or reference inputs.
+paths:
+  /v1/ai/mystic:
+    post:
+      summary: Generate image with Mystic
+      operationId: generateMystic
+      tags:
+      - Image Generation
+      requestBody:
+        $ref: '#/components/requestBodies/ImageGenerationRequest'
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+  /v1/ai/flux-2-pro:
+    post:
+      summary: Generate image with Flux 2 Pro
+      operationId: generateFlux2Pro
+      tags:
+      - Image Generation
+      requestBody:
+        $ref: '#/components/requestBodies/ImageGenerationRequest'
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+  /v1/ai/flux-2-turbo:
+    post:
+      summary: Generate image with Flux 2 Turbo
+      operationId: generateFlux2Turbo
+      tags:
+      - Image Generation
+      requestBody:
+        $ref: '#/components/requestBodies/ImageGenerationRequest'
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+  /v1/ai/flux-pro-v1-1:
+    post:
+      summary: Generate image with Flux Pro v1.1
+      operationId: generateFluxProV11
+      tags:
+      - Image Generation
+      requestBody:
+        $ref: '#/components/requestBodies/ImageGenerationRequest'
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+  /v1/ai/flux-dev:
+    post:
+      summary: Generate image with Flux Dev
+      operationId: generateFluxDev
+      tags:
+      - Image Generation
+      requestBody:
+        $ref: '#/components/requestBodies/ImageGenerationRequest'
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+  /v1/ai/hyperflux:
+    post:
+      summary: Generate image with HyperFlux
+      operationId: generateHyperflux
+      tags:
+      - Image Generation
+      requestBody:
+        $ref: '#/components/requestBodies/ImageGenerationRequest'
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+  /v1/ai/seedream-v4-5:
+    post:
+      summary: Generate image with Seedream v4.5
+      operationId: generateSeedream
+      tags:
+      - Image Generation
+      requestBody:
+        $ref: '#/components/requestBodies/ImageGenerationRequest'
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+  /v1/ai/runway:
+    post:
+      summary: Generate image with Runway
+      operationId: generateRunway
+      tags:
+      - Image Generation
+      requestBody:
+        $ref: '#/components/requestBodies/ImageGenerationRequest'
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+components:
+  requestBodies:
+    ImageGenerationRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              prompt:
+                type: string
+              aspect_ratio:
+                type: string
+              num_images:
+                type: integer
+              webhook_url:
+                type: string
+                format: uri
+  schemas:
+    TaskResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            task_id:
+              type: string
+            status:
+              type: string
+              enum:
+              - CREATED
+              - IN_PROGRESS
+              - COMPLETED
+              - FAILED
+            generated:
+              type: array
+              items:
+                type: string
+                format: uri
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: x-magnific-api-key

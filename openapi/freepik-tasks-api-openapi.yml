@@ -1,0 +1,68 @@
+openapi: 3.1.0
+info:
+  title: Freepik / Magnific Audio Tasks API
+  description: Freepik's developer platform (operated through Magnific) provides AI-powered image generation, video generation, image editing, audio generation, and access to Freepik's stock library of vectors, photos, icons, and templates. Asynchronous tasks are polled by task ID.
+  version: '1.0'
+  contact:
+    name: Freepik / Magnific
+    url: https://docs.freepik.com/
+servers:
+- url: https://api.magnific.com
+  description: Magnific API (Freepik developer platform)
+security:
+- ApiKey: []
+tags:
+- name: Tasks
+  description: Poll asynchronous task status.
+paths:
+  /v1/ai/{endpoint}/{taskId}:
+    get:
+      summary: Poll task status
+      operationId: getTask
+      tags:
+      - Tasks
+      parameters:
+      - name: endpoint
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: taskId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Task status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+components:
+  schemas:
+    TaskResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            task_id:
+              type: string
+            status:
+              type: string
+              enum:
+              - CREATED
+              - IN_PROGRESS
+              - COMPLETED
+              - FAILED
+            generated:
+              type: array
+              items:
+                type: string
+                format: uri
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: x-magnific-api-key

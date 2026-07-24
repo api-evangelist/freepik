@@ -1,0 +1,133 @@
+openapi: 3.1.0
+info:
+  title: Freepik / Magnific Audio Image Editing API
+  description: Freepik's developer platform (operated through Magnific) provides AI-powered image generation, video generation, image editing, audio generation, and access to Freepik's stock library of vectors, photos, icons, and templates. Asynchronous tasks are polled by task ID.
+  version: '1.0'
+  contact:
+    name: Freepik / Magnific
+    url: https://docs.freepik.com/
+servers:
+- url: https://api.magnific.com
+  description: Magnific API (Freepik developer platform)
+security:
+- ApiKey: []
+tags:
+- name: Image Editing
+  description: Upscale, relight, restyle, or edit images.
+paths:
+  /v1/ai/image-upscaler:
+    post:
+      summary: Creative image upscaler
+      operationId: imageUpscaler
+      tags:
+      - Image Editing
+      requestBody:
+        $ref: '#/components/requestBodies/ImageEditingRequest'
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+  /v1/ai/image-relight:
+    post:
+      summary: Relight image
+      operationId: imageRelight
+      tags:
+      - Image Editing
+      requestBody:
+        $ref: '#/components/requestBodies/ImageEditingRequest'
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+  /v1/ai/image-styletransfer:
+    post:
+      summary: Apply style transfer
+      operationId: imageStyleTransfer
+      tags:
+      - Image Editing
+      requestBody:
+        $ref: '#/components/requestBodies/ImageEditingRequest'
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+  /v1/ai/remove-background:
+    post:
+      summary: Remove background
+      operationId: removeBackground
+      tags:
+      - Image Editing
+      requestBody:
+        $ref: '#/components/requestBodies/ImageEditingRequest'
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+  /v1/ai/image-expand:
+    post:
+      summary: Expand image
+      operationId: imageExpand
+      tags:
+      - Image Editing
+      requestBody:
+        $ref: '#/components/requestBodies/ImageEditingRequest'
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+components:
+  requestBodies:
+    ImageEditingRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              image:
+                type: string
+                description: Image URL or base64.
+              webhook_url:
+                type: string
+                format: uri
+  schemas:
+    TaskResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            task_id:
+              type: string
+            status:
+              type: string
+              enum:
+              - CREATED
+              - IN_PROGRESS
+              - COMPLETED
+              - FAILED
+            generated:
+              type: array
+              items:
+                type: string
+                format: uri
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: x-magnific-api-key

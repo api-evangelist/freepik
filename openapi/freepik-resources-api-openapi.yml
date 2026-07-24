@@ -1,0 +1,104 @@
+openapi: 3.1.0
+info:
+  title: Freepik / Magnific Audio Resources API
+  description: Freepik's developer platform (operated through Magnific) provides AI-powered image generation, video generation, image editing, audio generation, and access to Freepik's stock library of vectors, photos, icons, and templates. Asynchronous tasks are polled by task ID.
+  version: '1.0'
+  contact:
+    name: Freepik / Magnific
+    url: https://docs.freepik.com/
+servers:
+- url: https://api.magnific.com
+  description: Magnific API (Freepik developer platform)
+security:
+- ApiKey: []
+tags:
+- name: Resources
+  description: Search Freepik's stock library.
+paths:
+  /v1/resources:
+    get:
+      summary: Search stock resources
+      description: Search Freepik's stock library of vectors, photos, icons, and templates.
+      operationId: listResources
+      tags:
+      - Resources
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      - name: page
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 1
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+      - name: term
+        in: query
+        schema:
+          type: string
+      - name: order
+        in: query
+        schema:
+          type: string
+          enum:
+          - relevance
+          - recent
+          default: relevance
+      - name: filters
+        in: query
+        schema:
+          type: string
+        description: Advanced filters (orientation, content_type, license, color, author, ai-generated, vector, psd, people).
+      responses:
+        '200':
+          description: Resources listing.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceList'
+components:
+  schemas:
+    ResourceList:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resource'
+        meta:
+          type: object
+    Resource:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        url:
+          type: string
+          format: uri
+        filename:
+          type: string
+        licenses:
+          type: array
+          items:
+            type: object
+        image:
+          type: object
+        author:
+          type: object
+        stats:
+          type: object
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: x-magnific-api-key
