@@ -5,7 +5,20 @@ description: >-
   professionals. Its developer platform (operated through Magnific) offers AI image, video, audio generation, image
   editing, and access to the Freepik stock library.
 type: Index
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/freepik.png
 access: 3rd-Party
 created: '2025-01-07'
 modified: '2026-05-19'
@@ -20,25 +33,78 @@ tags:
 url: https://raw.githubusercontent.com/api-evangelist/freepik/refs/heads/main/apis.yml
 specificationVersion: '0.19'
 apis:
-  - aid: freepik:freepik
-    name: Freepik
-    tags:
-      - AI
-      - Graphics
-      - Illustrations
-      - Image Generation
-      - Photos
-      - Video Generation
-    humanURL: https://docs.freepik.com/
-    baseURL: https://api.magnific.com
-    properties:
-      - url: https://docs.freepik.com/
-        type: Documentation
-      - url: https://raw.githubusercontent.com/api-evangelist/freepik/refs/heads/main/openapi/freepik-openapi.yml
-        type: OpenAPI
-    description: >-
-      Freepik's developer platform provides AI-powered image generation, video generation, image editing, audio
-      generation, and access to a vast stock library of vectors, photos, icons, and templates.
+- aid: freepik:freepik-audio-api
+  name: Freepik Audio API
+  description: Generate music and sound effects.
+  humanURL: https://docs.freepik.com/
+  baseURL: https://api.magnific.com
+  tags:
+  - Audio
+  properties:
+  - type: OpenAPI
+    url: openapi/freepik-audio-api-openapi.yml
+  - type: Documentation
+    url: https://docs.freepik.com/
+- aid: freepik:freepik-image-editing-api
+  name: Freepik Image Editing API
+  description: Upscale, relight, restyle, or edit images.
+  humanURL: https://docs.freepik.com/
+  baseURL: https://api.magnific.com
+  tags:
+  - Image Editing
+  properties:
+  - type: OpenAPI
+    url: openapi/freepik-image-editing-api-openapi.yml
+  - type: Documentation
+    url: https://docs.freepik.com/
+- aid: freepik:freepik-image-generation-api
+  name: Freepik Image Generation API
+  description: Generate images from text or reference inputs.
+  humanURL: https://docs.freepik.com/
+  baseURL: https://api.magnific.com
+  tags:
+  - Image Generation
+  properties:
+  - type: OpenAPI
+    url: openapi/freepik-image-generation-api-openapi.yml
+  - type: Documentation
+    url: https://docs.freepik.com/
+- aid: freepik:freepik-resources-api
+  name: Freepik Resources API
+  description: Search Freepik's stock library.
+  humanURL: https://docs.freepik.com/
+  baseURL: https://api.magnific.com
+  tags:
+  - Resources
+  properties:
+  - type: OpenAPI
+    url: openapi/freepik-resources-api-openapi.yml
+  - type: Documentation
+    url: https://docs.freepik.com/
+- aid: freepik:freepik-tasks-api
+  name: Freepik Tasks API
+  description: Poll asynchronous task status.
+  humanURL: https://docs.freepik.com/
+  baseURL: https://api.magnific.com
+  tags:
+  - Tasks
+  properties:
+  - type: OpenAPI
+    url: openapi/freepik-tasks-api-openapi.yml
+  - type: Documentation
+    url: https://docs.freepik.com/
+- aid: freepik:freepik-video-generation-api
+  name: Freepik Video Generation API
+  description: Generate video from images or text.
+  humanURL: https://docs.freepik.com/
+  baseURL: https://api.magnific.com
+  tags:
+  - Video Generation
+  properties:
+  - type: OpenAPI
+    url: openapi/freepik-video-generation-api-openapi.yml
+  - type: Documentation
+    url: https://docs.freepik.com/
 common:
   - type: AgenticAccess
     url: agentic-access/freepik-agentic-access.yml
