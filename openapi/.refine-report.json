@@ -1,0 +1,24 @@
+{
+  "provider": "freepik",
+  "sources": [
+    "freepik-audio-api-openapi.yml",
+    "freepik-image-editing-api-openapi.yml",
+    "freepik-image-generation-api-openapi.yml",
+    "freepik-resources-api-openapi.yml",
+    "freepik-tasks-api-openapi.yml",
+    "freepik-video-generation-api-openapi.yml"
+  ],
+  "outputs": [
+    "freepik-audio-api-openapi.yml",
+    "freepik-image-editing-api-openapi.yml",
+    "freepik-image-generation-api-openapi.yml",
+    "freepik-resources-api-openapi.yml",
+    "freepik-tasks-api-openapi.yml",
+    "freepik-video-generation-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

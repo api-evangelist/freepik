@@ -1,0 +1,495 @@
+openapi: 3.1.0
+info:
+  title: Freepik / Magnific API
+  description: >-
+    Freepik's developer platform (operated through Magnific) provides AI-powered
+    image generation, video generation, image editing, audio generation, and
+    access to Freepik's stock library of vectors, photos, icons, and templates.
+    Asynchronous tasks are polled by task ID.
+  version: '1.0'
+  contact:
+    name: Freepik / Magnific
+    url: https://docs.freepik.com/
+servers:
+  - url: https://api.magnific.com
+    description: Magnific API (Freepik developer platform)
+tags:
+  - name: Image Generation
+    description: Generate images from text or reference inputs.
+  - name: Video Generation
+    description: Generate video from images or text.
+  - name: Image Editing
+    description: Upscale, relight, restyle, or edit images.
+  - name: Audio
+    description: Generate music and sound effects.
+  - name: Resources
+    description: Search Freepik's stock library.
+  - name: Tasks
+    description: Poll asynchronous task status.
+paths:
+  /v1/resources:
+    get:
+      summary: Search stock resources
+      description: Search Freepik's stock library of vectors, photos, icons, and templates.
+      operationId: listResources
+      tags:
+        - Resources
+      parameters:
+        - name: Accept-Language
+          in: header
+          schema:
+            type: string
+            default: en-US
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+        - name: term
+          in: query
+          schema:
+            type: string
+        - name: order
+          in: query
+          schema:
+            type: string
+            enum: [relevance, recent]
+            default: relevance
+        - name: filters
+          in: query
+          schema:
+            type: string
+          description: Advanced filters (orientation, content_type, license, color, author, ai-generated, vector, psd, people).
+      responses:
+        '200':
+          description: Resources listing.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceList'
+  /v1/ai/mystic:
+    post:
+      summary: Generate image with Mystic
+      operationId: generateMystic
+      tags:
+        - Image Generation
+      requestBody:
+        $ref: '#/components/requestBodies/ImageGenerationRequest'
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+  /v1/ai/flux-2-pro:
+    post:
+      summary: Generate image with Flux 2 Pro
+      operationId: generateFlux2Pro
+      tags: [Image Generation]
+      requestBody:
+        $ref: '#/components/requestBodies/ImageGenerationRequest'
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+  /v1/ai/flux-2-turbo:
+    post:
+      summary: Generate image with Flux 2 Turbo
+      operationId: generateFlux2Turbo
+      tags: [Image Generation]
+      requestBody:
+        $ref: '#/components/requestBodies/ImageGenerationRequest'
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+  /v1/ai/flux-pro-v1-1:
+    post:
+      summary: Generate image with Flux Pro v1.1
+      operationId: generateFluxProV11
+      tags: [Image Generation]
+      requestBody:
+        $ref: '#/components/requestBodies/ImageGenerationRequest'
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+  /v1/ai/flux-dev:
+    post:
+      summary: Generate image with Flux Dev
+      operationId: generateFluxDev
+      tags: [Image Generation]
+      requestBody:
+        $ref: '#/components/requestBodies/ImageGenerationRequest'
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+  /v1/ai/hyperflux:
+    post:
+      summary: Generate image with HyperFlux
+      operationId: generateHyperflux
+      tags: [Image Generation]
+      requestBody:
+        $ref: '#/components/requestBodies/ImageGenerationRequest'
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+  /v1/ai/seedream-v4-5:
+    post:
+      summary: Generate image with Seedream v4.5
+      operationId: generateSeedream
+      tags: [Image Generation]
+      requestBody:
+        $ref: '#/components/requestBodies/ImageGenerationRequest'
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+  /v1/ai/runway:
+    post:
+      summary: Generate image with Runway
+      operationId: generateRunway
+      tags: [Image Generation]
+      requestBody:
+        $ref: '#/components/requestBodies/ImageGenerationRequest'
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+  /v1/ai/kling-v2.1-pro:
+    post:
+      summary: Generate video with Kling v2.1 Pro
+      operationId: generateKling21Pro
+      tags: [Video Generation]
+      requestBody:
+        $ref: '#/components/requestBodies/VideoGenerationRequest'
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+  /v1/ai/kling-v2.5-pro:
+    post:
+      summary: Generate video with Kling v2.5 Pro
+      operationId: generateKling25Pro
+      tags: [Video Generation]
+      requestBody:
+        $ref: '#/components/requestBodies/VideoGenerationRequest'
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+  /v1/ai/minimax-hailuo-02-1080p:
+    post:
+      summary: Generate video with Minimax Hailuo 02 1080p
+      operationId: generateMinimaxHailuo
+      tags: [Video Generation]
+      requestBody:
+        $ref: '#/components/requestBodies/VideoGenerationRequest'
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+  /v1/ai/image-upscaler:
+    post:
+      summary: Creative image upscaler
+      operationId: imageUpscaler
+      tags: [Image Editing]
+      requestBody:
+        $ref: '#/components/requestBodies/ImageEditingRequest'
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+  /v1/ai/image-relight:
+    post:
+      summary: Relight image
+      operationId: imageRelight
+      tags: [Image Editing]
+      requestBody:
+        $ref: '#/components/requestBodies/ImageEditingRequest'
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+  /v1/ai/image-styletransfer:
+    post:
+      summary: Apply style transfer
+      operationId: imageStyleTransfer
+      tags: [Image Editing]
+      requestBody:
+        $ref: '#/components/requestBodies/ImageEditingRequest'
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+  /v1/ai/remove-background:
+    post:
+      summary: Remove background
+      operationId: removeBackground
+      tags: [Image Editing]
+      requestBody:
+        $ref: '#/components/requestBodies/ImageEditingRequest'
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+  /v1/ai/image-expand:
+    post:
+      summary: Expand image
+      operationId: imageExpand
+      tags: [Image Editing]
+      requestBody:
+        $ref: '#/components/requestBodies/ImageEditingRequest'
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+  /v1/ai/music-generation:
+    post:
+      summary: Generate music
+      operationId: generateMusic
+      tags: [Audio]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+    get:
+      summary: List music generation tasks
+      operationId: listMusicTasks
+      tags: [Audio]
+      responses:
+        '200':
+          description: Music tasks list.
+          content:
+            application/json:
+              schema:
+                type: object
+  /v1/ai/sound-effects:
+    post:
+      summary: Generate sound effects
+      operationId: generateSoundEffects
+      tags: [Audio]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+  /v1/ai/audio-isolation:
+    post:
+      summary: Audio isolation from audio or video
+      operationId: audioIsolation
+      tags: [Audio]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Task accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+  /v1/ai/{endpoint}/{taskId}:
+    get:
+      summary: Poll task status
+      operationId: getTask
+      tags: [Tasks]
+      parameters:
+        - name: endpoint
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: taskId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Task status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+components:
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: x-magnific-api-key
+  requestBodies:
+    ImageGenerationRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              prompt:
+                type: string
+              aspect_ratio:
+                type: string
+              num_images:
+                type: integer
+              webhook_url:
+                type: string
+                format: uri
+    VideoGenerationRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              image:
+                type: string
+                description: Image URL or base64.
+              prompt:
+                type: string
+              duration:
+                type: integer
+              webhook_url:
+                type: string
+                format: uri
+    ImageEditingRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              image:
+                type: string
+                description: Image URL or base64.
+              webhook_url:
+                type: string
+                format: uri
+  schemas:
+    TaskResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            task_id:
+              type: string
+            status:
+              type: string
+              enum: [CREATED, IN_PROGRESS, COMPLETED, FAILED]
+            generated:
+              type: array
+              items:
+                type: string
+                format: uri
+    Resource:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        url:
+          type: string
+          format: uri
+        filename:
+          type: string
+        licenses:
+          type: array
+          items:
+            type: object
+        image:
+          type: object
+        author:
+          type: object
+        stats:
+          type: object
+    ResourceList:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resource'
+        meta:
+          type: object
+security:
+  - ApiKey: []
