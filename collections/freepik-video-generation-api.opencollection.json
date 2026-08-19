@@ -1,0 +1,71 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Freepik / Magnific Audio Video Generation API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-magnific-api-key",
+      "value": "{{x-magnific-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Video Generation",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Generate video with Kling v2.1 Pro",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.magnific.com/v1/ai/kling-v2.1-pro",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate video with Kling v2.1 Pro"
+        },
+        {
+          "info": {
+            "name": "Generate video with Kling v2.5 Pro",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.magnific.com/v1/ai/kling-v2.5-pro",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate video with Kling v2.5 Pro"
+        },
+        {
+          "info": {
+            "name": "Generate video with Minimax Hailuo 02 1080p",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.magnific.com/v1/ai/minimax-hailuo-02-1080p",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate video with Minimax Hailuo 02 1080p"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

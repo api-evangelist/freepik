@@ -1,0 +1,189 @@
+{
+  "item": [
+    {
+      "id": "e098dc9b-3b85-42c8-a750-1861edcd1898",
+      "name": "Resources",
+      "description": {
+        "content": "Search Freepik's stock library.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "12bd12e5-779f-4a92-bfdd-eb7b96e88635",
+          "name": "Search stock resources",
+          "request": {
+            "name": "Search stock resources",
+            "description": {
+              "content": "Search Freepik's stock library of vectors, photos, icons, and templates.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "resources"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "term",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "relevance"
+                },
+                {
+                  "disabled": false,
+                  "key": "filters",
+                  "value": "<string>",
+                  "description": "Advanced filters (orientation, content_type, license, color, author, ai-generated, vector, psd, people)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "key": "Accept-Language",
+                "value": "en-US",
+                "description": ""
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0757aa75-b87e-4595-9bf9-26db80024607",
+              "name": "Resources listing.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "resources"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "term",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "order",
+                      "value": "relevance"
+                    },
+                    {
+                      "key": "filters",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-magnific-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "Accept-Language",
+                    "value": "en-US",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": 2574,\n      \"title\": \"string\",\n      \"url\": \"http://QOfmvmz.ldgq9inAaeV3EzXTT6M\",\n      \"filename\": \"string\",\n      \"image\": {},\n      \"author\": {},\n      \"stats\": {}\n    },\n    {\n      \"id\": 390,\n      \"title\": \"string\",\n      \"url\": \"http://mmm.mvfgrEq1d.C.cWOXf-Nba90Abap72BkZnoTWkM2x\",\n      \"filename\": \"string\",\n      \"image\": {},\n      \"author\": {},\n      \"stats\": {}\n    }\n  ],\n  \"meta\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.magnific.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "x-magnific-api-key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "64b5153d-89d1-4d23-9f5b-25f44ffbde0f",
+    "name": "Freepik / Magnific Audio Resources API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Freepik's developer platform (operated through Magnific) provides AI-powered image generation, video generation, image editing, audio generation, and access to Freepik's stock library of vectors, photos, icons, and templates. Asynchronous tasks are polled by task ID.\n\nContact Support:\n Name: Freepik / Magnific",
+      "type": "text/plain"
+    }
+  }
+}

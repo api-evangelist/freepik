@@ -1,0 +1,71 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Freepik / Magnific Audio Resources API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-magnific-api-key",
+      "value": "{{x-magnific-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Resources",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search stock resources",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.magnific.com/v1/resources",
+            "headers": [
+              {
+                "name": "Accept-Language",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "term",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "filters",
+                "value": "",
+                "type": "query",
+                "description": "Advanced filters (orientation, content_type, license, color, author, ai-generated, vector, psd, people)."
+              }
+            ]
+          },
+          "docs": "Search Freepik's stock library of vectors, photos, icons, and templates."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

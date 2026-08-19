@@ -1,0 +1,146 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Freepik / Magnific Audio Image Generation API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-magnific-api-key",
+      "value": "{{x-magnific-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Image Generation",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Generate image with Mystic",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.magnific.com/v1/ai/mystic",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate image with Mystic"
+        },
+        {
+          "info": {
+            "name": "Generate image with Flux 2 Pro",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.magnific.com/v1/ai/flux-2-pro",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate image with Flux 2 Pro"
+        },
+        {
+          "info": {
+            "name": "Generate image with Flux 2 Turbo",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.magnific.com/v1/ai/flux-2-turbo",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate image with Flux 2 Turbo"
+        },
+        {
+          "info": {
+            "name": "Generate image with Flux Pro v1.1",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.magnific.com/v1/ai/flux-pro-v1-1",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate image with Flux Pro v1.1"
+        },
+        {
+          "info": {
+            "name": "Generate image with Flux Dev",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.magnific.com/v1/ai/flux-dev",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate image with Flux Dev"
+        },
+        {
+          "info": {
+            "name": "Generate image with HyperFlux",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.magnific.com/v1/ai/hyperflux",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate image with HyperFlux"
+        },
+        {
+          "info": {
+            "name": "Generate image with Seedream v4.5",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.magnific.com/v1/ai/seedream-v4-5",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate image with Seedream v4.5"
+        },
+        {
+          "info": {
+            "name": "Generate image with Runway",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.magnific.com/v1/ai/runway",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate image with Runway"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
