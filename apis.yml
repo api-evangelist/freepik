@@ -24,6 +24,13 @@ created: '2025-01-07'
 modified: '2026-05-19'
 position: Consumer
 tags:
+  - Artificial Intelligence
+  - Graphics
+  - Illustrations
+  - Image-Generation
+  - Photos
+  - Video Generation
+tags_raw:
   - AI
   - Graphics
   - Illustrations
@@ -63,6 +70,8 @@ apis:
   humanURL: https://docs.freepik.com/
   baseURL: https://api.magnific.com
   tags:
+  - Image-Generation
+  tags_raw:
   - Image Generation
   properties:
   - type: OpenAPI
@@ -87,6 +96,8 @@ apis:
   humanURL: https://docs.freepik.com/
   baseURL: https://api.magnific.com
   tags:
+  - Task
+  tags_raw:
   - Tasks
   properties:
   - type: OpenAPI
