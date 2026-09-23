@@ -1,12 +1,7 @@
 {
   "provider": "freepik",
   "sources": [
-    "freepik-audio-api-openapi.yml",
-    "freepik-image-editing-api-openapi.yml",
-    "freepik-image-generation-api-openapi.yml",
-    "freepik-resources-api-openapi.yml",
-    "freepik-tasks-api-openapi.yml",
-    "freepik-video-generation-api-openapi.yml"
+    "_original/freepik-openapi.yml"
   ],
   "outputs": [
     "freepik-audio-api-openapi.yml",
@@ -19,6 +14,17 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "freepik-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "freepik-audio-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "freepik-image-editing-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "freepik-image-generation-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "freepik-resources-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "freepik-tasks-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "freepik-video-generation-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
