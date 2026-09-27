@@ -40,7 +40,7 @@ tags:
   - Artificial Intelligence
   - Graphics
   - Illustrations
-  - Image-Generation
+  - Image Generation
   - Photos
   - Video Generation
 tags_raw:
@@ -50,6 +50,7 @@ tags_raw:
   - Image Generation
   - Photos
   - Video Generation
+  - Image-Generation
 url: https://raw.githubusercontent.com/api-evangelist/freepik/refs/heads/main/apis.yml
 specificationVersion: '0.23'
 apis:
@@ -83,9 +84,10 @@ apis:
   humanURL: https://docs.freepik.com/
   baseURL: https://api.magnific.com
   tags:
-  - Image-Generation
+  - Image Generation
   tags_raw:
   - Image Generation
+  - Image-Generation
   properties:
   - type: OpenAPI
     url: openapi/freepik-image-generation-api-openapi.yml

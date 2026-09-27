@@ -136,6 +136,23 @@ paths:
               schema:
                 $ref: '#/components/schemas/TaskResponse'
 components:
+  requestBodies:
+    ImageGenerationRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              prompt:
+                type: string
+              aspect_ratio:
+                type: string
+              num_images:
+                type: integer
+              webhook_url:
+                type: string
+                format: uri
   schemas:
     TaskResponse:
       type: object
@@ -155,23 +172,6 @@ components:
             generated:
               type: array
               items:
-                type: string
-                format: uri
-  requestBodies:
-    ImageGenerationRequest:
-      required: true
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              prompt:
-                type: string
-              aspect_ratio:
-                type: string
-              num_images:
-                type: integer
-              webhook_url:
                 type: string
                 format: uri
   securitySchemes:
