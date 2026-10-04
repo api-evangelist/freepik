@@ -61,24 +61,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/TaskResponse'
 components:
-  requestBodies:
-    VideoGenerationRequest:
-      required: true
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              image:
-                type: string
-                description: Image URL or base64.
-              prompt:
-                type: string
-              duration:
-                type: integer
-              webhook_url:
-                type: string
-                format: uri
   schemas:
     TaskResponse:
       type: object
@@ -98,6 +80,24 @@ components:
             generated:
               type: array
               items:
+                type: string
+                format: uri
+  requestBodies:
+    VideoGenerationRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              image:
+                type: string
+                description: Image URL or base64.
+              prompt:
+                type: string
+              duration:
+                type: integer
+              webhook_url:
                 type: string
                 format: uri
   securitySchemes:
