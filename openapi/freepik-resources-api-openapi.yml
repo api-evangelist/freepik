@@ -66,15 +66,6 @@ paths:
                 $ref: '#/components/schemas/ResourceList'
 components:
   schemas:
-    ResourceList:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Resource'
-        meta:
-          type: object
     Resource:
       type: object
       properties:
@@ -96,6 +87,15 @@ components:
         author:
           type: object
         stats:
+          type: object
+    ResourceList:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resource'
+        meta:
           type: object
   securitySchemes:
     ApiKey:
