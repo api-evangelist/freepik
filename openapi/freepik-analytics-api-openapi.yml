@@ -1,0 +1,1678 @@
+openapi: 3.2.0
+info:
+  description: The Magnific API is your gateway to a vast collection of high-quality digital resources for your applications and projects. As a leading platform, it offers a wide range of graphics, including vectors, photos, illustrations, icons, PSD templates, and more, all curated by talented designers from around the world.
+  title: Magnific Analytics API
+  version: 1.0.0
+servers:
+- description: B2B API Production V1
+  url: https://api.magnific.com
+security:
+- magnificApiKey: []
+tags:
+- name: Analytics
+paths:
+  /v1/analytics/team-members:
+    get:
+      description: 'Returns all members of the caller''s team with their email, role, and status.
+
+
+        Authenticates via API key (`X-Magnific-API-Key` header). The caller''s team
+
+        is resolved automatically from the API key.'
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                success:
+                  $ref: '#/components/examples/200-analytics-team-members'
+              schema:
+                $ref: '#/components/schemas/_v1_analytics_team_members_get_200_response'
+          description: OK
+        '403':
+          $ref: '#/components/responses/403-forbidden'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+      summary: List team members
+      tags:
+      - Analytics
+      operationId: getV1AnalyticsTeamMembers
+      x-operation-id-source: derived
+  /v1/analytics/team-api-keys:
+    get:
+      description: 'Returns all API keys belonging to the caller''s team with their ID,
+
+        display name, and status. Use the returned `api_key_id` values as filters
+
+        in `POST /v1/analytics/team-credit-usage`.
+
+
+        Authenticates via API key (`X-Magnific-API-Key` header). The caller''s team
+
+        is resolved automatically from the API key.'
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                success:
+                  $ref: '#/components/examples/200-analytics-team-api-keys'
+              schema:
+                $ref: '#/components/schemas/_v1_analytics_team_api_keys_get_200_response'
+          description: OK
+        '403':
+          $ref: '#/components/responses/403-forbidden'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+      summary: List team API keys
+      tags:
+      - Analytics
+      operationId: getV1AnalyticsTeamApiKeys
+      x-operation-id-source: derived
+  /v1/analytics/team-groups:
+    get:
+      description: 'Returns all groups within the caller''s team with their ID, name,
+
+        and member count. Use the returned `group_id` values as filters in
+
+        `POST /v1/analytics/team-credit-usage`.
+
+
+        Authenticates via API key (`X-Magnific-API-Key` header). The caller''s team
+
+        is resolved automatically from the API key.'
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                success:
+                  $ref: '#/components/examples/200-analytics-team-groups'
+              schema:
+                $ref: '#/components/schemas/_v1_analytics_team_groups_get_200_response'
+          description: OK
+        '403':
+          $ref: '#/components/responses/403-forbidden'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+      summary: List team groups
+      tags:
+      - Analytics
+      operationId: getV1AnalyticsTeamGroups
+      x-operation-id-source: derived
+  /v1/analytics/team-projects:
+    get:
+      description: 'Returns all projects within the caller''s team with their
+
+        reference UUID and name. Use the returned `project_reference` values
+
+        in the `project_references` filter of `POST /v1/analytics/team-credit-usage`.
+
+
+        Authenticates via API key (`X-Magnific-API-Key` header). The caller''s team
+
+        is resolved automatically from the API key.'
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                success:
+                  $ref: '#/components/examples/200-analytics-team-projects'
+              schema:
+                $ref: '#/components/schemas/_v1_analytics_team_projects_get_200_response'
+          description: OK
+        '403':
+          $ref: '#/components/responses/403-forbidden'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+      summary: List team projects
+      tags:
+      - Analytics
+      operationId: getV1AnalyticsTeamProjects
+      x-operation-id-source: derived
+  /v1/analytics/team-credit-usage:
+    post:
+      description: 'Returns credit consumption for the caller''s team aggregated into time buckets.
+
+        Authenticates via API key (`X-Magnific-API-Key` header). The caller''s identity
+
+        is resolved automatically from the API key.
+
+
+        Response always includes per-user breakdown with email and per-project grouping
+
+        (same data as the CSV export). Each row carries both the tool category as a
+
+        display name in `tool` (e.g. "AI Image Models") and the specific tool that was
+
+        billed in `tool_name`.
+
+
+        Reconciling usage: many tools share a category, so `tool` alone does not identify
+
+        a row. Rows with the same `tool`, user, project and date are distinct consumptions
+
+        — tell them apart by `tool_name` and sum their credits. De-duplicating them
+
+        undercounts real usage.
+
+
+        Date range limits: Enterprise up to 365 days, Business up to 180 days.
+
+        If no dates are provided, defaults to the last 7 days.
+
+
+        Available exclusively for Business and Enterprise plans. Rate limit: 100 RPD.
+
+
+        Response field mapping (differs from internal endpoints):
+
+        - `tool`: tool category as a display name (e.g. "AI Image Models")
+
+        - `tool_name`: the specific tool billed (e.g. "pikaso-tti-flux-dev")
+
+        - `user_uses`: number of operations (replaces `count`)
+
+        - `user_credits`: credits consumed (replaces `total_amount`/`amount`)
+
+        - `project_reference`: project UUID (replaces `folder_reference`)'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_v1_analytics_team_credit_usage_post_request'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                example-team-credit-usage:
+                  $ref: '#/components/examples/200-analytics-team-credit-usage'
+              schema:
+                $ref: '#/components/schemas/_v1_analytics_team_credit_usage_post_200_response'
+          description: OK
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '403':
+          $ref: '#/components/responses/403-forbidden'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+      summary: Get team credit usage over time
+      tags:
+      - Analytics
+      operationId: postV1AnalyticsTeamCreditUsage
+      x-operation-id-source: derived
+  /v1/analytics/audit-logs/events:
+    get:
+      description: 'Returns the audit-log events of the caller''s enterprise team: who did what,
+
+        to which resource, and how access changed.
+
+
+        Authenticates via API key (`X-Magnific-API-Key` header). The caller''s enterprise
+
+        team and identity are resolved automatically from the API key.
+
+
+        Available exclusively for Enterprise plans with audit logs enabled, and only to team
+
+        **admins/owners**. Rate limit: 500 RPD.
+
+
+        Retention & paging:
+
+        - The audit index retains at most **30 days**; the query window cannot exceed 30
+
+        days and defaults to the last 30 days when no dates are given.
+
+        - `per_page` is capped at **100**. In page mode, `page * per_page` cannot exceed
+
+        **10000** (`400` otherwise) — use `cursor` for deep iteration.
+
+        - When `cursor` is provided, `page` is ignored and there is no depth limit. Follow
+
+        `meta.next_cursor` until it is `null` to walk the whole history.
+
+
+        Reading your own audit trail costs no credits.'
+      parameters:
+      - description: Page number (1-based). Ignored when `cursor` is set.
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          minimum: 1
+          type: integer
+      - description: Items per page (max 100).
+        in: query
+        name: per_page
+        required: false
+        schema:
+          default: 20
+          maximum: 100
+          minimum: 1
+          type: integer
+      - description: Start of the query window (YYYY-MM-DD). Defaults to 30 days ago. Window max 30 days.
+        in: query
+        name: date_from
+        required: false
+        schema:
+          example: 2026-07-16
+          format: date
+          type: string
+      - description: End of the query window (YYYY-MM-DD). Defaults to today.
+        in: query
+        name: date_to
+        required: false
+        schema:
+          example: 2026-07-31
+          format: date
+          type: string
+      - description: 'Filter by actor user ID(s). Accepts a single value, a comma-separated list
+
+          (`member_id=1,2`) or repeated params (`member_id[]=1&member_id[]=2`).
+
+          '
+        example:
+        - 10499812
+        explode: false
+        in: query
+        name: member_id
+        required: false
+        schema:
+          items:
+            minimum: 1
+            type: integer
+          type: array
+        style: form
+      - description: Filter by team group ID(s). Same multi-value syntax as `member_id`.
+        example:
+        - 10
+        - 20
+        explode: false
+        in: query
+        name: group_id
+        required: false
+        schema:
+          items:
+            minimum: 1
+            type: integer
+          type: array
+        style: form
+      - description: Filter by folder reference(s). Same multi-value syntax as `member_id`.
+        example:
+        - a1b2c3d4-1111-4000-8000-000000000001
+        explode: false
+        in: query
+        name: folder_id
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Filter by event type(s). Same multi-value syntax as `member_id`.
+        example:
+        - team.member.role_changed
+        explode: false
+        in: query
+        name: event_type
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Exact `request_id` lookup — returns all events emitted by one request.
+        example: req-7f3a9c1e
+        in: query
+        name: request_id
+        required: false
+        schema:
+          type: string
+      - description: 'Opaque cursor for deep iteration. When set, `page` is ignored and there is no
+
+          depth limit. Take the value from `meta.next_cursor` of the previous response.
+
+          '
+        in: query
+        name: cursor
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                success:
+                  $ref: '#/components/examples/200-analytics-audit-logs-events'
+              schema:
+                $ref: '#/components/schemas/_v1_analytics_audit_logs_events_get_200_response'
+          description: OK
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '403':
+          $ref: '#/components/responses/403-forbidden'
+        '404':
+          $ref: '#/components/responses/404-not-found'
+        '429':
+          $ref: '#/components/responses/429-too-many-requests'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Search enterprise audit-log events
+      tags:
+      - Analytics
+      operationId: getV1AnalyticsAuditLogsEvents
+      x-operation-id-source: derived
+components:
+  schemas:
+    team-group:
+      example:
+        group_id: 10
+        name: Design Team
+        member_count: 5
+      properties:
+        group_id:
+          description: Group identifier. Use in `group_ids` filter of team-credit-usage.
+          example: 10
+          type: integer
+        name:
+          description: Group name.
+          example: Design Team
+          type: string
+        member_count:
+          description: Number of members in this group.
+          example: 5
+          type: integer
+      type: object
+    _v1_analytics_team_credit_usage_post_200_response:
+      example:
+        data:
+        - date: 2026-01-01 00:00:00+00:00
+          consumptions:
+          - tool_name: pikaso-tti-flux-dev
+            user_usages:
+            - user_email: designer@company.com
+              user_reference: usr_a3f81c2d9e4b7f60
+              project_reference: a1b2c3d4-1111-4000-8000-000000000001
+              group_name: Design Team
+              user_credits: 1200
+              project_name: Marketing Campaign
+              user_uses: 30
+              api_key_id: d98b3edd-38c6-4f03-a9bd-da6eff110782
+              api_key_name: prod-batch
+            - user_email: designer@company.com
+              user_reference: usr_a3f81c2d9e4b7f60
+              project_reference: a1b2c3d4-1111-4000-8000-000000000001
+              group_name: Design Team
+              user_credits: 1200
+              project_name: Marketing Campaign
+              user_uses: 30
+              api_key_id: d98b3edd-38c6-4f03-a9bd-da6eff110782
+              api_key_name: prod-batch
+            user_credits: 1800
+            user_uses: 45
+            tool: AI Image Models
+          - tool_name: pikaso-tti-flux-dev
+            user_usages:
+            - user_email: designer@company.com
+              user_reference: usr_a3f81c2d9e4b7f60
+              project_reference: a1b2c3d4-1111-4000-8000-000000000001
+              group_name: Design Team
+              user_credits: 1200
+              project_name: Marketing Campaign
+              user_uses: 30
+              api_key_id: d98b3edd-38c6-4f03-a9bd-da6eff110782
+              api_key_name: prod-batch
+            - user_email: designer@company.com
+              user_reference: usr_a3f81c2d9e4b7f60
+              project_reference: a1b2c3d4-1111-4000-8000-000000000001
+              group_name: Design Team
+              user_credits: 1200
+              project_name: Marketing Campaign
+              user_uses: 30
+              api_key_id: d98b3edd-38c6-4f03-a9bd-da6eff110782
+              api_key_name: prod-batch
+            user_credits: 1800
+            user_uses: 45
+            tool: AI Image Models
+        - date: 2026-01-01 00:00:00+00:00
+          consumptions:
+          - tool_name: pikaso-tti-flux-dev
+            user_usages:
+            - user_email: designer@company.com
+              user_reference: usr_a3f81c2d9e4b7f60
+              project_reference: a1b2c3d4-1111-4000-8000-000000000001
+              group_name: Design Team
+              user_credits: 1200
+              project_name: Marketing Campaign
+              user_uses: 30
+              api_key_id: d98b3edd-38c6-4f03-a9bd-da6eff110782
+              api_key_name: prod-batch
+            - user_email: designer@company.com
+              user_reference: usr_a3f81c2d9e4b7f60
+              project_reference: a1b2c3d4-1111-4000-8000-000000000001
+              group_name: Design Team
+              user_credits: 1200
+              project_name: Marketing Campaign
+              user_uses: 30
+              api_key_id: d98b3edd-38c6-4f03-a9bd-da6eff110782
+              api_key_name: prod-batch
+            user_credits: 1800
+            user_uses: 45
+            tool: AI Image Models
+          - tool_name: pikaso-tti-flux-dev
+            user_usages:
+            - user_email: designer@company.com
+              user_reference: usr_a3f81c2d9e4b7f60
+              project_reference: a1b2c3d4-1111-4000-8000-000000000001
+              group_name: Design Team
+              user_credits: 1200
+              project_name: Marketing Campaign
+              user_uses: 30
+              api_key_id: d98b3edd-38c6-4f03-a9bd-da6eff110782
+              api_key_name: prod-batch
+            - user_email: designer@company.com
+              user_reference: usr_a3f81c2d9e4b7f60
+              project_reference: a1b2c3d4-1111-4000-8000-000000000001
+              group_name: Design Team
+              user_credits: 1200
+              project_name: Marketing Campaign
+              user_uses: 30
+              api_key_id: d98b3edd-38c6-4f03-a9bd-da6eff110782
+              api_key_name: prod-batch
+            user_credits: 1800
+            user_uses: 45
+            tool: AI Image Models
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/team_credit_usage_response_inner'
+          type: array
+      type: object
+    _v1_analytics_team_api_keys_get_200_response:
+      example:
+        data:
+        - created_at: 2026-01-15 10:30:00+00:00
+          display_name: Production Backend
+          api_key_id: fpk-abc123def456
+          status: active
+        - created_at: 2026-01-15 10:30:00+00:00
+          display_name: Production Backend
+          api_key_id: fpk-abc123def456
+          status: active
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/team-api-key'
+          type: array
+      type: object
+    inline_object_1_problem_invalid_params_inner:
+      properties:
+        name:
+          description: Name of the invalid parameter.
+          example: page
+          type: string
+        field:
+          description: Field of the invalid parameter. Mirrors `name`.
+          example: page
+          type: string
+        reason:
+          example: Parameter 'page' must be greater than 0
+          type: string
+      required:
+      - field
+      - name
+      - reason
+      type: object
+    _v1_analytics_team_groups_get_200_response:
+      example:
+        data:
+        - group_id: 10
+          name: Design Team
+          member_count: 5
+        - group_id: 10
+          name: Design Team
+          member_count: 5
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/team-group'
+          type: array
+      type: object
+    team_credit_usage_response_inner_consumptions_inner:
+      example:
+        tool_name: pikaso-tti-flux-dev
+        user_usages:
+        - user_email: designer@company.com
+          user_reference: usr_a3f81c2d9e4b7f60
+          project_reference: a1b2c3d4-1111-4000-8000-000000000001
+          group_name: Design Team
+          user_credits: 1200
+          project_name: Marketing Campaign
+          user_uses: 30
+          api_key_id: d98b3edd-38c6-4f03-a9bd-da6eff110782
+          api_key_name: prod-batch
+        - user_email: designer@company.com
+          user_reference: usr_a3f81c2d9e4b7f60
+          project_reference: a1b2c3d4-1111-4000-8000-000000000001
+          group_name: Design Team
+          user_credits: 1200
+          project_name: Marketing Campaign
+          user_uses: 30
+          api_key_id: d98b3edd-38c6-4f03-a9bd-da6eff110782
+          api_key_name: prod-batch
+        user_credits: 1800
+        user_uses: 45
+        tool: AI Image Models
+      properties:
+        tool:
+          description: 'Tool category display name. Many tools share a category, so this
+
+            value does not identify a row on its own — use `tool_name` for that.
+
+            '
+          example: AI Image Models
+          type: string
+        tool_name:
+          description: 'Specific tool that was billed. Two rows with the same `tool`, user,
+
+            project and date are distinct consumptions, not duplicates: they are
+
+            told apart by this field and their credits must be summed, not
+
+            de-duplicated.
+
+            '
+          example: pikaso-tti-flux-dev
+          type: string
+        user_uses:
+          description: Number of operations in this period.
+          example: 45
+          type: integer
+        user_credits:
+          description: Total credits consumed.
+          example: 1800
+          type: integer
+        user_usages:
+          description: 'Per-user breakdown. Always included.
+
+
+            An entry is normally attributable to one of two things: a person,
+
+            identified by `user_email` and `user_reference`, or an API key,
+
+            identified by `api_key_id` and `api_key_name`.
+
+
+            An entry may still carry none of them. That happens when the user
+
+            behind it cannot be resolved and no reference is available for them,
+
+            and it is real usage that is counted in the parent totals like any
+
+            other — reconcile it against those totals rather than treating it as
+
+            missing data.
+
+            '
+          items:
+            $ref: '#/components/schemas/team_credit_usage_response_inner_consumptions_inner_user_usages_inner'
+          type: array
+      type: object
+    _v1_analytics_audit_logs_events_get_200_response:
+      example:
+        data:
+        - date: 2026-07-30 09:14:52+00:00
+          event_id: b3d1f0a2-9c4e-4a1b-8f2d-1a2b3c4d5e6f
+          member:
+            user_id: 10499812
+            type: user
+            email: admin@company.com
+          action:
+            data:
+              target_user_id: 10511077
+              role: admin
+              operation: grant
+            verb: update
+            folder_name: Q4 assets
+            project_name: Marketing Campaign Q4
+            duration_ms: 42
+            event_type: team.member.role_changed
+            old_state:
+              role: member
+            context: {}
+            resource_id: '18422'
+            correlation_id: corr-2b8e
+            new_state:
+              role: admin
+            request_id: req-7f3a9c1e
+            status: success
+          source:
+            referer: referer
+            project: magnific
+            platform: web
+          category: member
+        - date: 2026-07-30 09:14:52+00:00
+          event_id: b3d1f0a2-9c4e-4a1b-8f2d-1a2b3c4d5e6f
+          member:
+            user_id: 10499812
+            type: user
+            email: admin@company.com
+          action:
+            data:
+              target_user_id: 10511077
+              role: admin
+              operation: grant
+            verb: update
+            folder_name: Q4 assets
+            project_name: Marketing Campaign Q4
+            duration_ms: 42
+            event_type: team.member.role_changed
+            old_state:
+              role: member
+            context: {}
+            resource_id: '18422'
+            correlation_id: corr-2b8e
+            new_state:
+              role: admin
+            request_id: req-7f3a9c1e
+            status: success
+          source:
+            referer: referer
+            project: magnific
+            platform: web
+          category: member
+        meta:
+          next_cursor: eyJzIjpbMTcyMjMyOF19
+          pagination:
+            per_page: 1
+            total: 1
+            last_page: 1
+            current_page: 1
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/audit-log-event'
+          type: array
+        meta:
+          $ref: '#/components/schemas/_v1_analytics_audit_logs_events_get_200_response_meta'
+      type: object
+    team-project:
+      example:
+        project_reference: a1b2c3d4-1111-4000-8000-000000000001
+        name: Marketing Campaign Q4
+      properties:
+        project_reference:
+          description: Project reference UUID. Use in `project_references` filter of team-credit-usage.
+          example: a1b2c3d4-1111-4000-8000-000000000001
+          format: uuid
+          type: string
+        name:
+          description: Project name.
+          example: Marketing Campaign Q4
+          type: string
+      type: object
+    pagination:
+      description: Metainformation about pagination
+      example:
+        per_page: 1
+        total: 1
+        last_page: 1
+        current_page: 1
+      properties:
+        current_page:
+          description: The current page.
+          example: 1
+          type: integer
+        per_page:
+          description: The limit of resources per page.
+          example: 1
+          type: integer
+        last_page:
+          description: The total number of pages.
+          example: 1
+          type: integer
+        total:
+          description: The total number of resources.
+          example: 1
+          type: integer
+      type: object
+    _v1_analytics_team_projects_get_200_response:
+      example:
+        data:
+        - project_reference: a1b2c3d4-1111-4000-8000-000000000001
+          name: Marketing Campaign Q4
+        - project_reference: a1b2c3d4-1111-4000-8000-000000000001
+          name: Marketing Campaign Q4
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/team-project'
+          type: array
+      type: object
+    inline_object_1:
+      properties:
+        problem:
+          $ref: '#/components/schemas/inline_object_1_problem'
+      type: object
+    _v1_analytics_audit_logs_events_get_200_response_meta:
+      example:
+        next_cursor: eyJzIjpbMTcyMjMyOF19
+        pagination:
+          per_page: 1
+          total: 1
+          last_page: 1
+          current_page: 1
+      properties:
+        pagination:
+          $ref: '#/components/schemas/pagination'
+        next_cursor:
+          description: Cursor for the next page, or `null` when there are no more pages.
+          example: eyJzIjpbMTcyMjMyOF19
+          type:
+          - string
+          - 'null'
+      type: object
+    team_credit_usage_response_inner:
+      example:
+        date: 2026-01-01 00:00:00+00:00
+        consumptions:
+        - tool_name: pikaso-tti-flux-dev
+          user_usages:
+          - user_email: designer@company.com
+            user_reference: usr_a3f81c2d9e4b7f60
+            project_reference: a1b2c3d4-1111-4000-8000-000000000001
+            group_name: Design Team
+            user_credits: 1200
+            project_name: Marketing Campaign
+            user_uses: 30
+            api_key_id: d98b3edd-38c6-4f03-a9bd-da6eff110782
+            api_key_name: prod-batch
+          - user_email: designer@company.com
+            user_reference: usr_a3f81c2d9e4b7f60
+            project_reference: a1b2c3d4-1111-4000-8000-000000000001
+            group_name: Design Team
+            user_credits: 1200
+            project_name: Marketing Campaign
+            user_uses: 30
+            api_key_id: d98b3edd-38c6-4f03-a9bd-da6eff110782
+            api_key_name: prod-batch
+          user_credits: 1800
+          user_uses: 45
+          tool: AI Image Models
+        - tool_name: pikaso-tti-flux-dev
+          user_usages:
+          - user_email: designer@company.com
+            user_reference: usr_a3f81c2d9e4b7f60
+            project_reference: a1b2c3d4-1111-4000-8000-000000000001
+            group_name: Design Team
+            user_credits: 1200
+            project_name: Marketing Campaign
+            user_uses: 30
+            api_key_id: d98b3edd-38c6-4f03-a9bd-da6eff110782
+            api_key_name: prod-batch
+          - user_email: designer@company.com
+            user_reference: usr_a3f81c2d9e4b7f60
+            project_reference: a1b2c3d4-1111-4000-8000-000000000001
+            group_name: Design Team
+            user_credits: 1200
+            project_name: Marketing Campaign
+            user_uses: 30
+            api_key_id: d98b3edd-38c6-4f03-a9bd-da6eff110782
+            api_key_name: prod-batch
+          user_credits: 1800
+          user_uses: 45
+          tool: AI Image Models
+      properties:
+        date:
+          description: Start date of the time period.
+          example: 2026-01-01 00:00:00+00:00
+          format: date-time
+          type: string
+        consumptions:
+          items:
+            $ref: '#/components/schemas/team_credit_usage_response_inner_consumptions_inner'
+          type: array
+      type: object
+    inline_object_1_problem:
+      properties:
+        message:
+          example: Validation error
+          type: string
+        invalid_params:
+          items:
+            $ref: '#/components/schemas/inline_object_1_problem_invalid_params_inner'
+          type: array
+      required:
+      - invalid_params
+      - message
+      type: object
+    audit_log_event_member:
+      description: The actor that performed the action.
+      example:
+        user_id: 10499812
+        type: user
+        email: admin@company.com
+      properties:
+        type:
+          description: Actor type.
+          example: user
+          type: string
+        user_id:
+          description: Actor user ID.
+          example: 10499812
+          type:
+          - integer
+          - 'null'
+        email:
+          description: Actor email address.
+          example: admin@company.com
+          type:
+          - string
+          - 'null'
+      type: object
+    inline_object_2:
+      example:
+        message: Internal Server Error
+      properties:
+        message:
+          example: Internal Server Error
+          type: string
+      type: object
+    audit_log_event_source:
+      description: Where the action originated.
+      example:
+        referer: referer
+        project: magnific
+        platform: web
+      properties:
+        project:
+          description: Originating product/project.
+          example: magnific
+          type:
+          - string
+          - 'null'
+        platform:
+          description: Originating platform.
+          example: web
+          type:
+          - string
+          - 'null'
+        referer:
+          description: Referer, when available.
+          type:
+          - string
+          - 'null'
+          example: null
+      type: object
+    inline_object:
+      example:
+        message: message
+      properties:
+        message:
+          type: string
+      type: object
+    _v1_analytics_team_credit_usage_post_request:
+      properties:
+        granularity:
+          default: day
+          description: Time bucket granularity for aggregation. Defaults to `day` if omitted.
+          enum:
+          - day
+          - week
+          - month
+          - year
+          example: month
+          type: string
+        start_date:
+          description: Start date for the query range (YYYY-MM-DD). Defaults to 7 days ago.
+          example: 2026-01-01
+          format: date
+          type: string
+        end_date:
+          description: End date for the query range (YYYY-MM-DD). Defaults to today.
+          example: 2026-03-31
+          format: date
+          type: string
+        project_references:
+          description: Filter by specific project references.
+          example:
+          - a1b2c3d4-1111-4000-8000-000000000001
+          items:
+            format: uuid
+            type: string
+          type: array
+        api_key_ids:
+          description: Filter by specific API key IDs.
+          example:
+          - api-key-1
+          - api-key-2
+          items:
+            type: string
+          type: array
+        group_ids:
+          description: Filter by specific team group IDs. Members of these groups are included in the results.
+          example:
+          - 10
+          - 20
+          items:
+            minimum: 1
+            type: integer
+          type: array
+      type: object
+    team_credit_usage_response_inner_consumptions_inner_user_usages_inner:
+      example:
+        user_email: designer@company.com
+        user_reference: usr_a3f81c2d9e4b7f60
+        project_reference: a1b2c3d4-1111-4000-8000-000000000001
+        group_name: Design Team
+        user_credits: 1200
+        project_name: Marketing Campaign
+        user_uses: 30
+        api_key_id: d98b3edd-38c6-4f03-a9bd-da6eff110782
+        api_key_name: prod-batch
+      properties:
+        user_email:
+          description: 'User email address. `null` when the user could not be resolved
+
+            (deleted account) and on entries generated by an API key, which
+
+            belong to no person. The consumption is still counted in the
+
+            parent totals either way.
+
+
+            To attribute a `null` entry, use `api_key_id` when it is
+
+            present — the entry came from a key, not a person — and
+
+            `user_reference` otherwise.
+
+            '
+          example: designer@company.com
+          type:
+          - string
+          - 'null'
+        user_reference:
+          description: 'Opaque, stable identifier of the person behind this entry. It
+
+            does not change over time, so entries from different periods
+
+            belonging to the same person can be matched even once their
+
+            account has been deleted and `user_email` has become `null`.
+
+
+            It reveals nothing about the person and is scoped to your team:
+
+            the same individual appears under a different reference in
+
+            another team''s reports.
+
+
+            `null` on entries generated by an API key, which belong to no
+
+            person — use `api_key_id` there — and on entries whose user has
+
+            no reference available.
+
+            '
+          example: usr_a3f81c2d9e4b7f60
+          type:
+          - string
+          - 'null'
+        api_key_id:
+          description: 'API key that generated this consumption, when it was not made by
+
+            a person. Matches `api_key_id` in `GET /v1/analytics/team-api-keys`,
+
+            so the two responses can be joined. Absent on entries made by a
+
+            person.
+
+            '
+          example: d98b3edd-38c6-4f03-a9bd-da6eff110782
+          type:
+          - string
+          - 'null'
+        api_key_name:
+          description: 'Display name of `api_key_id`. `null` when the name cannot be
+
+            resolved; the entry is still attributable through `api_key_id`.
+
+            Keys deleted after generating the consumption keep their name.
+
+            '
+          example: prod-batch
+          type:
+          - string
+          - 'null'
+        user_uses:
+          description: Number of operations by this user.
+          example: 30
+          type: integer
+        user_credits:
+          description: Credits consumed by this user.
+          example: 1200
+          type: integer
+        project_reference:
+          description: Project UUID, if any.
+          example: a1b2c3d4-1111-4000-8000-000000000001
+          type: string
+        project_name:
+          description: Project name, if resolvable.
+          example: Marketing Campaign
+          type: string
+        group_name:
+          description: Group name, if resolvable.
+          example: Design Team
+          type: string
+      type: object
+    inline_object_3:
+      example:
+        message: Service Unavailable. Please try again later.
+      properties:
+        message:
+          example: Service Unavailable. Please try again later.
+          type: string
+      type: object
+    team-api-key:
+      example:
+        created_at: 2026-01-15 10:30:00+00:00
+        display_name: Production Backend
+        api_key_id: fpk-abc123def456
+        status: active
+      properties:
+        api_key_id:
+          description: API key identifier. Use in `api_key_ids` filter of team-credit-usage.
+          example: fpk-abc123def456
+          type: string
+        display_name:
+          description: User-defined name for this API key.
+          example: Production Backend
+          type: string
+        status:
+          description: API key status.
+          enum:
+          - active
+          - inactive
+          example: active
+          type: string
+        created_at:
+          description: When the API key was created.
+          example: 2026-01-15 10:30:00+00:00
+          format: date-time
+          type: string
+      type: object
+    audit_log_event_action:
+      example:
+        data:
+          target_user_id: 10511077
+          role: admin
+          operation: grant
+        verb: update
+        folder_name: Q4 assets
+        project_name: Marketing Campaign Q4
+        duration_ms: 42
+        event_type: team.member.role_changed
+        old_state:
+          role: member
+        context: {}
+        resource_id: '18422'
+        correlation_id: corr-2b8e
+        new_state:
+          role: admin
+        request_id: req-7f3a9c1e
+        status: success
+      properties:
+        event_type:
+          description: Canonical event type.
+          example: team.member.role_changed
+          type: string
+        verb:
+          description: The action performed.
+          example: update
+          type: string
+        status:
+          description: Outcome status of the action.
+          example: success
+          type: string
+        resource_id:
+          description: Identifier of the resource the action happened to.
+          example: '18422'
+          type:
+          - string
+          - 'null'
+        request_id:
+          description: Request identifier. Use the `request_id` filter to fetch all events of one request.
+          example: req-7f3a9c1e
+          type:
+          - string
+          - 'null'
+        correlation_id:
+          description: Correlation identifier linking related events.
+          example: corr-2b8e
+          type:
+          - string
+          - 'null'
+        old_state:
+          additionalProperties: true
+          description: Vetted subset of the resource state before the action.
+          example:
+            role: member
+          type:
+          - object
+          - 'null'
+        new_state:
+          additionalProperties: true
+          description: Vetted subset of the resource state after the action.
+          example:
+            role: admin
+          type:
+          - object
+          - 'null'
+        duration_ms:
+          description: Action duration in milliseconds, when measured.
+          example: 42
+          type:
+          - integer
+          - 'null'
+        data:
+          additionalProperties: true
+          description: 'Free-form event payload, narrowed to the public allow-list. Keys vary by
+
+            `event_type` (e.g. `target_user_id`, `role`, `group_id`, `operation`,
+
+            `project_reference`, `permission`, `outcome`).
+
+            '
+          example:
+            target_user_id: 10511077
+            role: admin
+            operation: grant
+          type: object
+        context:
+          additionalProperties: true
+          description: Additional contextual metadata for the event.
+          example: {}
+          type:
+          - object
+          - 'null'
+        project_name:
+          description: Human-readable project name, resolved server-side from the event's project reference.
+          example: Marketing Campaign Q4
+          type:
+          - string
+          - 'null'
+        folder_name:
+          description: Human-readable folder name, resolved server-side from the event's folder reference.
+          example: Q4 assets
+          type:
+          - string
+          - 'null'
+      type: object
+    team-member:
+      example:
+        role: member
+        email: designer@company.com
+        status: active
+      properties:
+        email:
+          description: User email address.
+          example: designer@company.com
+          type: string
+        role:
+          description: User role within the team.
+          enum:
+          - owner
+          - admin
+          - member
+          example: member
+          type: string
+        status:
+          description: Membership status.
+          enum:
+          - active
+          - inactive
+          - invited
+          example: active
+          type: string
+      type: object
+    audit-log-event:
+      description: 'A single enterprise audit-log event. On the public API the free-form objects
+
+        (`action.data`, `action.old_state`, `action.new_state`) are narrowed to a vetted
+
+        allow-list of keys; provider/inference internals, cross-system identifiers, internal
+
+        billing state and content-moderation flags are stripped and never returned here.
+
+        '
+      example:
+        date: 2026-07-30 09:14:52+00:00
+        event_id: b3d1f0a2-9c4e-4a1b-8f2d-1a2b3c4d5e6f
+        member:
+          user_id: 10499812
+          type: user
+          email: admin@company.com
+        action:
+          data:
+            target_user_id: 10511077
+            role: admin
+            operation: grant
+          verb: update
+          folder_name: Q4 assets
+          project_name: Marketing Campaign Q4
+          duration_ms: 42
+          event_type: team.member.role_changed
+          old_state:
+            role: member
+          context: {}
+          resource_id: '18422'
+          correlation_id: corr-2b8e
+          new_state:
+            role: admin
+          request_id: req-7f3a9c1e
+          status: success
+        source:
+          referer: referer
+          project: magnific
+          platform: web
+        category: member
+      properties:
+        event_id:
+          description: Unique identifier of the event.
+          example: b3d1f0a2-9c4e-4a1b-8f2d-1a2b3c4d5e6f
+          type: string
+        date:
+          description: When the event occurred (UTC, ISO-8601).
+          example: 2026-07-30 09:14:52+00:00
+          format: date-time
+          type: string
+        action:
+          $ref: '#/components/schemas/audit_log_event_action'
+        member:
+          $ref: '#/components/schemas/audit_log_event_member'
+        category:
+          description: Resource category the event belongs to.
+          example: member
+          type:
+          - string
+          - 'null'
+        source:
+          $ref: '#/components/schemas/audit_log_event_source'
+      type: object
+    _v1_analytics_team_members_get_200_response:
+      example:
+        data:
+        - role: member
+          email: designer@company.com
+          status: active
+        - role: member
+          email: designer@company.com
+          status: active
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/team-member'
+          type: array
+      type: object
+  responses:
+    403-forbidden:
+      content:
+        application/json:
+          examples:
+            user_not_authorized:
+              summary: User has not privileges to access some resource
+              value:
+                message: User is not authorized to access this resource
+            user_not_owner:
+              summary: Collection author id is different from current user's id
+              value:
+                message: User is not owner of requested collection
+            item_is_premium:
+              summary: The user cannot download this item because it is premium
+              value:
+                message: The user cannot download this item because it is premium
+            creator_not_authorized:
+              summary: Creator has not privileges to access some resource
+              value:
+                message: Creator is not authorized to access this resource
+            transaction_stats_access_denied:
+              summary: Group admin is not allowed to access the requested transaction stats
+              value:
+                message: Access denied to transaction stats for the current role
+            credit_filter_not_allowed:
+              summary: Group admin tried to use a credit-usage filter dimension not allowed for their role
+              value:
+                message: Credit filter not allowed for the current role
+          schema:
+            $ref: '#/components/schemas/inline_object'
+      description: Forbidden - The client does not have permission to access the requested resource.
+    503-service-unavailable:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_3'
+      description: Service Unavailable
+    400-bad-request:
+      content:
+        application/json:
+          examples:
+            invalid_page:
+              summary: Parameter 'page' is not valid
+              value:
+                message: Parameter 'page' must be greater than 0
+            invalid_query:
+              summary: Parameter 'query' is not valid
+              value:
+                message: Parameter 'query' must not be empty
+            invalid_filter:
+              summary: Parameter 'filter' is not valid
+              value:
+                message: Parameter 'filter' is not valid
+            generic_bad_request:
+              summary: Bad Request
+              value:
+                message: Parameter ':attribute' is not valid
+          schema:
+            $ref: '#/components/schemas/inline_object'
+        application/problem+json:
+          examples:
+            invalid_page:
+              summary: Parameter 'page' is not valid
+              value:
+                message: Validation error
+                invalid_params:
+                - field: page
+                  reason: Parameter 'page' must be greater than 0
+                - field: per_page
+                  reason: Parameter 'per_page' must be greater than 0
+          schema:
+            $ref: '#/components/schemas/inline_object_1'
+      description: Bad Request - The server could not understand the request due to invalid syntax.
+    404-not-found:
+      content:
+        application/json:
+          examples:
+            ai_resource_not_found:
+              summary: AI resource with provided id does not exist
+              value:
+                message: AI resource not found
+            collection_not_found:
+              summary: Collection with provided id does not exist
+              value:
+                message: Collection not found
+            resource_not_found:
+              summary: Resource with provided id does not exist
+              value:
+                message: Resource not found
+            resources_not_found:
+              summary: Resources not found
+              value:
+                message: Resources not found
+            user_not_found:
+              summary: User with provided id does not exist
+              value:
+                message: User not found
+            video_not_found:
+              summary: Video with provided id does not exist
+              value:
+                message: Video not found
+            video_assets_not_found:
+              summary: Video with provided id has not associated assets
+              value:
+                message: Video not found
+            icon_not_found:
+              summary: Icon with provided id does not exist
+              value:
+                message: Icon not found
+            author_not_found:
+              summary: Author with provided id does not exist
+              value:
+                message: Author not found
+            developer_not_found:
+              summary: Developer with provided email does not exist
+              value:
+                message: Developer not found
+            country_not_found:
+              summary: Country with provided code does not exist
+              value:
+                message: Country not found
+            generic_not_found:
+              summary: Not Found
+              value:
+                message: Not found
+          schema:
+            $ref: '#/components/schemas/inline_object'
+      description: Not Found - The server can not find the requested resource.
+    500-internal-server-error:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_2'
+      description: Internal Server Error - The server has encountered a situation it doesn't know how to handle.
+    429-too-many-requests:
+      content:
+        application/json:
+          examples:
+            generic:
+              summary: Generic message for 429 errors
+              value:
+                message: Too many requests
+            download_limit_reached:
+              summary: The download limits has been reached.
+              value:
+                message: The user can't download more items because the download limits has been reached.
+            edit_limit_reached:
+              summary: Free user icon edit limits has been reached.
+              value:
+                message: Limit for free users reached.
+          schema:
+            $ref: '#/components/schemas/inline_object'
+      description: Too Many Requests - The client has sent too many requests in a given amount of time.
+  examples:
+    200-analytics-team-members:
+      summary: Success - List of team members.
+      value:
+        data:
+        - email: designer@company.com
+          role: admin
+          status: active
+        - email: developer@company.com
+          role: member
+          status: active
+        - email: intern@company.com
+          role: member
+          status: invited
+    200-analytics-team-credit-usage:
+      description: 'The first two rows share the same `tool` category and would be indistinguishable
+
+        without `tool_name`. They are distinct consumptions: sum them, do not de-duplicate.
+
+
+        The last consumptions show the entries that carry no email. None of them is
+
+        missing data: all are real usage, counted in the parent totals. One is
+
+        attributable to an API key, one to a person whose account no longer exists but
+
+        whose `user_reference` still matches their earlier entries, and the last to
+
+        neither — reconcile that one against the parent totals.
+
+        '
+      summary: Success - Team credit usage with per-user breakdown.
+      value:
+        data:
+        - date: 2026-01-01 00:00:00+00:00
+          consumptions:
+          - tool: AI Image Models
+            tool_name: pikaso-tti-flux-dev
+            user_uses: 45
+            user_credits: 1800
+            user_usages:
+            - user_email: designer@company.com
+              user_reference: usr_a3f81c2d9e4b7f60
+              user_uses: 30
+              user_credits: 1200
+              project_reference: a1b2c3d4-1111-4000-8000-000000000001
+              project_name: Marketing Campaign
+              group_name: Design Team
+            - user_email: developer@company.com
+              user_reference: usr_5c09e7b21f8a43d6
+              user_uses: 15
+              user_credits: 600
+          - tool: AI Image Models
+            tool_name: pikaso-image-ai_image_generator-nano_banana_2
+            user_uses: 45
+            user_credits: 1800
+            user_usages:
+            - user_email: designer@company.com
+              user_reference: usr_a3f81c2d9e4b7f60
+              user_uses: 45
+              user_credits: 1800
+          - tool: AI Image Models
+            tool_name: pikaso-image-ai_image_generator-nano_banana_2
+            user_uses: 120
+            user_credits: 4800
+            user_usages:
+            - api_key_id: d98b3edd-38c6-4f03-a9bd-da6eff110782
+              api_key_name: prod-batch
+              user_email: null
+              user_uses: 120
+              user_credits: 4800
+          - tool: Asset Download
+            tool_name: magnific-premium-photo-download
+            user_uses: 14
+            user_credits: 1260
+            user_usages:
+            - user_email: null
+              user_reference: usr_7b1d4e0af62c9835
+              user_uses: 10
+              user_credits: 900
+            - user_email: null
+              user_reference: null
+              user_uses: 4
+              user_credits: 360
+    200-analytics-audit-logs-events:
+      summary: Success - Enterprise audit-log events.
+      value:
+        data:
+        - event_id: b3d1f0a2-9c4e-4a1b-8f2d-1a2b3c4d5e6f
+          date: 2026-07-30 09:14:52+00:00
+          action:
+            event_type: team.member.role_changed
+            verb: update
+            status: success
+            resource_id: '18422'
+            request_id: req-7f3a9c1e
+            correlation_id: corr-2b8e
+            old_state:
+              role: member
+            new_state:
+              role: admin
+            duration_ms: 42
+            data:
+              target_user_id: 10511077
+              role: admin
+              operation: grant
+            context: {}
+            project_name: null
+            folder_name: null
+          member:
+            type: user
+            user_id: 10499812
+            email: admin@company.com
+          category: member
+          source:
+            project: magnific
+            platform: web
+            referer: null
+        - event_id: c4e2a1b3-0d5f-4b2c-9a3e-2b3c4d5e6f70
+          date: 2026-07-30 08:02:11+00:00
+          action:
+            event_type: project.folder.shared
+            verb: create
+            status: success
+            resource_id: a1b2c3d4-1111-4000-8000-000000000001
+            request_id: req-5a1b2c3d
+            correlation_id: null
+            old_state: null
+            new_state: null
+            duration_ms: 18
+            data:
+              folder_reference: a1b2c3d4-1111-4000-8000-000000000001
+              share_type: group
+              group_id: 10
+              permission: editor
+              outcome: shared
+            context: {}
+            project_name: Marketing Campaign Q4
+            folder_name: Q4 assets
+          member:
+            type: user
+            user_id: 10499812
+            email: admin@company.com
+          category: folder
+          source:
+            project: magnific
+            platform: web
+            referer: null
+        meta:
+          pagination:
+            current_page: 1
+            per_page: 20
+            last_page: 5
+            total: 92
+          next_cursor: eyJzIjpbMTcyMjMyOF19
+    200-analytics-team-groups:
+      summary: Success - List of team groups.
+      value:
+        data:
+        - group_id: 10
+          name: Design Team
+          member_count: 5
+        - group_id: 20
+          name: Marketing Team
+          member_count: 8
+        - group_id: 30
+          name: Engineering
+          member_count: 12
+    200-analytics-team-projects:
+      summary: Success - List of team projects.
+      value:
+        data:
+        - project_reference: a1b2c3d4-1111-4000-8000-000000000001
+          name: Marketing Campaign Q4
+        - project_reference: b2c3d4e5-2222-4000-8000-000000000002
+          name: Product Launch Assets
+        - project_reference: c3d4e5f6-3333-4000-8000-000000000003
+          name: Social Media Templates
+    200-analytics-team-api-keys:
+      summary: Success - List of team API keys.
+      value:
+        data:
+        - api_key_id: fpk-abc123def456
+          display_name: Production Backend
+          status: active
+          created_at: 2026-01-15 10:30:00+00:00
+        - api_key_id: fpk-xyz789ghi012
+          display_name: Staging
+          status: active
+          created_at: 2026-03-20 14:00:00+00:00
+  securitySchemes:
+    magnificApiKey:
+      description: 'Your Magnific API key. Required for authentication. [Learn how to obtain an API key](https://docs.magnific.com/quickstart)
+
+        '
+      in: header
+      name: x-magnific-api-key
+      type: apiKey

@@ -1,0 +1,926 @@
+openapi: 3.2.0
+info:
+  description: The Magnific API is your gateway to a vast collection of high-quality digital resources for your applications and projects. As a leading platform, it offers a wide range of graphics, including vectors, photos, illustrations, icons, PSD templates, and more, all curated by talented designers from around the world.
+  title: Magnific Music API
+  version: 1.0.0
+servers:
+- description: B2B API Production V1
+  url: https://api.magnific.com
+security:
+- magnificApiKey: []
+tags:
+- name: Music
+paths:
+  /v1/music:
+    get:
+      description: Search the Magnific Music catalog. Filter by genre, mood, artist, premium status, and creation date range. Returns paginated results sorted by popularity by default.
+      operationId: search_music
+      parameters:
+      - description: Full-text search query for music titles, artists, and tags
+        example: summer vibes
+        in: query
+        name: q
+        required: false
+        schema:
+          type: string
+      - description: Filter by genre. Comma-separated for multiple values
+        example: Electronic,Ambient
+        explode: false
+        in: query
+        name: genre
+        required: false
+        schema:
+          items:
+            enum:
+            - Acoustic
+            - Afrobeat
+            - Ambient
+            - Blues
+            - Children
+            - Cinematic
+            - Classical
+            - Corporate
+            - Country
+            - Disco
+            - Electronic
+            - Funk
+            - Hip Hop
+            - Jazz
+            - Latin
+            - Lofi
+            - Lounge
+            - Pop
+            - Reggae
+            - RnB
+            - Rock
+            - Soul
+            - Synthwave
+            - World
+            type: string
+          type: array
+        style: form
+      - description: Filter by mood. Comma-separated for multiple values
+        example: Happy,Energetic
+        explode: false
+        in: query
+        name: mood
+        required: false
+        schema:
+          items:
+            enum:
+            - Dark
+            - Dramatic
+            - Elegant
+            - Energetic
+            - Epic
+            - Exciting
+            - Groovy
+            - Happy
+            - Hopeful
+            - Laid Back
+            - Melancholic
+            - Peaceful
+            - Playful
+            - Sad
+            - Sentimental
+            - Soulful
+            - Tension
+            - Upbeat
+            type: string
+          type: array
+        style: form
+      - description: Include premium music in search results. When false, only free music is returned
+        in: query
+        name: include-premium
+        required: false
+        schema:
+          default: false
+          type: boolean
+      - description: Filter by creation date, relative to current date
+        in: query
+        name: time_range
+        required: false
+        schema:
+          enum:
+          - 7d
+          - 30d
+          - 90d
+          type: string
+      - description: Sort order for results. Prefix with "-" for descending. Defaults to "relevance" when a search query (q) is provided, otherwise defaults to "-popularity".
+        in: query
+        name: order_by
+        required: false
+        schema:
+          enum:
+          - relevance
+          - popularity
+          - -popularity
+          - created_at
+          - -created_at
+          - title
+          - -title
+          - seconds
+          - -seconds
+          - bpm
+          - -bpm
+          type: string
+      - description: Number of results to return per page
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 10
+          maximum: 1000
+          minimum: 1
+          type: integer
+      - description: Number of results to skip for pagination
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedMusicListResponse'
+          description: OK
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+      summary: Search and filter music
+      tags:
+      - Music
+  /v1/music/{music-id}:
+    get:
+      description: Retrieve full details for a music item including artist biography, genre and mood metadata, popularity score, and download statistics.
+      operationId: get_music_detail
+      parameters:
+      - description: Unique numeric identifier of the music item
+        example: 1
+        in: path
+        name: music-id
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicDetail'
+          description: OK
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '404':
+          $ref: '#/components/responses/404-not-found'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+      summary: Get detailed music information by ID
+      tags:
+      - Music
+  /v1/music/{music-id}/download:
+    get:
+      description: Get a direct download URL for a music audio file. Returns the music ID, title, and a CDN-hosted download link.
+      operationId: download_music
+      parameters:
+      - description: Unique numeric identifier of the music item
+        example: 1
+        in: path
+        name: music-id
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicDownloadResponse'
+          description: OK
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '404':
+          $ref: '#/components/responses/404-not-found'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+      summary: Download music
+      tags:
+      - Music
+components:
+  responses:
+    401-unauthorized:
+      content:
+        application/json:
+          examples:
+            invalid_api_key:
+              summary: API key is not valid
+              value:
+                message: Invalid API key
+            missing_api_key:
+              summary: API key is not provided
+              value:
+                message: Missing API key
+          schema:
+            $ref: '#/components/schemas/inline_object'
+      description: Unauthorized - The client must authenticate itself to get the requested response.
+    400-bad-request:
+      content:
+        application/json:
+          examples:
+            invalid_page:
+              summary: Parameter 'page' is not valid
+              value:
+                message: Parameter 'page' must be greater than 0
+            invalid_query:
+              summary: Parameter 'query' is not valid
+              value:
+                message: Parameter 'query' must not be empty
+            invalid_filter:
+              summary: Parameter 'filter' is not valid
+              value:
+                message: Parameter 'filter' is not valid
+            generic_bad_request:
+              summary: Bad Request
+              value:
+                message: Parameter ':attribute' is not valid
+          schema:
+            $ref: '#/components/schemas/inline_object'
+        application/problem+json:
+          examples:
+            invalid_page:
+              summary: Parameter 'page' is not valid
+              value:
+                message: Validation error
+                invalid_params:
+                - field: page
+                  reason: Parameter 'page' must be greater than 0
+                - field: per_page
+                  reason: Parameter 'per_page' must be greater than 0
+          schema:
+            $ref: '#/components/schemas/inline_object_1'
+      description: Bad Request - The server could not understand the request due to invalid syntax.
+    404-not-found:
+      content:
+        application/json:
+          examples:
+            ai_resource_not_found:
+              summary: AI resource with provided id does not exist
+              value:
+                message: AI resource not found
+            collection_not_found:
+              summary: Collection with provided id does not exist
+              value:
+                message: Collection not found
+            resource_not_found:
+              summary: Resource with provided id does not exist
+              value:
+                message: Resource not found
+            resources_not_found:
+              summary: Resources not found
+              value:
+                message: Resources not found
+            user_not_found:
+              summary: User with provided id does not exist
+              value:
+                message: User not found
+            video_not_found:
+              summary: Video with provided id does not exist
+              value:
+                message: Video not found
+            video_assets_not_found:
+              summary: Video with provided id has not associated assets
+              value:
+                message: Video not found
+            icon_not_found:
+              summary: Icon with provided id does not exist
+              value:
+                message: Icon not found
+            author_not_found:
+              summary: Author with provided id does not exist
+              value:
+                message: Author not found
+            developer_not_found:
+              summary: Developer with provided email does not exist
+              value:
+                message: Developer not found
+            country_not_found:
+              summary: Country with provided code does not exist
+              value:
+                message: Country not found
+            generic_not_found:
+              summary: Not Found
+              value:
+                message: Not found
+          schema:
+            $ref: '#/components/schemas/inline_object'
+      description: Not Found - The server can not find the requested resource.
+    500-internal-server-error:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_2'
+      description: Internal Server Error - The server has encountered a situation it doesn't know how to handle.
+  schemas:
+    inline_object_1_problem_invalid_params_inner:
+      properties:
+        name:
+          description: Name of the invalid parameter.
+          example: page
+          type: string
+        field:
+          description: Field of the invalid parameter. Mirrors `name`.
+          example: page
+          type: string
+        reason:
+          example: Parameter 'page' must be greater than 0
+          type: string
+      required:
+      - field
+      - name
+      - reason
+      type: object
+    PaginatedMusicListResponse:
+      example:
+        count: 150
+        results:
+        - favorites: 350
+          file_url: file_url
+          cover_url: cover_url
+          is_active: true
+          artist:
+            name: John Doe
+          moods:
+          - name: Happy
+          - name: Energetic
+          created_at: 2000-01-23 04:56:07+00:00
+          in_playlists: 15
+          title: Summer Vibes
+          seconds: 225
+          is_premium: true
+          downloads: 1200
+          genres:
+          - name: Electronic
+          - name: Ambient
+          preview_url: preview_url
+          popularity: 85
+          download_url: download_url
+          id: 1
+          time: 225
+        - favorites: 350
+          file_url: file_url
+          cover_url: cover_url
+          is_active: true
+          artist:
+            name: John Doe
+          moods:
+          - name: Happy
+          - name: Energetic
+          created_at: 2000-01-23 04:56:07+00:00
+          in_playlists: 15
+          title: Summer Vibes
+          seconds: 225
+          is_premium: true
+          downloads: 1200
+          genres:
+          - name: Electronic
+          - name: Ambient
+          preview_url: preview_url
+          popularity: 85
+          download_url: download_url
+          id: 1
+          time: 225
+      properties:
+        count:
+          description: Total number of results matching the query
+          example: 150
+          type: integer
+        results:
+          items:
+            $ref: '#/components/schemas/MusicListItem'
+          type: array
+      required:
+      - count
+      - results
+      type: object
+    MoodItem:
+      example:
+        cover_url: cover_url
+        is_active: true
+        name: Happy
+        id: 1
+        order: 1
+      properties:
+        id:
+          example: 1
+          type: integer
+        name:
+          enum:
+          - Dark
+          - Dramatic
+          - Elegant
+          - Energetic
+          - Epic
+          - Exciting
+          - Groovy
+          - Happy
+          - Hopeful
+          - Laid Back
+          - Melancholic
+          - Peaceful
+          - Playful
+          - Sad
+          - Sentimental
+          - Soulful
+          - Tension
+          - Upbeat
+          example: Happy
+          type: string
+        order:
+          example: 1
+          type: integer
+        is_active:
+          type: boolean
+        cover_url:
+          type: string
+      required:
+      - id
+      - name
+      type: object
+    MoodSearchTag:
+      description: Mood tag object returned by the search index
+      properties:
+        id:
+          description: Mood identifier (may not always be present)
+          example: 1
+          type: integer
+        name:
+          description: Mood name
+          enum:
+          - Dark
+          - Dramatic
+          - Elegant
+          - Energetic
+          - Epic
+          - Exciting
+          - Groovy
+          - Happy
+          - Hopeful
+          - Laid Back
+          - Melancholic
+          - Peaceful
+          - Playful
+          - Sad
+          - Sentimental
+          - Soulful
+          - Tension
+          - Upbeat
+          example: Happy
+          type: string
+      required:
+      - name
+      type: object
+    inline_object_1:
+      properties:
+        problem:
+          $ref: '#/components/schemas/inline_object_1_problem'
+      type: object
+    GenreItem:
+      example:
+        cover_url: cover_url
+        is_active: true
+        name: Electronic
+        description: description
+        id: 1
+        order: 1
+      properties:
+        id:
+          example: 1
+          type: integer
+        name:
+          enum:
+          - Acoustic
+          - Afrobeat
+          - Ambient
+          - Blues
+          - Children
+          - Cinematic
+          - Classical
+          - Corporate
+          - Country
+          - Disco
+          - Electronic
+          - Funk
+          - Hip Hop
+          - Jazz
+          - Latin
+          - Lofi
+          - Lounge
+          - Pop
+          - Reggae
+          - RnB
+          - Rock
+          - Soul
+          - Synthwave
+          - World
+          example: Electronic
+          type: string
+        order:
+          example: 1
+          type: integer
+        is_active:
+          type: boolean
+        cover_url:
+          type: string
+        description:
+          type: string
+      required:
+      - id
+      - name
+      type: object
+    inline_object_1_problem:
+      properties:
+        message:
+          example: Validation error
+          type: string
+        invalid_params:
+          items:
+            $ref: '#/components/schemas/inline_object_1_problem_invalid_params_inner'
+          type: array
+      required:
+      - invalid_params
+      - message
+      type: object
+    MusicDetail:
+      example:
+        favorites: 350
+        file_url: file_url
+        cover_url: cover_url
+        is_active: true
+        artist:
+          cover_url: cover_url
+          name: John Doe
+          bio: bio
+          id: 1
+          track_count: 42
+        moods:
+        - cover_url: cover_url
+          is_active: true
+          name: Happy
+          id: 1
+          order: 1
+        - cover_url: cover_url
+          is_active: true
+          name: Happy
+          id: 1
+          order: 1
+        created_at: 2000-01-23 04:56:07+00:00
+        in_playlists: 15
+        title: Summer Vibes
+        seconds: 225
+        is_premium: true
+        downloads: 1200
+        genres:
+        - cover_url: cover_url
+          is_active: true
+          name: Electronic
+          description: description
+          id: 1
+          order: 1
+        - cover_url: cover_url
+          is_active: true
+          name: Electronic
+          description: description
+          id: 1
+          order: 1
+        preview_url: preview_url
+        popularity: 85
+        download_url: download_url
+        id: 1
+        time: 225
+      properties:
+        id:
+          description: Unique identifier of the music item
+          example: 1
+          type: integer
+        title:
+          description: Music title
+          example: Summer Vibes
+          type: string
+        artist:
+          $ref: '#/components/schemas/MusicDetail_artist'
+        genres:
+          items:
+            $ref: '#/components/schemas/GenreItem'
+          type: array
+        moods:
+          items:
+            $ref: '#/components/schemas/MoodItem'
+          type: array
+        cover_url:
+          description: URL to the music cover image
+          type:
+          - string
+          - 'null'
+        file_url:
+          description: Direct S3/CDN URL to the audio file
+          type:
+          - string
+          - 'null'
+        preview_url:
+          description: Preview URL
+          type:
+          - string
+          - 'null'
+        download_url:
+          description: URL to download the music
+          type:
+          - string
+          - 'null'
+        seconds:
+          description: Music duration in seconds
+          example: 225
+          type: integer
+        time:
+          description: Music duration formatted as minutes and seconds
+          example: 225
+          type: string
+        popularity:
+          description: Popularity score
+          example: 85
+          type: integer
+        is_premium:
+          description: Whether the music is premium
+          type: boolean
+        is_active:
+          description: Whether the music is active
+          type: boolean
+        created_at:
+          description: Music creation timestamp
+          format: date-time
+          type: string
+        downloads:
+          description: Total number of downloads
+          example: 1200
+          type: integer
+        favorites:
+          description: Total number of favorites
+          example: 350
+          type: integer
+        in_playlists:
+          description: Number of playlists containing this music
+          example: 15
+          type: integer
+      required:
+      - id
+      - title
+      type: object
+    inline_object_2:
+      example:
+        message: Internal Server Error
+      properties:
+        message:
+          example: Internal Server Error
+          type: string
+      type: object
+    inline_object:
+      example:
+        message: message
+      properties:
+        message:
+          type: string
+      type: object
+    GenreSearchTag:
+      description: Genre tag object returned by the search index
+      properties:
+        id:
+          description: Genre identifier (may not always be present)
+          example: 1
+          type: integer
+        name:
+          description: Genre name
+          enum:
+          - Acoustic
+          - Afrobeat
+          - Ambient
+          - Blues
+          - Children
+          - Cinematic
+          - Classical
+          - Corporate
+          - Country
+          - Disco
+          - Electronic
+          - Funk
+          - Hip Hop
+          - Jazz
+          - Latin
+          - Lofi
+          - Lounge
+          - Pop
+          - Reggae
+          - RnB
+          - Rock
+          - Soul
+          - Synthwave
+          - World
+          example: Electronic
+          type: string
+      required:
+      - name
+      type: object
+    MusicListItem:
+      description: Music item returned by search results (MeilisearchTrackSerializer). Fields are only included when non-null in the search index.
+      example:
+        favorites: 350
+        file_url: file_url
+        cover_url: cover_url
+        is_active: true
+        artist:
+          name: John Doe
+        moods:
+        - name: Happy
+        - name: Energetic
+        created_at: 2000-01-23 04:56:07+00:00
+        in_playlists: 15
+        title: Summer Vibes
+        seconds: 225
+        is_premium: true
+        downloads: 1200
+        genres:
+        - name: Electronic
+        - name: Ambient
+        preview_url: preview_url
+        popularity: 85
+        download_url: download_url
+        id: 1
+        time: 225
+      properties:
+        id:
+          description: Unique identifier of the music item
+          example: 1
+          type: integer
+        title:
+          description: Music title
+          example: Summer Vibes
+          type: string
+        artist:
+          $ref: '#/components/schemas/MusicListArtist'
+        genres:
+          description: Genre tags from the search index
+          example:
+          - name: Electronic
+          - name: Ambient
+          items:
+            $ref: '#/components/schemas/GenreSearchTag'
+          type: array
+        moods:
+          description: Mood tags from the search index
+          example:
+          - name: Happy
+          - name: Energetic
+          items:
+            $ref: '#/components/schemas/MoodSearchTag'
+          type: array
+        cover_url:
+          description: URL to the music cover image
+          type:
+          - string
+          - 'null'
+        file_url:
+          description: Direct S3/CDN URL to the audio file
+          type:
+          - string
+          - 'null'
+        preview_url:
+          description: Preview URL for the audio file (same as file_url)
+          type:
+          - string
+          - 'null'
+        download_url:
+          description: URL to download the music
+          type:
+          - string
+          - 'null'
+        seconds:
+          description: Music duration in seconds
+          example: 225
+          type: integer
+        time:
+          description: Music duration formatted as minutes and seconds
+          example: 225
+          type: string
+        popularity:
+          description: Popularity score
+          example: 85
+          type: integer
+        is_premium:
+          description: Whether the music is premium
+          type: boolean
+        is_active:
+          description: Whether the music is active
+          type: boolean
+        created_at:
+          description: Music creation timestamp
+          format: date-time
+          type: string
+        downloads:
+          description: Total number of downloads
+          example: 1200
+          type: integer
+        favorites:
+          description: Total number of favorites
+          example: 350
+          type: integer
+        in_playlists:
+          description: Number of playlists containing this music
+          example: 15
+          type: integer
+      required:
+      - id
+      - title
+      type: object
+    MusicDownloadResponse:
+      example:
+        download_url: https://cdn.freepik.com/music/track.mp3
+        id: 1
+        title: Summer Vibes
+      properties:
+        id:
+          description: Unique identifier of the music item
+          example: 1
+          type: integer
+        title:
+          description: Music title
+          example: Summer Vibes
+          type: string
+        download_url:
+          description: Direct URL to download the music file
+          example: https://cdn.freepik.com/music/track.mp3
+          type: string
+      required:
+      - download_url
+      - id
+      - title
+      type: object
+    MusicListArtist:
+      description: Simplified artist object returned in search results (MeilisearchTrackSerializer). Contains only the artist name.
+      example:
+        name: John Doe
+      properties:
+        name:
+          description: Artist name
+          example: John Doe
+          type: string
+      required:
+      - name
+      type:
+      - object
+      - 'null'
+    MusicDetail_artist:
+      example:
+        cover_url: cover_url
+        name: John Doe
+        bio: bio
+        id: 1
+        track_count: 42
+      properties:
+        id:
+          example: 1
+          type: integer
+        name:
+          example: John Doe
+          type: string
+        bio:
+          description: Artist biography
+          type: string
+        cover_url:
+          description: URL to the artist cover image
+          type: string
+        track_count:
+          description: Total number of music items by the artist
+          example: 42
+          type: integer
+      required:
+      - bio
+      - cover_url
+      - id
+      - name
+      - track_count
+      type:
+      - object
+      - 'null'
+  securitySchemes:
+    magnificApiKey:
+      description: 'Your Magnific API key. Required for authentication. [Learn how to obtain an API key](https://docs.magnific.com/quickstart)
+
+        '
+      in: header
+      name: x-magnific-api-key
+      type: apiKey

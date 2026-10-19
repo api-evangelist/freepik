@@ -1,0 +1,503 @@
+openapi: 3.2.0
+info:
+  description: The Magnific API is your gateway to a vast collection of high-quality digital resources for your applications and projects. As a leading platform, it offers a wide range of graphics, including vectors, photos, illustrations, icons, PSD templates, and more, all curated by talented designers from around the world.
+  title: Magnific Advanced Custom Elements API
+  version: 1.0.0
+servers:
+- description: B2B API Production V1
+  url: https://api.magnific.com
+security:
+- magnificApiKey: []
+tags:
+- name: advanced-custom-elements
+paths:
+  /v1/ai/video/kling-advanced-custom-elements:
+    get:
+      deprecated: true
+      description: '**Deprecated.** This endpoint is deprecated. You can pass reference images directly in the `elements` array
+
+        of the Kling V3 video generation endpoints (`/ai/video/kling-v3-pro`, `/ai/video/kling-v3-std`)
+
+        without needing to pre-create elements.
+
+
+        Retrieve the list of all Advanced Custom Elements creation tasks for the authenticated user.'
+      operationId: getAiVideoKlingAdvancedCustomElementsTasks
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/get_all_style_transfer_tasks_200_response'
+          description: OK - The list of Advanced Custom Elements tasks is returned
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Advanced Custom Elements - List tasks
+      tags:
+      - advanced-custom-elements
+    post:
+      deprecated: true
+      description: '**Deprecated.** This endpoint is deprecated. You can pass reference images directly in the `elements` array
+
+        of the Kling V3 video generation endpoints (`/ai/video/kling-v3-pro`, `/ai/video/kling-v3-std`)
+
+        without needing to pre-create elements.
+
+
+        Create reusable custom elements (characters, animals, items, costumes, scenes, effects) from reference images or videos.
+
+        Elements can be referenced in Kling video generation tasks for consistent identity across videos.
+
+
+        **Features:**
+
+        - Create elements from multi-angle reference images or a reference video
+
+        - Supports character, animal, item, costume, scene, and effect element types
+
+        - Optionally bind a voice to the element for video generation with speech
+
+        - Elements can be reused across multiple video generation tasks
+
+
+        **Reference types:**
+
+        - `image_refer`: Create element from 1 frontal image + up to 3 additional reference images from different angles
+
+        - `video_refer`: Create element from a single reference video (3-8 seconds, 1080P, mp4/mov)'
+      operationId: postAiVideoKlingAdvancedCustomElements
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/advanced-custom-elements-request'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/task-detail-200-default-response'
+          description: OK - Task created successfully
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Advanced Custom Elements - Create element
+      tags:
+      - advanced-custom-elements
+  /v1/ai/video/kling-advanced-custom-elements/{task-id}:
+    get:
+      deprecated: true
+      description: '**Deprecated.** This endpoint is deprecated. You can pass reference images directly in the `elements` array
+
+        of the Kling V3 video generation endpoints (`/ai/video/kling-v3-pro`, `/ai/video/kling-v3-std`)
+
+        without needing to pre-create elements.
+
+
+        Retrieve the status and result of a specific Advanced Custom Elements creation task by its task ID.'
+      operationId: getAiVideoKlingAdvancedCustomElementsTask
+      parameters:
+      - description: ID of the task
+        in: path
+        name: task-id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                success - completed task:
+                  $ref: '#/components/examples/200-task-completed'
+                success - in progress task:
+                  $ref: '#/components/examples/200-task-in-progress'
+              schema:
+                $ref: '#/components/schemas/get_style_transfer_task_status_200_response'
+          description: OK - The task exists and the status is returned
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Advanced Custom Elements - Get task status
+      tags:
+      - advanced-custom-elements
+components:
+  schemas:
+    advanced-custom-elements-image-list:
+      description: 'Reference images for defining the element. Required when reference_type is `image_refer`, ignored when reference_type is `video_refer`.
+
+        Provide one frontal reference image and 1 to 3 additional reference images from different angles or close-ups.
+
+        '
+      properties:
+        frontal_image:
+          description: 'Frontal reference image URL or Base64 encoding. At least one frontal reference image is required. Supported formats: .jpg, .jpeg, .png. Max file size: 10MB. Min dimensions: 300px. Aspect ratio: 1:2.5 to 2.5:1.'
+          type: string
+        refer_images:
+          description: 1 to 3 additional reference images from other angles or close-ups. These should differ from the frontal reference image.
+          items:
+            $ref: '#/components/schemas/advanced-custom-elements-refer-image'
+          maxItems: 3
+          minItems: 1
+          type: array
+      required:
+      - frontal_image
+      - refer_images
+      type: object
+    inline_object_1_problem_invalid_params_inner:
+      properties:
+        name:
+          description: Name of the invalid parameter.
+          example: page
+          type: string
+        field:
+          description: Field of the invalid parameter. Mirrors `name`.
+          example: page
+          type: string
+        reason:
+          example: Parameter 'page' must be greater than 0
+          type: string
+      required:
+      - field
+      - name
+      - reason
+      type: object
+    task:
+      example:
+        task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        status: CREATED
+      properties:
+        task_id:
+          description: Task identifier
+          format: uuid
+          type: string
+        status:
+          description: Task status
+          enum:
+          - CREATED
+          - IN_PROGRESS
+          - COMPLETED
+          - FAILED
+          type: string
+      required:
+      - status
+      - task_id
+      type: object
+    advanced-custom-elements-video-list:
+      description: 'Reference video for defining the element. Required when reference_type is `video_refer`, ignored when reference_type is `image_refer`.
+
+        Only one video can be uploaded. If the video contains human voice, voice tone customization will be initiated.
+
+        '
+      properties:
+        refer_videos:
+          description: Reference videos. Only 1 video can be uploaded.
+          items:
+            $ref: '#/components/schemas/advanced-custom-elements-refer-video'
+          maxItems: 1
+          minItems: 1
+          type: array
+      required:
+      - refer_videos
+      type: object
+    task-detail-200-default-response:
+      description: OK - The task exists and the status is returned
+    advanced-custom-elements-refer-video:
+      properties:
+        video_url:
+          description: 'Reference video URL. Only .mp4/.mov formats supported. Must be 1080P with duration between 3 and 8 seconds, aspect ratio 16:9 or 9:16. Max file size: 200MB.'
+          type: string
+      required:
+      - video_url
+      type: object
+    inline_object_1:
+      properties:
+        problem:
+          $ref: '#/components/schemas/inline_object_1_problem'
+      type: object
+    inline_object_1_problem:
+      properties:
+        message:
+          example: Validation error
+          type: string
+        invalid_params:
+          items:
+            $ref: '#/components/schemas/inline_object_1_problem_invalid_params_inner'
+          type: array
+      required:
+      - invalid_params
+      - message
+      type: object
+    advanced-custom-elements-tag:
+      properties:
+        tag_id:
+          $ref: '#/components/schemas/advanced-custom-elements-tag-id'
+      required:
+      - tag_id
+      type: object
+    inline_object_2:
+      example:
+        message: Internal Server Error
+      properties:
+        message:
+          example: Internal Server Error
+          type: string
+      type: object
+    inline_object:
+      example:
+        message: message
+      properties:
+        message:
+          type: string
+      type: object
+    get_style_transfer_task_status_200_response:
+      example:
+        data:
+          generated:
+          - https://openapi-generator.tech
+          - https://openapi-generator.tech
+          task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: CREATED
+      properties:
+        data:
+          $ref: '#/components/schemas/task-detail'
+      required:
+      - data
+      type: object
+    inline_object_3:
+      example:
+        message: Service Unavailable. Please try again later.
+      properties:
+        message:
+          example: Service Unavailable. Please try again later.
+          type: string
+      type: object
+    advanced-custom-elements-request:
+      properties:
+        element_name:
+          description: Name of the custom element. Must not exceed 20 characters.
+          maxLength: 20
+          type: string
+        element_description:
+          description: Description of the custom element. Must not exceed 100 characters.
+          maxLength: 100
+          type: string
+        reference_type:
+          $ref: '#/components/schemas/advanced-custom-elements-reference-type'
+        element_image_list:
+          $ref: '#/components/schemas/advanced-custom-elements-image-list'
+        element_video_list:
+          $ref: '#/components/schemas/advanced-custom-elements-video-list'
+        element_voice_id:
+          description: 'Bind the element to an existing voice from the tone library. When empty, the element is not bound to a voice.
+
+            The voice ID can be obtained through the voice-related API. Only elements customized via video reference support voice binding.
+
+            '
+          type: string
+        tag_list:
+          description: Configure category tags for the element. One element can have multiple tags.
+          items:
+            $ref: '#/components/schemas/advanced-custom-elements-tag'
+          type: array
+        webhook_url:
+          description: 'Optional callback URL that will receive asynchronous notifications whenever the task changes status. The payload sent to this URL is the same as the corresponding GET endpoint response, but without the data field.
+
+            '
+          example: https://www.example.com/webhook
+          format: uri
+          type: string
+      required:
+      - element_description
+      - element_name
+      - reference_type
+      type: object
+    advanced-custom-elements-refer-image:
+      properties:
+        image_url:
+          description: 'Reference image URL or Base64 encoding. Supported formats: .jpg, .jpeg, .png. Max file size: 10MB. Min dimensions: 300px.'
+          type: string
+      required:
+      - image_url
+      type: object
+    get_all_style_transfer_tasks_200_response:
+      example:
+        data:
+        - task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: CREATED
+        - task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: CREATED
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/task'
+          type: array
+      required:
+      - data
+      type: object
+    advanced-custom-elements-reference-type:
+      description: 'Reference method for defining the element''s appearance:
+
+        - `image_refer`: Multi-Image Elements. The element appearance is defined from reference images (element_image_list). Supported formats: .jpg, .jpeg, .png. Max 10MB per image. Min 300px dimensions. Aspect ratio between 1:2.5 and 2.5:1.
+
+        - `video_refer`: Video Character Elements. The element appearance is defined from a reference video (element_video_list). Only .mp4/.mov formats, 1080P, 3-8 seconds duration, 16:9 or 9:16 aspect ratio, max 200MB.
+
+        '
+      enum:
+      - image_refer
+      - video_refer
+      type: string
+    advanced-custom-elements-tag-id:
+      description: 'Tag category for the element:
+
+        - `o_101`: Hottest
+
+        - `o_102`: Character
+
+        - `o_103`: Animal
+
+        - `o_104`: Item
+
+        - `o_105`: Costume
+
+        - `o_106`: Scene
+
+        - `o_107`: Effect
+
+        - `o_108`: Others
+
+        '
+      enum:
+      - o_101
+      - o_102
+      - o_103
+      - o_104
+      - o_105
+      - o_106
+      - o_107
+      - o_108
+      type: string
+    task-detail:
+      allOf:
+      - $ref: '#/components/schemas/task'
+      - properties:
+          generated:
+            items:
+              description: URL of the generated image
+              format: uri
+              type: string
+            type: array
+        required:
+        - generated
+        type: object
+      example:
+        generated:
+        - https://openapi-generator.tech
+        - https://openapi-generator.tech
+        task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        status: CREATED
+  responses:
+    401-unauthorized:
+      content:
+        application/json:
+          examples:
+            invalid_api_key:
+              summary: API key is not valid
+              value:
+                message: Invalid API key
+            missing_api_key:
+              summary: API key is not provided
+              value:
+                message: Missing API key
+          schema:
+            $ref: '#/components/schemas/inline_object'
+      description: Unauthorized - The client must authenticate itself to get the requested response.
+    503-service-unavailable:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_3'
+      description: Service Unavailable
+    400-bad-request:
+      content:
+        application/json:
+          examples:
+            invalid_page:
+              summary: Parameter 'page' is not valid
+              value:
+                message: Parameter 'page' must be greater than 0
+            invalid_query:
+              summary: Parameter 'query' is not valid
+              value:
+                message: Parameter 'query' must not be empty
+            invalid_filter:
+              summary: Parameter 'filter' is not valid
+              value:
+                message: Parameter 'filter' is not valid
+            generic_bad_request:
+              summary: Bad Request
+              value:
+                message: Parameter ':attribute' is not valid
+          schema:
+            $ref: '#/components/schemas/inline_object'
+        application/problem+json:
+          examples:
+            invalid_page:
+              summary: Parameter 'page' is not valid
+              value:
+                message: Validation error
+                invalid_params:
+                - field: page
+                  reason: Parameter 'page' must be greater than 0
+                - field: per_page
+                  reason: Parameter 'per_page' must be greater than 0
+          schema:
+            $ref: '#/components/schemas/inline_object_1'
+      description: Bad Request - The server could not understand the request due to invalid syntax.
+    500-internal-server-error:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_2'
+      description: Internal Server Error - The server has encountered a situation it doesn't know how to handle.
+  examples:
+    200-task-in-progress:
+      summary: Success - Task in progress
+      value:
+        data:
+          generated: []
+          task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: IN_PROGRESS
+    200-task-completed:
+      summary: Success - Task completed
+      value:
+        data:
+          generated:
+          - https://ai-statics.freepik.com/completed_task_image.jpg
+          task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: COMPLETED
+  securitySchemes:
+    magnificApiKey:
+      description: 'Your Magnific API key. Required for authentication. [Learn how to obtain an API key](https://docs.magnific.com/quickstart)
+
+        '
+      in: header
+      name: x-magnific-api-key
+      type: apiKey

@@ -1,0 +1,12 @@
+{
+ "url": "https://storage.googleapis.com/fc-freepik-pro-rev1-eu-api-specs/magnific-api-v1-openapi.yaml?v=46\\",
+ "final": "https://storage.googleapis.com/fc-freepik-pro-rev1-eu-api-specs/magnific-api-v1-openapi.yaml?v=46\\",
+ "status": 200,
+ "content_type": "application/yaml",
+ "bytes": 1419150,
+ "sha256": "60711fb082c706e9a781ac9c641ab3a270480fda89558bc613f717db03e7f2a3",
+ "fetched_at": "2026-10-19",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "re-archived: the provider's current document replaced a stale archive (roadmap#793); the old files are in openapi/_superseded/2026-10-19-stale"
+}

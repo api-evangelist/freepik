@@ -1,104 +1,4200 @@
 openapi: 3.2.0
 info:
-  title: Freepik / Magnific Resources API
-  description: Freepik's developer platform (operated through Magnific) provides AI-powered image generation, video generation, image editing, audio generation, and access to Freepik's stock library of vectors, photos, icons, and templates. Asynchronous tasks are polled by task ID.
-  version: '1.0'
-  contact:
-    name: Freepik / Magnific
-    url: https://docs.freepik.com/
+  description: The Magnific API is your gateway to a vast collection of high-quality digital resources for your applications and projects. As a leading platform, it offers a wide range of graphics, including vectors, photos, illustrations, icons, PSD templates, and more, all curated by talented designers from around the world.
+  title: Magnific Resources API
+  version: 1.0.0
 servers:
-- url: https://api.magnific.com
-  description: Magnific API (Freepik developer platform)
+- description: B2B API Production V1
+  url: https://api.magnific.com
 security:
-- ApiKey: []
+- magnificApiKey: []
 tags:
 - name: Resources
-  description: Search Freepik's stock library.
 paths:
   /v1/resources:
     get:
-      summary: Search stock resources
-      description: Search Freepik's stock library of vectors, photos, icons, and templates.
-      operationId: listResources
-      tags:
-      - Resources
+      description: Retrieve a list of resources based on various filter criteria such as orientation, content type, license, and more.
+      operationId: search_resources
       parameters:
-      - name: Accept-Language
+      - description: 'Specifies the search query language using the ISO 639-1 (2-letter
+
+          language code) and the ISO 3166-1 (2-letter country code) for language variants.
+
+          The API will use "en-US" as a default language for processing if a code is not
+
+          provided, or does not exist.
+
+          '
+        example: en-US
         in: header
+        name: Accept-Language
+        required: false
         schema:
           type: string
-          default: en-US
-      - name: page
+      - description: Page number. It must be greater than 0 and less than or equal to 100.
+        example: 1
         in: query
+        name: page
+        required: false
         schema:
           type: integer
-          minimum: 1
-          maximum: 100
-          default: 1
-      - name: limit
+      - description: Limit results per page. It must be greater than 0.
+        example: 100
         in: query
+        name: limit
+        required: false
         schema:
           type: integer
-          minimum: 1
-      - name: term
+      - description: "Specifies the order in which search results are returned. The available options allow you to prioritize results based on different criteria:\n - `relevance`: Prioritizes results that are most relevant to the search query.\n - `recent`: Sorts results by the most recent updates.\n"
+        example: recent
         in: query
+        name: order
+        required: false
         schema:
-          type: string
-      - name: order
-        in: query
-        schema:
-          type: string
+          default: relevance
           enum:
           - relevance
           - recent
-          default: relevance
-      - name: filters
+          type: string
+      - description: Search term. If only term comes, it is searched for term, if only slug comes, it is searched for slug and if both come, it is searched for slug
+        example: nature
         in: query
+        name: term
+        required: false
         schema:
           type: string
-        description: Advanced filters (orientation, content_type, license, color, author, ai-generated, vector, psd, people).
+      - description: Advanced filtering options for resources
+        explode: true
+        in: query
+        name: filters
+        schema:
+          $ref: '#/components/schemas/search_resources_filters_parameter'
+        style: deepObject
       responses:
         '200':
-          description: Resources listing.
+          content:
+            application/json:
+              examples:
+                example:
+                  $ref: '#/components/examples/200-b2b-full-list-pagination'
+              schema:
+                $ref: '#/components/schemas/search_resources_200_response'
+          description: Ok Response
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '403':
+          $ref: '#/components/responses/403-forbidden'
+        '404':
+          $ref: '#/components/responses/404-not-found'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Search and filter resources with advanced options
+      tags:
+      - Resources
+  /v1/resources/{resource-id}:
+    get:
+      description: Retrieve the detailed information of a specific resource by its ID. This endpoint supports multiple resource types including PSD, vector, photo, and AI-generated content.
+      operationId: get_resource_detail_by_id
+      parameters:
+      - description: Photo, video or PSD resource ID
+        example: 30955
+        in: path
+        name: resource-id
+        required: true
+        schema:
+          type: string
+      - description: 'Specifies the search query language using the ISO 639-1 (2-letter
+
+          language code) and the ISO 3166-1 (2-letter country code) for language variants.
+
+          The API will use "en-US" as a default language for processing if a code is not
+
+          provided, or does not exist.
+
+          '
+        example: en-US
+        in: header
+        name: Accept-Language
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                detail_photo:
+                  $ref: '#/components/examples/200-detail-photo-b2b'
+                detail_vector:
+                  $ref: '#/components/examples/200-detail-vector-b2b'
+                detail_psd:
+                  $ref: '#/components/examples/200-detail-psd-b2b'
+                detail_ai:
+                  $ref: '#/components/examples/200-detail-ai-b2b'
+              schema:
+                $ref: '#/components/schemas/get_resource_detail_by_id_200_response'
+          description: OK Response
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '404':
+          $ref: '#/components/responses/404-not-found'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Get detailed resource information by ID
+      tags:
+      - Resources
+  /v1/resources/{resource-id}/download:
+    get:
+      description: Download a specific resource by providing the resource ID. This endpoint supports downloading various types of resources including vectors, PSDs, photos, and AI-generated content.
+      operationId: download_resource_by_id
+      parameters:
+      - description: Photo, video or PSD resource ID
+        example: 30955
+        in: path
+        name: resource-id
+        required: true
+        schema:
+          type: integer
+      - description: 'Specifies the search query language using the ISO 639-1 (2-letter
+
+          language code) and the ISO 3166-1 (2-letter country code) for language variants.
+
+          The API will use "en-US" as a default language for processing if a code is not
+
+          provided, or does not exist.
+
+          '
+        example: en-US
+        in: header
+        name: Accept-Language
+        required: false
+        schema:
+          type: string
+      - description: "Resizes the photo to a specified size while maintaining aspect ratio. Accepts a pixel value (100px to 2000px) or \nkeywords small(1000px), medium(1500px), large(2000px), original corresponding to standard website sizes.\nThe size depends on the image orientation, the longest side of the image will be resized to the specified size.\nIf not specified, the highest resolution is provided. Applicable only to photos.\n"
+        example: 2000px
+        in: query
+        name: image_size
+        required: false
+        schema:
+          $ref: '#/components/schemas/download_resource_by_id_image_size_parameter'
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                download_vector_or_psd:
+                  $ref: '#/components/examples/200-download-vector-or-psd'
+                download_photo:
+                  $ref: '#/components/examples/200-download-photo'
+                download_ai:
+                  $ref: '#/components/examples/200-download-ai-resource'
+              schema:
+                $ref: '#/components/schemas/download_resource_by_id_200_response'
+          description: OK Response
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '403':
+          $ref: '#/components/responses/403-forbidden'
+        '404':
+          $ref: '#/components/responses/404-not-found'
+        '429':
+          $ref: '#/components/responses/429-too-many-requests'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Download an resource
+      tags:
+      - Resources
+  /v1/resources/{resource-id}/download/{resource-format}:
+    get:
+      description: Retrieve a resource by specifying both the resource ID and the format. This endpoint allows for precise downloading of resources in the desired format.
+      operationId: get_resource_download_formats
+      parameters:
+      - description: Photo, video or PSD resource ID
+        example: 30955
+        in: path
+        name: resource-id
+        required: true
+        schema:
+          type: integer
+      - description: Resource format
+        in: path
+        name: resource-format
+        required: true
+        schema:
+          enum:
+          - psd
+          - ai
+          - eps
+          - atn
+          - fonts
+          - resources
+          - png
+          - jpg
+          - 3d-render
+          - svg
+          - mockup
+          example: svg
+          type: string
+      responses:
+        '200':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResourceList'
+                $ref: '#/components/schemas/download_list'
+          description: OK
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '403':
+          $ref: '#/components/responses/403-forbidden'
+        '404':
+          $ref: '#/components/responses/404-not-found'
+        '429':
+          $ref: '#/components/responses/429-too-many-requests'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+      summary: Get available download formats for resource
+      tags:
+      - Resources
 components:
   schemas:
-    Resource:
+    get_resource_detail_by_id_200_response_data:
+      anyOf:
+      - $ref: '#/components/schemas/detail_vector'
+      - $ref: '#/components/schemas/detail_psd'
+      - $ref: '#/components/schemas/detail_photo'
+      - $ref: '#/components/schemas/detail_ai'
+    search_resources_filters_parameter_vector:
+      properties:
+        type:
+          description: File type for vectors
+          enum:
+          - jpg
+          - ai
+          - eps
+          - svg
+          type: string
+        style:
+          description: Style type for vectors, ignored if content_type exists and it is not vector
+          enum:
+          - watercolor
+          - flat
+          - cartoon
+          - geometric
+          - gradient
+          - isometric
+          - 3d
+          - hand-drawn
+          type: string
       type: object
+    pagination:
+      description: Metainformation about pagination
+      example:
+        per_page: 1
+        total: 1
+        last_page: 1
+        current_page: 1
+      properties:
+        current_page:
+          description: The current page.
+          example: 1
+          type: integer
+        per_page:
+          description: The limit of resources per page.
+          example: 1
+          type: integer
+        last_page:
+          description: The total number of pages.
+          example: 1
+          type: integer
+        total:
+          description: The total number of resources.
+          example: 1
+          type: integer
+      type: object
+    clean_search:
+      description: If true, It has been ensured that the search does not return disabled resources.
+      example: true
+      type: boolean
+    format:
+      example:
+        size: 100
+        id: 1
       properties:
         id:
+          description: The id of the format. Null if doesn't exist
+          example: 1
+          type:
+          - integer
+          - 'null'
+        size:
+          description: The size of the file in bytes.
+          example: 100
+          type: integer
+      required:
+      - id
+      - size
+      type: object
+    inline_object_1:
+      properties:
+        problem:
+          $ref: '#/components/schemas/inline_object_1_problem'
+      type: object
+    available_formats_1:
+      description: The available formats for the resource.
+      example:
+        psd:
+          total: 1
+          items:
+          - size: 100
+            colorspace: RGB
+            name: image.jpg
+            id: 1
+          - size: 100
+            colorspace: RGB
+            name: image.jpg
+            id: 1
+        jpg:
+          total: 1
+          items:
+          - size: 100
+            colorspace: RGB
+            name: image.jpg
+            id: 1
+          - size: 100
+            colorspace: RGB
+            name: image.jpg
+            id: 1
+        zip:
+          total: 1
+          items:
+          - size: 100
+            colorspace: RGB
+            name: image.jpg
+            id: 1
+          - size: 100
+            colorspace: RGB
+            name: image.jpg
+            id: 1
+        fonts:
+          total: 1
+          items:
+          - size: 100
+            colorspace: RGB
+            name: image.jpg
+            id: 1
+          - size: 100
+            colorspace: RGB
+            name: image.jpg
+            id: 1
+        svg:
+          total: 1
+          items:
+          - size: 100
+            colorspace: RGB
+            name: image.jpg
+            id: 1
+          - size: 100
+            colorspace: RGB
+            name: image.jpg
+            id: 1
+        ai:
+          total: 1
+          items:
+          - size: 100
+            colorspace: RGB
+            name: image.jpg
+            id: 1
+          - size: 100
+            colorspace: RGB
+            name: image.jpg
+            id: 1
+        png:
+          total: 1
+          items:
+          - size: 100
+            colorspace: RGB
+            name: image.jpg
+            id: 1
+          - size: 100
+            colorspace: RGB
+            name: image.jpg
+            id: 1
+        eps:
+          total: 1
+          items:
+          - size: 100
+            colorspace: RGB
+            name: image.jpg
+            id: 1
+          - size: 100
+            colorspace: RGB
+            name: image.jpg
+            id: 1
+        resources:
+          total: 1
+          items:
+          - size: 100
+            colorspace: RGB
+            name: image.jpg
+            id: 1
+          - size: 100
+            colorspace: RGB
+            name: image.jpg
+            id: 1
+        3d-render:
+          total: 1
+          items:
+          - size: 100
+            colorspace: RGB
+            name: image.jpg
+            id: 1
+          - size: 100
+            colorspace: RGB
+            name: image.jpg
+            id: 1
+        atn:
+          total: 1
+          items:
+          - size: 100
+            colorspace: RGB
+            name: image.jpg
+            id: 1
+          - size: 100
+            colorspace: RGB
+            name: image.jpg
+            id: 1
+      properties:
+        psd:
+          $ref: '#/components/schemas/formats'
+        ai:
+          $ref: '#/components/schemas/formats'
+        eps:
+          $ref: '#/components/schemas/formats'
+        atn:
+          $ref: '#/components/schemas/formats'
+        fonts:
+          $ref: '#/components/schemas/formats'
+        resources:
+          $ref: '#/components/schemas/formats'
+        png:
+          $ref: '#/components/schemas/formats'
+        jpg:
+          $ref: '#/components/schemas/formats'
+        3d-render:
+          $ref: '#/components/schemas/formats'
+        zip:
+          $ref: '#/components/schemas/formats'
+        svg:
+          $ref: '#/components/schemas/formats'
+      type:
+      - object
+      - 'null'
+    regular-resource-type:
+      description: The type of the resource.
+      enum:
+      - photo
+      - vector
+      - psd
+      example: vector
+      type: string
+    resource_base:
+      description: A resource within a list of resources from collection
+      example:
+        image:
+          orientation: horizontal
+          source:
+            size: 740x640
+            key: large
+            url: https://img.freepik.com/free-photo/tshirt_53876-104920.jpg
+          type: vector
+        licenses:
+        - type: freemium
+          url: https://www.freepik.com/profile/license/pdf/4350594
+        - type: freemium
+          url: https://www.freepik.com/profile/license/pdf/4350594
+        author:
+          assets: 0
+          name: John Doe
+          id: 2147483647
+          avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+          slug: merry-christmas
+        id: 15667327
+        title: White t-shirt with copy space on gray background
+        url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+      properties:
+        id:
+          description: Resource's id.
+          example: 15667327
+          minimum: 1
           type: integer
         title:
+          description: Resource's title.
+          example: White t-shirt with copy space on gray background
           type: string
         url:
-          type: string
+          description: Resource's url
+          example: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
           format: uri
-        filename:
           type: string
         licenses:
-          type: array
+          description: The licenses of this resource
           items:
-            type: object
+            $ref: '#/components/schemas/license-information'
+          type: array
         image:
-          type: object
+          $ref: '#/components/schemas/resource-image'
         author:
-          type: object
-        stats:
-          type: object
-    ResourceList:
+          $ref: '#/components/schemas/author'
+      required:
+      - author
+      - id
+      - image
+      - licenses
+      - title
+      - url
       type: object
+    ai_related:
+      description: Related resources and tags for this resource.
+      properties:
+        suggested:
+          description: Other resources related to this one.
+          items:
+            $ref: '#/components/schemas/resource'
+          type: array
+      required:
+      - suggested
+      type:
+      - object
+      - 'null'
+    inline_object_3:
+      example:
+        message: Service Unavailable. Please try again later.
+      properties:
+        message:
+          example: Service Unavailable. Please try again later.
+          type: string
+      type: object
+    related_same_series_same_series:
+      description: Other photos which belongs to the same photo series.
+      example:
+        items:
+        - preview:
+            width: 300
+            url: https://www.freepik.com/free-ai-image/surreal-landscape_41357833.htm
+            height: 500
+          new: true
+          premium: true
+          is_ai_generated: true
+          author:
+            assets: 0
+            name: John Doe
+            id: 2147483647
+            avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+            slug: merry-christmas
+          name: White t-shirt with copy space on gray background
+          id: 15667327
+          type: vector
+          has_prompt: true
+          slug: merry-christmas
+          url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+        - preview:
+            width: 300
+            url: https://www.freepik.com/free-ai-image/surreal-landscape_41357833.htm
+            height: 500
+          new: true
+          premium: true
+          is_ai_generated: true
+          author:
+            assets: 0
+            name: John Doe
+            id: 2147483647
+            avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+            slug: merry-christmas
+          name: White t-shirt with copy space on gray background
+          id: 15667327
+          type: vector
+          has_prompt: true
+          slug: merry-christmas
+          url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+        url: https://www.freepik.com/serie/32689488
+      properties:
+        url:
+          description: The url of the series.
+          example: https://www.freepik.com/serie/32689488
+          format: uri
+          type: string
+        items:
+          description: Other resources which belongs to the same photo series.
+          items:
+            $ref: '#/components/schemas/resource'
+          type: array
+      required:
+      - items
+      - url
+      type:
+      - object
+      - 'null'
+    search_resources_filters_parameter_ai_generated:
+      properties:
+        excluded:
+          default: 0
+          description: Excludes AI-generated images from the results. Set to 1 to exclude, 0 to include.
+          type: number
+        only:
+          default: 0
+          description: Filters results to only include AI-generated images. Set to 1 to include only AI-generated images, 0 to include all images.
+          type: number
+      type: object
+    related_same_collection:
+      properties:
+        same_collection:
+          $ref: '#/components/schemas/related_same_collection_same_collection'
+      type: object
+    photo_resource:
+      additionalProperties: true
+      allOf:
+      - $ref: '#/components/schemas/resource_base'
+      - description: A resource within a list of resources from collection
+        properties:
+          filename:
+            description: The filename of this resource.
+            type: string
+          products:
+            deprecated: true
+            description: These products of this resource
+            items:
+              $ref: '#/components/schemas/resource_product'
+            type: array
+          meta:
+            $ref: '#/components/schemas/photo_meta'
+          related:
+            $ref: '#/components/schemas/resource_base'
+          stats:
+            $ref: '#/components/schemas/resource_stats'
+        required:
+        - filename
+        - meta
+        - related
+        - stats
+        type: object
+    search_resources_200_response_meta:
+      allOf:
+      - $ref: '#/components/schemas/pagination'
+      - properties:
+          clean_search:
+            $ref: '#/components/schemas/clean_search'
+        type: object
+      example:
+        per_page: 1
+        total: 1
+        last_page: 1
+        current_page: 1
+        clean_search: true
+    download_resource_by_id_200_response_data:
+      anyOf:
+      - $ref: '#/components/schemas/download'
+      - $ref: '#/components/schemas/ai_download'
+    resource_related:
+      example:
+        keywords:
+          name: Merry Christmas
+          slug: merry-christmas
+        serie:
+          image:
+            orientation: horizontal
+            source:
+              size: 740x640
+              key: large
+              url: https://img.freepik.com/free-photo/tshirt_53876-104920.jpg
+            type: vector
+          licenses:
+          - type: freemium
+            url: https://www.freepik.com/profile/license/pdf/4350594
+          - type: freemium
+            url: https://www.freepik.com/profile/license/pdf/4350594
+          author:
+            assets: 0
+            name: John Doe
+            id: 2147483647
+            avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+            slug: merry-christmas
+          id: 15667327
+          title: White t-shirt with copy space on gray background
+          url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+        others:
+          image:
+            orientation: horizontal
+            source:
+              size: 740x640
+              key: large
+              url: https://img.freepik.com/free-photo/tshirt_53876-104920.jpg
+            type: vector
+          licenses:
+          - type: freemium
+            url: https://www.freepik.com/profile/license/pdf/4350594
+          - type: freemium
+            url: https://www.freepik.com/profile/license/pdf/4350594
+          author:
+            assets: 0
+            name: John Doe
+            id: 2147483647
+            avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+            slug: merry-christmas
+          id: 15667327
+          title: White t-shirt with copy space on gray background
+          url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+      properties:
+        serie:
+          $ref: '#/components/schemas/resource_base'
+        others:
+          $ref: '#/components/schemas/resource_base'
+        keywords:
+          $ref: '#/components/schemas/tag_1'
+      required:
+      - keywords
+      - others
+      - serie
+      type: object
+    vertical-type:
+      description: 'The vertical of the resource, used to drive the post-download experience.
+
+        It mirrors `type` for most resources, but resolves to `mockup` or
+
+        `template` for PSD/Vector resources that match specific production lines.
+
+        '
+      enum:
+      - photo
+      - vector
+      - psd
+      - icon
+      - video
+      - 3d
+      - font
+      - mockup
+      - template
+      example: mockup
+      type: string
+    formats_1:
+      properties:
+        total:
+          description: The total number of files for that format.
+          example: 1
+          type: integer
+        items:
+          items:
+            $ref: '#/components/schemas/format'
+          type: array
+      required:
+      - items
+      - total
+      type: object
+    resource_image_source:
+      example:
+        size: 740x640
+        key: large
+        url: https://img.freepik.com/free-photo/tshirt_53876-104920.jpg
+      properties:
+        key:
+          description: The size of this image
+          enum:
+          - large
+          example: large
+          type: string
+        url:
+          description: The orientation of this resource.
+          example: https://img.freepik.com/free-photo/tshirt_53876-104920.jpg
+          format: uri
+          type: string
+        size:
+          description: The width and height of the image
+          example: 740x640
+          pattern: ^[1-9][0-9]+x[1-9][0-9]+$
+          type: string
+      required:
+      - key
+      - size
+      - url
+      type: object
+    inline_object_1_problem_invalid_params_inner:
+      properties:
+        name:
+          description: Name of the invalid parameter.
+          example: page
+          type: string
+        field:
+          description: Field of the invalid parameter. Mirrors `name`.
+          example: page
+          type: string
+        reason:
+          example: Parameter 'page' must be greater than 0
+          type: string
+      required:
+      - field
+      - name
+      - reason
+      type: object
+    search_resources_200_response:
+      example:
+        data:
+        - image:
+            orientation: horizontal
+            source:
+              size: 740x640
+              key: large
+              url: https://img.freepik.com/free-photo/tshirt_53876-104920.jpg
+            type: vector
+          licenses:
+          - type: freemium
+            url: https://www.freepik.com/profile/license/pdf/4350594
+          - type: freemium
+            url: https://www.freepik.com/profile/license/pdf/4350594
+          filename: filename
+          related:
+            keywords:
+              name: Merry Christmas
+              slug: merry-christmas
+            serie:
+              image:
+                orientation: horizontal
+                source:
+                  size: 740x640
+                  key: large
+                  url: https://img.freepik.com/free-photo/tshirt_53876-104920.jpg
+                type: vector
+              licenses:
+              - type: freemium
+                url: https://www.freepik.com/profile/license/pdf/4350594
+              - type: freemium
+                url: https://www.freepik.com/profile/license/pdf/4350594
+              author:
+                assets: 0
+                name: John Doe
+                id: 2147483647
+                avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+                slug: merry-christmas
+              id: 15667327
+              title: White t-shirt with copy space on gray background
+              url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+            others:
+              image:
+                orientation: horizontal
+                source:
+                  size: 740x640
+                  key: large
+                  url: https://img.freepik.com/free-photo/tshirt_53876-104920.jpg
+                type: vector
+              licenses:
+              - type: freemium
+                url: https://www.freepik.com/profile/license/pdf/4350594
+              - type: freemium
+                url: https://www.freepik.com/profile/license/pdf/4350594
+              author:
+                assets: 0
+                name: John Doe
+                id: 2147483647
+                avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+                slug: merry-christmas
+              id: 15667327
+              title: White t-shirt with copy space on gray background
+              url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+          stats:
+            downloads: 0
+            likes: 0
+          author:
+            assets: 0
+            name: John Doe
+            id: 2147483647
+            avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+            slug: merry-christmas
+          meta:
+            is_new: true
+            available_formats:
+              psd:
+                total: 1
+                items:
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+              jpg:
+                total: 1
+                items:
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+              zip:
+                total: 1
+                items:
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+              fonts:
+                total: 1
+                items:
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+              svg:
+                total: 1
+                items:
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+              ai:
+                total: 1
+                items:
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+              png:
+                total: 1
+                items:
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+              eps:
+                total: 1
+                items:
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+              resources:
+                total: 1
+                items:
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+              3d-render:
+                total: 1
+                items:
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+              atn:
+                total: 1
+                items:
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+            published_at: 2020-12-01 23:50:50+00:00
+          id: 15667327
+          title: White t-shirt with copy space on gray background
+          url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+          products:
+          - type: essential
+            url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+          - type: essential
+            url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+        - image:
+            orientation: horizontal
+            source:
+              size: 740x640
+              key: large
+              url: https://img.freepik.com/free-photo/tshirt_53876-104920.jpg
+            type: vector
+          licenses:
+          - type: freemium
+            url: https://www.freepik.com/profile/license/pdf/4350594
+          - type: freemium
+            url: https://www.freepik.com/profile/license/pdf/4350594
+          filename: filename
+          related:
+            keywords:
+              name: Merry Christmas
+              slug: merry-christmas
+            serie:
+              image:
+                orientation: horizontal
+                source:
+                  size: 740x640
+                  key: large
+                  url: https://img.freepik.com/free-photo/tshirt_53876-104920.jpg
+                type: vector
+              licenses:
+              - type: freemium
+                url: https://www.freepik.com/profile/license/pdf/4350594
+              - type: freemium
+                url: https://www.freepik.com/profile/license/pdf/4350594
+              author:
+                assets: 0
+                name: John Doe
+                id: 2147483647
+                avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+                slug: merry-christmas
+              id: 15667327
+              title: White t-shirt with copy space on gray background
+              url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+            others:
+              image:
+                orientation: horizontal
+                source:
+                  size: 740x640
+                  key: large
+                  url: https://img.freepik.com/free-photo/tshirt_53876-104920.jpg
+                type: vector
+              licenses:
+              - type: freemium
+                url: https://www.freepik.com/profile/license/pdf/4350594
+              - type: freemium
+                url: https://www.freepik.com/profile/license/pdf/4350594
+              author:
+                assets: 0
+                name: John Doe
+                id: 2147483647
+                avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+                slug: merry-christmas
+              id: 15667327
+              title: White t-shirt with copy space on gray background
+              url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+          stats:
+            downloads: 0
+            likes: 0
+          author:
+            assets: 0
+            name: John Doe
+            id: 2147483647
+            avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+            slug: merry-christmas
+          meta:
+            is_new: true
+            available_formats:
+              psd:
+                total: 1
+                items:
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+              jpg:
+                total: 1
+                items:
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+              zip:
+                total: 1
+                items:
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+              fonts:
+                total: 1
+                items:
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+              svg:
+                total: 1
+                items:
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+              ai:
+                total: 1
+                items:
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+              png:
+                total: 1
+                items:
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+              eps:
+                total: 1
+                items:
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+              resources:
+                total: 1
+                items:
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+              3d-render:
+                total: 1
+                items:
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+              atn:
+                total: 1
+                items:
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+                - size: 100
+                  colorspace: RGB
+                  name: image.jpg
+                  id: 1
+            published_at: 2020-12-01 23:50:50+00:00
+          id: 15667327
+          title: White t-shirt with copy space on gray background
+          url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+          products:
+          - type: essential
+            url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+          - type: essential
+            url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+        meta:
+          per_page: 1
+          total: 1
+          last_page: 1
+          current_page: 1
+          clean_search: true
       properties:
         data:
-          type: array
+          description: A list of resources.
           items:
-            $ref: '#/components/schemas/Resource'
+            $ref: '#/components/schemas/search_resources_200_response_data_inner'
+          type: array
         meta:
-          type: object
+          $ref: '#/components/schemas/search_resources_200_response_meta'
+      type: object
+    photo_format:
+      properties:
+        id:
+          description: The id of the format. Null if doesn't exist
+          example: 1
+          minimum: 1
+          type:
+          - integer
+          - 'null'
+        colorspace:
+          description: The colorspace of the file. This property is not sent when the file id is null.
+          enum:
+          - RGB
+          - CMYK
+          - UNKNOWN
+          example: RGB
+          type: string
+        name:
+          description: The name of the file. This property is not sent when the file id is null.
+          example: image.jpg
+          type: string
+        size:
+          description: The size of the photo in bytes.
+          example: 100
+          type: integer
+        is_remove_bg:
+          description: Indicates that the file is the result of the remove background tool.
+          example: true
+          type: boolean
+      required:
+      - size
+      type: object
+    detail_ai:
+      allOf:
+      - $ref: '#/components/schemas/detail_resource'
+      - description: AI photo details.
+        properties:
+          dimensions:
+            $ref: '#/components/schemas/dimensions'
+          model_type:
+            example: Dall-E
+            type:
+            - string
+            - 'null'
+          model_subtype:
+            example: niji
+            type:
+            - string
+            - 'null'
+          type:
+            enum:
+            - photo
+            example: photo
+            type: string
+          available_formats:
+            $ref: '#/components/schemas/photo_available_formats'
+          related_resources:
+            $ref: '#/components/schemas/ai_related'
+          related_tags:
+            items:
+              $ref: '#/components/schemas/tag_2'
+            type: array
+        required:
+        - available_formats
+        - dimensions
+        - model_subtype
+        - model_type
+        - related_resources
+        - related_tags
+        - type
+        type: object
+    download_list:
+      example:
+        data:
+        - signed_url: https://img.freepik.com/premium-photo/close-up-cat-resting_1048944-9269194.jpg?t=st=1725276607~exp=1725280207~hmac=1538f1b294fc3a19a19e9f02ceeb6594a9a1e36a900de85d47bbd386e27dddbe
+          filename: blackboard-template.zip
+          url: https://downloadscdn5.freepik.com/d/1137445/blackboard-template.zip
+        - signed_url: https://img.freepik.com/premium-photo/close-up-cat-resting_1048944-9269194.jpg?t=st=1725276607~exp=1725280207~hmac=1538f1b294fc3a19a19e9f02ceeb6594a9a1e36a900de85d47bbd386e27dddbe
+          filename: blackboard-template.zip
+          url: https://downloadscdn5.freepik.com/d/1137445/blackboard-template.zip
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/download'
+          type: array
+      required:
+      - data
+      type: object
+    search_resources_filters_parameter_content_type:
+      properties:
+        photo:
+          default: 0
+          description: Filters results to only include resources of type photo. Set to 1 to enable, 0 to disable.
+          type: number
+        psd:
+          default: 0
+          description: Filters results to only include resources of type PSD (Photoshop Document). Set to 1 to enable, 0 to disable.
+          type: number
+        vector:
+          default: 0
+          description: Filters results to only include resources of type vector. Set to 1 to enable, 0 to disable.
+          type: number
+      type: object
+    photo_related:
+      allOf:
+      - description: Related resources and tags for this resource.
+        properties:
+          suggested:
+            description: Other resources related to this one.
+            items:
+              $ref: '#/components/schemas/resource'
+            type: array
+          same_author:
+            description: Other resources created by this author.
+            items:
+              $ref: '#/components/schemas/resource'
+            type: array
+        required:
+        - same_author
+        - suggested
+        type: object
+      - $ref: '#/components/schemas/related_same_series'
+      - $ref: '#/components/schemas/related_same_collection'
+    photo_meta:
+      properties:
+        published_at:
+          description: The datetime when this resource was published.
+          example: 2020-12-01 23:50:50+00:00
+          type: string
+        is_new:
+          description: True if this resource is new. False, otherwise.
+          example: true
+          type: boolean
+        available_formats:
+          $ref: '#/components/schemas/photo_available_formats'
+      required:
+      - available_formats
+      - is_new
+      - published_at
+      type: object
+    download_resource_by_id_image_size_parameter:
+      oneOf:
+      - enum:
+        - small
+        - medium
+        - large
+        - original
+        type: string
+      - pattern: ^(\d{3}|[12]\d{3})px$
+        type: string
+    search_resources_200_response_data_inner:
+      anyOf:
+      - $ref: '#/components/schemas/vector_psd_resource'
+      - $ref: '#/components/schemas/photo_resource'
+    inline_object:
+      example:
+        message: message
+      properties:
+        message:
+          type: string
+      type: object
+    format_1:
+      allOf:
+      - $ref: '#/components/schemas/format'
+      - properties:
+          name:
+            description: The name of the file.
+            example: image.jpg
+            type: string
+          colorspace:
+            description: The colorspace of the file.
+            enum:
+            - RGB
+            - CMYK
+            - UNKNOWN
+            example: RGB
+            type: string
+        required:
+        - colorspace
+        - name
+        type: object
+      example:
+        size: 100
+        colorspace: RGB
+        name: image.jpg
+        id: 1
+    resource_stats:
+      example:
+        downloads: 0
+        likes: 0
+      properties:
+        downloads:
+          description: The number of downloads of this resource.
+          example: 0
+          type: integer
+        likes:
+          description: The number of likes of this resource.
+          example: 0
+          type: integer
+      required:
+      - downloads
+      - likes
+      type: object
+    ai_download:
+      allOf:
+      - $ref: '#/components/schemas/download'
+      - properties:
+          prompt:
+            description: The used prompt to create this resource
+            example: Two cute cats are playing with a ball of wool
+            type: string
+        required:
+        - prompt
+        type: object
+    search_resources_filters_parameter_license:
+      properties:
+        freemium:
+          default: 0
+          description: Filters results to only include resources with a freemium license. Set to 1 to enable, 0 to disable.
+          type: number
+        premium:
+          default: 0
+          description: Filters results to only include resources with a premium license. Set to 1 to enable, 0 to disable.
+          type: number
+      type: object
+    related_same_series:
+      properties:
+        same_series:
+          $ref: '#/components/schemas/related_same_series_same_series'
+      type: object
+    available_formats:
+      description: The available formats for the resource.
+      properties:
+        psd:
+          $ref: '#/components/schemas/formats_1'
+        ai:
+          $ref: '#/components/schemas/formats_1'
+        eps:
+          $ref: '#/components/schemas/formats_1'
+        atn:
+          $ref: '#/components/schemas/formats_1'
+        fonts:
+          $ref: '#/components/schemas/formats_1'
+        resources:
+          $ref: '#/components/schemas/formats_1'
+        png:
+          $ref: '#/components/schemas/formats_1'
+        jpg:
+          $ref: '#/components/schemas/formats_1'
+        3d-render:
+          $ref: '#/components/schemas/formats_1'
+        zip:
+          $ref: '#/components/schemas/formats_1'
+        svg:
+          $ref: '#/components/schemas/formats_1'
+      type:
+      - object
+      - 'null'
+    formats:
+      allOf:
+      - $ref: '#/components/schemas/formats_1'
+      - properties:
+          items:
+            items:
+              $ref: '#/components/schemas/format_1'
+            type: array
+        required:
+        - items
+        type: object
+      example:
+        total: 1
+        items:
+        - size: 100
+          colorspace: RGB
+          name: image.jpg
+          id: 1
+        - size: 100
+          colorspace: RGB
+          name: image.jpg
+          id: 1
+    author:
+      example:
+        assets: 0
+        name: John Doe
+        id: 2147483647
+        avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+        slug: merry-christmas
+      properties:
+        id:
+          maximum: 9223372036854775807
+          minimum: 1
+          type: integer
+        name:
+          example: John Doe
+          minLength: 1
+          type: string
+        avatar:
+          example: https://avatar.cdnpk.net/61668527-220726032514.jpg
+          format: uri
+          type: string
+        assets:
+          description: The number of assets of this author.
+          minimum: 0
+          type: integer
+        slug:
+          example: merry-christmas
+          minLength: 1
+          type: string
+      required:
+      - assets
+      - avatar
+      - id
+      - name
+      - slug
+      type: object
+    vector_related:
+      allOf:
+      - description: Related resources and tags for this resource.
+        properties:
+          suggested:
+            description: Other resources related to this one.
+            items:
+              $ref: '#/components/schemas/resource'
+            type: array
+          same_author:
+            description: Other resources created by this author.
+            items:
+              $ref: '#/components/schemas/resource'
+            type: array
+        required:
+        - same_author
+        - same_series
+        - suggested
+        type: object
+      - $ref: '#/components/schemas/related_same_series'
+      - $ref: '#/components/schemas/related_same_collection'
+      example:
+        suggested:
+        - preview:
+            width: 300
+            url: https://www.freepik.com/free-ai-image/surreal-landscape_41357833.htm
+            height: 500
+          new: true
+          premium: true
+          is_ai_generated: true
+          author:
+            assets: 0
+            name: John Doe
+            id: 2147483647
+            avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+            slug: merry-christmas
+          name: White t-shirt with copy space on gray background
+          id: 15667327
+          type: vector
+          has_prompt: true
+          slug: merry-christmas
+          url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+        - preview:
+            width: 300
+            url: https://www.freepik.com/free-ai-image/surreal-landscape_41357833.htm
+            height: 500
+          new: true
+          premium: true
+          is_ai_generated: true
+          author:
+            assets: 0
+            name: John Doe
+            id: 2147483647
+            avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+            slug: merry-christmas
+          name: White t-shirt with copy space on gray background
+          id: 15667327
+          type: vector
+          has_prompt: true
+          slug: merry-christmas
+          url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+        same_author:
+        - preview:
+            width: 300
+            url: https://www.freepik.com/free-ai-image/surreal-landscape_41357833.htm
+            height: 500
+          new: true
+          premium: true
+          is_ai_generated: true
+          author:
+            assets: 0
+            name: John Doe
+            id: 2147483647
+            avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+            slug: merry-christmas
+          name: White t-shirt with copy space on gray background
+          id: 15667327
+          type: vector
+          has_prompt: true
+          slug: merry-christmas
+          url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+        - preview:
+            width: 300
+            url: https://www.freepik.com/free-ai-image/surreal-landscape_41357833.htm
+            height: 500
+          new: true
+          premium: true
+          is_ai_generated: true
+          author:
+            assets: 0
+            name: John Doe
+            id: 2147483647
+            avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+            slug: merry-christmas
+          name: White t-shirt with copy space on gray background
+          id: 15667327
+          type: vector
+          has_prompt: true
+          slug: merry-christmas
+          url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+        same_collection:
+          items:
+          - preview:
+              width: 300
+              url: https://www.freepik.com/free-ai-image/surreal-landscape_41357833.htm
+              height: 500
+            new: true
+            premium: true
+            is_ai_generated: true
+            author:
+              assets: 0
+              name: John Doe
+              id: 2147483647
+              avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+              slug: merry-christmas
+            name: White t-shirt with copy space on gray background
+            id: 15667327
+            type: vector
+            has_prompt: true
+            slug: merry-christmas
+            url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+          - preview:
+              width: 300
+              url: https://www.freepik.com/free-ai-image/surreal-landscape_41357833.htm
+              height: 500
+            new: true
+            premium: true
+            is_ai_generated: true
+            author:
+              assets: 0
+              name: John Doe
+              id: 2147483647
+              avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+              slug: merry-christmas
+            name: White t-shirt with copy space on gray background
+            id: 15667327
+            type: vector
+            has_prompt: true
+            slug: merry-christmas
+            url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+          url: https://www.freepik.com/collection/shining
+        same_series:
+          items:
+          - preview:
+              width: 300
+              url: https://www.freepik.com/free-ai-image/surreal-landscape_41357833.htm
+              height: 500
+            new: true
+            premium: true
+            is_ai_generated: true
+            author:
+              assets: 0
+              name: John Doe
+              id: 2147483647
+              avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+              slug: merry-christmas
+            name: White t-shirt with copy space on gray background
+            id: 15667327
+            type: vector
+            has_prompt: true
+            slug: merry-christmas
+            url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+          - preview:
+              width: 300
+              url: https://www.freepik.com/free-ai-image/surreal-landscape_41357833.htm
+              height: 500
+            new: true
+            premium: true
+            is_ai_generated: true
+            author:
+              assets: 0
+              name: John Doe
+              id: 2147483647
+              avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+              slug: merry-christmas
+            name: White t-shirt with copy space on gray background
+            id: 15667327
+            type: vector
+            has_prompt: true
+            slug: merry-christmas
+            url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+          url: https://www.freepik.com/serie/32689488
+    tag_1:
+      example:
+        name: Merry Christmas
+        slug: merry-christmas
+      properties:
+        slug:
+          example: merry-christmas
+          minLength: 1
+          type: string
+        name:
+          description: The name of the tag.
+          example: Merry Christmas
+          minLength: 1
+          type: string
+      required:
+      - name
+      - slug
+      type: object
+    detail_vector:
+      allOf:
+      - $ref: '#/components/schemas/detail_resource'
+      - description: Vector details.
+        properties:
+          type:
+            enum:
+            - vector
+            example: photo
+            type: string
+          available_formats:
+            $ref: '#/components/schemas/available_formats_1'
+          related_tags:
+            items:
+              $ref: '#/components/schemas/tag_2'
+            type: array
+          related_resources:
+            $ref: '#/components/schemas/vector_related'
+          dimensions:
+            $ref: '#/components/schemas/dimensions'
+        required:
+        - available_formats
+        - dimensions
+        - related_resources
+        - related_tags
+        - type
+        type: object
+      example:
+        preview:
+          width: 300
+          url: https://www.freepik.com/free-ai-image/surreal-landscape_41357833.htm
+          height: 500
+        new: true
+        author:
+          assets: 0
+          name: John Doe
+          id: 2147483647
+          avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+          slug: merry-christmas
+        created: 2023-03-07 23:05:26+00:00
+        available_formats:
+          psd:
+            total: 1
+            items:
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+          jpg:
+            total: 1
+            items:
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+          zip:
+            total: 1
+            items:
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+          fonts:
+            total: 1
+            items:
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+          svg:
+            total: 1
+            items:
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+          ai:
+            total: 1
+            items:
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+          png:
+            total: 1
+            items:
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+          eps:
+            total: 1
+            items:
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+          resources:
+            total: 1
+            items:
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+          3d-render:
+            total: 1
+            items:
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+          atn:
+            total: 1
+            items:
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+        vertical: mockup
+        type: photo
+        url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+        license: https://www.freepik.com/profile/license/pdf/4350594
+        premium: true
+        is_ai_generated: true
+        related_resources:
+          suggested:
+          - preview:
+              width: 300
+              url: https://www.freepik.com/free-ai-image/surreal-landscape_41357833.htm
+              height: 500
+            new: true
+            premium: true
+            is_ai_generated: true
+            author:
+              assets: 0
+              name: John Doe
+              id: 2147483647
+              avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+              slug: merry-christmas
+            name: White t-shirt with copy space on gray background
+            id: 15667327
+            type: vector
+            has_prompt: true
+            slug: merry-christmas
+            url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+          - preview:
+              width: 300
+              url: https://www.freepik.com/free-ai-image/surreal-landscape_41357833.htm
+              height: 500
+            new: true
+            premium: true
+            is_ai_generated: true
+            author:
+              assets: 0
+              name: John Doe
+              id: 2147483647
+              avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+              slug: merry-christmas
+            name: White t-shirt with copy space on gray background
+            id: 15667327
+            type: vector
+            has_prompt: true
+            slug: merry-christmas
+            url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+          same_author:
+          - preview:
+              width: 300
+              url: https://www.freepik.com/free-ai-image/surreal-landscape_41357833.htm
+              height: 500
+            new: true
+            premium: true
+            is_ai_generated: true
+            author:
+              assets: 0
+              name: John Doe
+              id: 2147483647
+              avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+              slug: merry-christmas
+            name: White t-shirt with copy space on gray background
+            id: 15667327
+            type: vector
+            has_prompt: true
+            slug: merry-christmas
+            url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+          - preview:
+              width: 300
+              url: https://www.freepik.com/free-ai-image/surreal-landscape_41357833.htm
+              height: 500
+            new: true
+            premium: true
+            is_ai_generated: true
+            author:
+              assets: 0
+              name: John Doe
+              id: 2147483647
+              avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+              slug: merry-christmas
+            name: White t-shirt with copy space on gray background
+            id: 15667327
+            type: vector
+            has_prompt: true
+            slug: merry-christmas
+            url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+          same_collection:
+            items:
+            - preview:
+                width: 300
+                url: https://www.freepik.com/free-ai-image/surreal-landscape_41357833.htm
+                height: 500
+              new: true
+              premium: true
+              is_ai_generated: true
+              author:
+                assets: 0
+                name: John Doe
+                id: 2147483647
+                avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+                slug: merry-christmas
+              name: White t-shirt with copy space on gray background
+              id: 15667327
+              type: vector
+              has_prompt: true
+              slug: merry-christmas
+              url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+            - preview:
+                width: 300
+                url: https://www.freepik.com/free-ai-image/surreal-landscape_41357833.htm
+                height: 500
+              new: true
+              premium: true
+              is_ai_generated: true
+              author:
+                assets: 0
+                name: John Doe
+                id: 2147483647
+                avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+                slug: merry-christmas
+              name: White t-shirt with copy space on gray background
+              id: 15667327
+              type: vector
+              has_prompt: true
+              slug: merry-christmas
+              url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+            url: https://www.freepik.com/collection/shining
+          same_series:
+            items:
+            - preview:
+                width: 300
+                url: https://www.freepik.com/free-ai-image/surreal-landscape_41357833.htm
+                height: 500
+              new: true
+              premium: true
+              is_ai_generated: true
+              author:
+                assets: 0
+                name: John Doe
+                id: 2147483647
+                avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+                slug: merry-christmas
+              name: White t-shirt with copy space on gray background
+              id: 15667327
+              type: vector
+              has_prompt: true
+              slug: merry-christmas
+              url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+            - preview:
+                width: 300
+                url: https://www.freepik.com/free-ai-image/surreal-landscape_41357833.htm
+                height: 500
+              new: true
+              premium: true
+              is_ai_generated: true
+              author:
+                assets: 0
+                name: John Doe
+                id: 2147483647
+                avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+                slug: merry-christmas
+              name: White t-shirt with copy space on gray background
+              id: 15667327
+              type: vector
+              has_prompt: true
+              slug: merry-christmas
+              url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+            url: https://www.freepik.com/serie/32689488
+        name: White t-shirt with copy space on gray background
+        id: 15667327
+        has_prompt: true
+        download_size: 1024
+        slug: merry-christmas
+        related_tags:
+        - name: Merry Christmas
+          slug: merry-christmas
+          url: https://www.freepik.com/dog
+        - name: Merry Christmas
+          slug: merry-christmas
+          url: https://www.freepik.com/dog
+        dimensions:
+          width: 2000
+          height: 3000
+    inline_object_1_problem:
+      properties:
+        message:
+          example: Validation error
+          type: string
+        invalid_params:
+          items:
+            $ref: '#/components/schemas/inline_object_1_problem_invalid_params_inner'
+          type: array
+      required:
+      - invalid_params
+      - message
+      type: object
+    get_resource_detail_by_id_200_response:
+      example:
+        data:
+          preview:
+            width: 300
+            url: https://www.freepik.com/free-ai-image/surreal-landscape_41357833.htm
+            height: 500
+          new: true
+          author:
+            assets: 0
+            name: John Doe
+            id: 2147483647
+            avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+            slug: merry-christmas
+          created: 2023-03-07 23:05:26+00:00
+          available_formats:
+            psd:
+              total: 1
+              items:
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+            jpg:
+              total: 1
+              items:
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+            zip:
+              total: 1
+              items:
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+            fonts:
+              total: 1
+              items:
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+            svg:
+              total: 1
+              items:
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+            ai:
+              total: 1
+              items:
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+            png:
+              total: 1
+              items:
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+            eps:
+              total: 1
+              items:
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+            resources:
+              total: 1
+              items:
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+            3d-render:
+              total: 1
+              items:
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+            atn:
+              total: 1
+              items:
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+          vertical: mockup
+          type: photo
+          url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+          license: https://www.freepik.com/profile/license/pdf/4350594
+          premium: true
+          is_ai_generated: true
+          related_resources:
+            suggested:
+            - preview:
+                width: 300
+                url: https://www.freepik.com/free-ai-image/surreal-landscape_41357833.htm
+                height: 500
+              new: true
+              premium: true
+              is_ai_generated: true
+              author:
+                assets: 0
+                name: John Doe
+                id: 2147483647
+                avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+                slug: merry-christmas
+              name: White t-shirt with copy space on gray background
+              id: 15667327
+              type: vector
+              has_prompt: true
+              slug: merry-christmas
+              url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+            - preview:
+                width: 300
+                url: https://www.freepik.com/free-ai-image/surreal-landscape_41357833.htm
+                height: 500
+              new: true
+              premium: true
+              is_ai_generated: true
+              author:
+                assets: 0
+                name: John Doe
+                id: 2147483647
+                avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+                slug: merry-christmas
+              name: White t-shirt with copy space on gray background
+              id: 15667327
+              type: vector
+              has_prompt: true
+              slug: merry-christmas
+              url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+            same_author:
+            - preview:
+                width: 300
+                url: https://www.freepik.com/free-ai-image/surreal-landscape_41357833.htm
+                height: 500
+              new: true
+              premium: true
+              is_ai_generated: true
+              author:
+                assets: 0
+                name: John Doe
+                id: 2147483647
+                avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+                slug: merry-christmas
+              name: White t-shirt with copy space on gray background
+              id: 15667327
+              type: vector
+              has_prompt: true
+              slug: merry-christmas
+              url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+            - preview:
+                width: 300
+                url: https://www.freepik.com/free-ai-image/surreal-landscape_41357833.htm
+                height: 500
+              new: true
+              premium: true
+              is_ai_generated: true
+              author:
+                assets: 0
+                name: John Doe
+                id: 2147483647
+                avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+                slug: merry-christmas
+              name: White t-shirt with copy space on gray background
+              id: 15667327
+              type: vector
+              has_prompt: true
+              slug: merry-christmas
+              url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+            same_collection:
+              items:
+              - preview:
+                  width: 300
+                  url: https://www.freepik.com/free-ai-image/surreal-landscape_41357833.htm
+                  height: 500
+                new: true
+                premium: true
+                is_ai_generated: true
+                author:
+                  assets: 0
+                  name: John Doe
+                  id: 2147483647
+                  avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+                  slug: merry-christmas
+                name: White t-shirt with copy space on gray background
+                id: 15667327
+                type: vector
+                has_prompt: true
+                slug: merry-christmas
+                url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+              - preview:
+                  width: 300
+                  url: https://www.freepik.com/free-ai-image/surreal-landscape_41357833.htm
+                  height: 500
+                new: true
+                premium: true
+                is_ai_generated: true
+                author:
+                  assets: 0
+                  name: John Doe
+                  id: 2147483647
+                  avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+                  slug: merry-christmas
+                name: White t-shirt with copy space on gray background
+                id: 15667327
+                type: vector
+                has_prompt: true
+                slug: merry-christmas
+                url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+              url: https://www.freepik.com/collection/shining
+            same_series:
+              items:
+              - preview:
+                  width: 300
+                  url: https://www.freepik.com/free-ai-image/surreal-landscape_41357833.htm
+                  height: 500
+                new: true
+                premium: true
+                is_ai_generated: true
+                author:
+                  assets: 0
+                  name: John Doe
+                  id: 2147483647
+                  avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+                  slug: merry-christmas
+                name: White t-shirt with copy space on gray background
+                id: 15667327
+                type: vector
+                has_prompt: true
+                slug: merry-christmas
+                url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+              - preview:
+                  width: 300
+                  url: https://www.freepik.com/free-ai-image/surreal-landscape_41357833.htm
+                  height: 500
+                new: true
+                premium: true
+                is_ai_generated: true
+                author:
+                  assets: 0
+                  name: John Doe
+                  id: 2147483647
+                  avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+                  slug: merry-christmas
+                name: White t-shirt with copy space on gray background
+                id: 15667327
+                type: vector
+                has_prompt: true
+                slug: merry-christmas
+                url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+              url: https://www.freepik.com/serie/32689488
+          name: White t-shirt with copy space on gray background
+          id: 15667327
+          has_prompt: true
+          download_size: 1024
+          slug: merry-christmas
+          related_tags:
+          - name: Merry Christmas
+            slug: merry-christmas
+            url: https://www.freepik.com/dog
+          - name: Merry Christmas
+            slug: merry-christmas
+            url: https://www.freepik.com/dog
+          dimensions:
+            width: 2000
+            height: 3000
+      properties:
+        data:
+          $ref: '#/components/schemas/get_resource_detail_by_id_200_response_data'
+      required:
+      - data
+      type: object
+    search_resources_filters_parameter_orientation:
+      properties:
+        landscape:
+          default: 0
+          description: Filters results to only include resources with a landscape orientation. Set to 1 to enable, 0 to disable.
+          type: number
+        portrait:
+          default: 0
+          description: Filters results to only include resources with a portrait orientation. Set to 1 to enable, 0 to disable.
+          type: number
+        square:
+          default: 0
+          description: Filters results to only include resources with a square orientation. Set to 1 to enable, 0 to disable.
+          type: number
+        panoramic:
+          default: 0
+          description: Filters results to only include resources with a panoramic orientation. Set to 1 to enable, 0 to disable.
+          type: number
+      type: object
+    license-information:
+      example:
+        type: freemium
+        url: https://www.freepik.com/profile/license/pdf/4350594
+      properties:
+        type:
+          description: The type of license.
+          enum:
+          - freemium
+          - premium
+          type: string
+        url:
+          description: The URL of the license.
+          example: https://www.freepik.com/profile/license/pdf/4350594
+          format: uri
+          type: string
+      required:
+      - type
+      - url
+      type: object
+    resource:
+      description: A regular resource.
+      example:
+        preview:
+          width: 300
+          url: https://www.freepik.com/free-ai-image/surreal-landscape_41357833.htm
+          height: 500
+        new: true
+        premium: true
+        is_ai_generated: true
+        author:
+          assets: 0
+          name: John Doe
+          id: 2147483647
+          avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+          slug: merry-christmas
+        name: White t-shirt with copy space on gray background
+        id: 15667327
+        type: vector
+        has_prompt: true
+        slug: merry-christmas
+        url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+      properties:
+        id:
+          description: Resource's id.
+          example: 15667327
+          minimum: 1
+          type: integer
+        name:
+          description: Resource's name.
+          example: White t-shirt with copy space on gray background
+          type: string
+        slug:
+          example: merry-christmas
+          minLength: 1
+          type: string
+        type:
+          $ref: '#/components/schemas/resource-type'
+        is_ai_generated:
+          description: True if the resource is generated by AI, false otherwise.
+          example: true
+          type: boolean
+        new:
+          description: True if the resource is new, false otherwise.
+          example: true
+          type: boolean
+        premium:
+          description: True if the resource is premium, false otherwise.
+          example: true
+          type: boolean
+        url:
+          description: Detail resource's url
+          example: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+          format: uri
+          type: string
+        preview:
+          $ref: '#/components/schemas/preview'
+        has_prompt:
+          description: True if the resource has prompt, false otherwise.
+          example: true
+          type: boolean
+        author:
+          $ref: '#/components/schemas/author'
+      required:
+      - author
+      - has_prompt
+      - id
+      - is_ai_generated
+      - name
+      - new
+      - premium
+      - preview
+      - slug
+      - type
+      - url
+      type: object
+    search_resources_filters_parameter_people:
+      properties:
+        include:
+          default: 0
+          description: Filter by included people
+          example: 1
+          type: number
+        exclude:
+          default: 0
+          description: Filter by excluded people
+          example: 1
+          type: number
+        number:
+          description: Filter by number of people
+          enum:
+          - '1'
+          - '2'
+          - '3'
+          - more_than_three
+          example: '2'
+          type: string
+        age:
+          description: Filter by age of the people
+          enum:
+          - infant
+          - child
+          - teen
+          - young-adult
+          - adult
+          - senior
+          - elder
+          example: child
+          type: string
+        gender:
+          description: Filter by gender of the people
+          enum:
+          - male
+          - female
+          example: female
+          type: string
+        ethnicity:
+          description: Filter by ethnicity of the people
+          enum:
+          - south-asian
+          - middle-eastern
+          - east-asian
+          - black
+          - hispanic
+          - indian
+          - white
+          - multiracial
+          - southeast-asian
+          example: black
+          type: string
+      type: object
+    detail_photo:
+      allOf:
+      - $ref: '#/components/schemas/detail_resource'
+      - description: Photo details.
+        properties:
+          type:
+            enum:
+            - photo
+            example: photo
+            type: string
+          dimensions:
+            $ref: '#/components/schemas/dimensions'
+          available_formats:
+            $ref: '#/components/schemas/photo_available_formats'
+          related_tags:
+            items:
+              $ref: '#/components/schemas/tag_2'
+            type: array
+          related_resources:
+            $ref: '#/components/schemas/photo_related'
+        required:
+        - available_formats
+        - dimensions
+        - related_resources
+        - related_tags
+        - type
+        type: object
+    resource-type:
+      description: The type of the resource.
+      enum:
+      - photo
+      - vector
+      - psd
+      - icon
+      - video
+      - 3d
+      - font
+      example: vector
+      type: string
+    tag_2:
+      allOf:
+      - $ref: '#/components/schemas/tag_1'
+      - properties:
+          url:
+            description: It will not be null when some SEO rules like redirects and canonicals are applied.
+            example: https://www.freepik.com/dog
+            format: uri
+            type:
+            - string
+            - 'null'
+        type: object
+      example:
+        name: Merry Christmas
+        slug: merry-christmas
+        url: https://www.freepik.com/dog
+    download_resource_by_id_200_response:
+      example:
+        data:
+          signed_url: https://img.freepik.com/premium-photo/close-up-cat-resting_1048944-9269194.jpg?t=st=1725276607~exp=1725280207~hmac=1538f1b294fc3a19a19e9f02ceeb6594a9a1e36a900de85d47bbd386e27dddbe
+          filename: blackboard-template.zip
+          url: https://downloadscdn5.freepik.com/d/1137445/blackboard-template.zip
+      properties:
+        data:
+          $ref: '#/components/schemas/download_resource_by_id_200_response_data'
+      required:
+      - data
+      type: object
+    search_resources_filters_parameter_psd:
+      properties:
+        type:
+          description: File type for psd
+          enum:
+          - jpg
+          - psd
+          type: string
+      type: object
+    resource-image:
+      example:
+        orientation: horizontal
+        source:
+          size: 740x640
+          key: large
+          url: https://img.freepik.com/free-photo/tshirt_53876-104920.jpg
+        type: vector
+      properties:
+        type:
+          $ref: '#/components/schemas/regular-resource-type'
+        orientation:
+          $ref: '#/components/schemas/orientation'
+        source:
+          $ref: '#/components/schemas/resource_image_source'
+      required:
+      - orientation
+      - source
+      - type
+      type: object
+    download:
+      example:
+        signed_url: https://img.freepik.com/premium-photo/close-up-cat-resting_1048944-9269194.jpg?t=st=1725276607~exp=1725280207~hmac=1538f1b294fc3a19a19e9f02ceeb6594a9a1e36a900de85d47bbd386e27dddbe
+        filename: blackboard-template.zip
+        url: https://downloadscdn5.freepik.com/d/1137445/blackboard-template.zip
+      properties:
+        filename:
+          description: Filename of the resource
+          example: blackboard-template.zip
+          minLength: 1
+          type: string
+        url:
+          example: https://downloadscdn5.freepik.com/d/1137445/blackboard-template.zip
+          format: uri
+          minLength: 1
+          type: string
+        signed_url:
+          description: The signed URL of the resource preview
+          example: https://img.freepik.com/premium-photo/close-up-cat-resting_1048944-9269194.jpg?t=st=1725276607~exp=1725280207~hmac=1538f1b294fc3a19a19e9f02ceeb6594a9a1e36a900de85d47bbd386e27dddbe
+          format: uri
+          type:
+          - string
+          - 'null'
+      required:
+      - filename
+      - url
+      type: object
+    photo_available_formats:
+      description: The available formats for the photo.
+      properties:
+        jpg:
+          $ref: '#/components/schemas/photo_formats'
+      type:
+      - object
+      - 'null'
+    orientation:
+      description: The orientation of the image.
+      enum:
+      - horizontal
+      - vertical
+      - square
+      - panoramic
+      - unknown
+      type: string
+    preview:
+      description: Information needed to preview a resource.
+      example:
+        width: 300
+        url: https://www.freepik.com/free-ai-image/surreal-landscape_41357833.htm
+        height: 500
+      properties:
+        url:
+          description: Resource's url.
+          example: https://www.freepik.com/free-ai-image/surreal-landscape_41357833.htm
+          format: uri
+          type: string
+        width:
+          description: Resource image width.
+          example: 300
+          minimum: 0
+          type: integer
+        height:
+          description: Resource image height.
+          example: 500
+          minimum: 0
+          type: integer
+      required:
+      - height
+      - url
+      - width
+      type: object
+    inline_object_2:
+      example:
+        message: Internal Server Error
+      properties:
+        message:
+          example: Internal Server Error
+          type: string
+      type: object
+    search_resources_filters_parameter:
+      properties:
+        orientation:
+          $ref: '#/components/schemas/search_resources_filters_parameter_orientation'
+        content_type:
+          $ref: '#/components/schemas/search_resources_filters_parameter_content_type'
+        license:
+          $ref: '#/components/schemas/search_resources_filters_parameter_license'
+        people:
+          $ref: '#/components/schemas/search_resources_filters_parameter_people'
+        period:
+          description: Filters results based on the time period in which the resources were added.
+          enum:
+          - last-month
+          - last-quarter
+          - last-semester
+          - last-year
+          type: string
+        color:
+          description: Filters results by the predominant color in the resources.
+          enum:
+          - black
+          - blue
+          - gray
+          - green
+          - orange
+          - red
+          - white
+          - yellow
+          - purple
+          - cyan
+          - pink
+          type: string
+        author:
+          default: 0
+          description: Filters results to include resources by a specific author, identified by their author ID.
+          type: number
+        ai-generated:
+          $ref: '#/components/schemas/search_resources_filters_parameter_ai_generated'
+        vector:
+          $ref: '#/components/schemas/search_resources_filters_parameter_vector'
+        psd:
+          $ref: '#/components/schemas/search_resources_filters_parameter_psd'
+        ids:
+          description: Filter by list of ids. This filter is incompatible with any other filters. In case of using this filter, the rest of filters will be ignored.
+          example: 1,2,3,4,5
+          type: string
+      type: object
+    detail_resource:
+      allOf:
+      - $ref: '#/components/schemas/resource'
+      - description: Vector details.
+        properties:
+          license:
+            description: The URL of the license.
+            example: https://www.freepik.com/profile/license/pdf/4350594
+            format: uri
+            type: string
+          download_size:
+            description: The size of the resource in bytes.
+            example: 1024
+            minimum: 0
+            type: integer
+          created:
+            description: The date when the resource was created.
+            example: 2023-03-07 23:05:26+00:00
+            format: date-time
+            type: string
+          vertical:
+            $ref: '#/components/schemas/vertical-type'
+        required:
+        - created
+        - download_size
+        - license
+        - vertical
+        type: object
+    dimensions:
+      description: Resource's dimensions.
+      example:
+        width: 2000
+        height: 3000
+      properties:
+        width:
+          description: Width of the resource image in pixels.
+          example: 2000
+          minimum: 0
+          type: integer
+        height:
+          description: Height of the resource image in pixels.
+          example: 3000
+          minimum: 0
+          type: integer
+      required:
+      - height
+      - width
+      type: object
+    resource_meta:
+      example:
+        is_new: true
+        available_formats:
+          psd:
+            total: 1
+            items:
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+          jpg:
+            total: 1
+            items:
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+          zip:
+            total: 1
+            items:
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+          fonts:
+            total: 1
+            items:
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+          svg:
+            total: 1
+            items:
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+          ai:
+            total: 1
+            items:
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+          png:
+            total: 1
+            items:
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+          eps:
+            total: 1
+            items:
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+          resources:
+            total: 1
+            items:
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+          3d-render:
+            total: 1
+            items:
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+          atn:
+            total: 1
+            items:
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+            - size: 100
+              colorspace: RGB
+              name: image.jpg
+              id: 1
+        published_at: 2020-12-01 23:50:50+00:00
+      properties:
+        published_at:
+          description: The datetime when this resource was published.
+          example: 2020-12-01 23:50:50+00:00
+          type: string
+        is_new:
+          description: True if this resource is new. False, otherwise.
+          example: true
+          type: boolean
+        available_formats:
+          $ref: '#/components/schemas/available_formats_1'
+      required:
+      - available_formats
+      - is_new
+      - published_at
+      type: object
+    detail_psd:
+      allOf:
+      - $ref: '#/components/schemas/detail_resource'
+      - description: PSD details.
+        properties:
+          type:
+            enum:
+            - psd
+            example: photo
+            type: string
+          available_formats:
+            $ref: '#/components/schemas/available_formats'
+          related_tags:
+            items:
+              $ref: '#/components/schemas/tag_2'
+            type: array
+          related_resources:
+            $ref: '#/components/schemas/psd_related'
+          dimensions:
+            $ref: '#/components/schemas/dimensions'
+        required:
+        - available_formats
+        - dimensions
+        - related_resources
+        - related_tags
+        - type
+        type: object
+    resource_product:
+      deprecated: true
+      example:
+        type: essential
+        url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+      properties:
+        type:
+          deprecated: true
+          description: The type of product
+          example: essential
+          type: string
+        url:
+          deprecated: true
+          description: The url of product
+          example: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+          format: uri
+          type: string
+      required:
+      - type
+      - url
+      type: object
+    photo_formats:
+      properties:
+        total:
+          description: The total number of files for that format.
+          example: 1
+          type: integer
+        items:
+          items:
+            $ref: '#/components/schemas/photo_format'
+          type: array
+      required:
+      - items
+      - total
+      type: object
+    vector_psd_resource:
+      additionalProperties: true
+      allOf:
+      - $ref: '#/components/schemas/resource_base'
+      - description: A resource within a list of resources from collection
+        properties:
+          filename:
+            description: The filename of this resource.
+            type: string
+          products:
+            deprecated: true
+            description: These products of this resource
+            items:
+              $ref: '#/components/schemas/resource_product'
+            type: array
+          meta:
+            $ref: '#/components/schemas/resource_meta'
+          related:
+            $ref: '#/components/schemas/resource_related'
+          stats:
+            $ref: '#/components/schemas/resource_stats'
+        required:
+        - filename
+        - meta
+        - related
+        - stats
+        type: object
+      example:
+        image:
+          orientation: horizontal
+          source:
+            size: 740x640
+            key: large
+            url: https://img.freepik.com/free-photo/tshirt_53876-104920.jpg
+          type: vector
+        licenses:
+        - type: freemium
+          url: https://www.freepik.com/profile/license/pdf/4350594
+        - type: freemium
+          url: https://www.freepik.com/profile/license/pdf/4350594
+        filename: filename
+        related:
+          keywords:
+            name: Merry Christmas
+            slug: merry-christmas
+          serie:
+            image:
+              orientation: horizontal
+              source:
+                size: 740x640
+                key: large
+                url: https://img.freepik.com/free-photo/tshirt_53876-104920.jpg
+              type: vector
+            licenses:
+            - type: freemium
+              url: https://www.freepik.com/profile/license/pdf/4350594
+            - type: freemium
+              url: https://www.freepik.com/profile/license/pdf/4350594
+            author:
+              assets: 0
+              name: John Doe
+              id: 2147483647
+              avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+              slug: merry-christmas
+            id: 15667327
+            title: White t-shirt with copy space on gray background
+            url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+          others:
+            image:
+              orientation: horizontal
+              source:
+                size: 740x640
+                key: large
+                url: https://img.freepik.com/free-photo/tshirt_53876-104920.jpg
+              type: vector
+            licenses:
+            - type: freemium
+              url: https://www.freepik.com/profile/license/pdf/4350594
+            - type: freemium
+              url: https://www.freepik.com/profile/license/pdf/4350594
+            author:
+              assets: 0
+              name: John Doe
+              id: 2147483647
+              avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+              slug: merry-christmas
+            id: 15667327
+            title: White t-shirt with copy space on gray background
+            url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+        stats:
+          downloads: 0
+          likes: 0
+        author:
+          assets: 0
+          name: John Doe
+          id: 2147483647
+          avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+          slug: merry-christmas
+        meta:
+          is_new: true
+          available_formats:
+            psd:
+              total: 1
+              items:
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+            jpg:
+              total: 1
+              items:
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+            zip:
+              total: 1
+              items:
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+            fonts:
+              total: 1
+              items:
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+            svg:
+              total: 1
+              items:
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+            ai:
+              total: 1
+              items:
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+            png:
+              total: 1
+              items:
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+            eps:
+              total: 1
+              items:
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+            resources:
+              total: 1
+              items:
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+            3d-render:
+              total: 1
+              items:
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+            atn:
+              total: 1
+              items:
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+              - size: 100
+                colorspace: RGB
+                name: image.jpg
+                id: 1
+          published_at: 2020-12-01 23:50:50+00:00
+        id: 15667327
+        title: White t-shirt with copy space on gray background
+        url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+        products:
+        - type: essential
+          url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+        - type: essential
+          url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+    psd_related:
+      allOf:
+      - description: Related resources and tags for this resource.
+        properties:
+          suggested:
+            description: Other resources related to this one.
+            items:
+              $ref: '#/components/schemas/resource'
+            type: array
+          same_author:
+            description: Other resources created by this author.
+            items:
+              $ref: '#/components/schemas/resource'
+            type: array
+        required:
+        - same_author
+        - same_series
+        - suggested
+        type: object
+      - $ref: '#/components/schemas/related_same_series'
+      - $ref: '#/components/schemas/related_same_collection'
+    related_same_collection_same_collection:
+      description: Related resources of the same collection.
+      example:
+        items:
+        - preview:
+            width: 300
+            url: https://www.freepik.com/free-ai-image/surreal-landscape_41357833.htm
+            height: 500
+          new: true
+          premium: true
+          is_ai_generated: true
+          author:
+            assets: 0
+            name: John Doe
+            id: 2147483647
+            avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+            slug: merry-christmas
+          name: White t-shirt with copy space on gray background
+          id: 15667327
+          type: vector
+          has_prompt: true
+          slug: merry-christmas
+          url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+        - preview:
+            width: 300
+            url: https://www.freepik.com/free-ai-image/surreal-landscape_41357833.htm
+            height: 500
+          new: true
+          premium: true
+          is_ai_generated: true
+          author:
+            assets: 0
+            name: John Doe
+            id: 2147483647
+            avatar: https://avatar.cdnpk.net/61668527-220726032514.jpg
+            slug: merry-christmas
+          name: White t-shirt with copy space on gray background
+          id: 15667327
+          type: vector
+          has_prompt: true
+          slug: merry-christmas
+          url: https://www.freepik.com/free-photo/white-t-shirts-with-copy-space-gray-background_15667327.htm
+        url: https://www.freepik.com/collection/shining
+      properties:
+        url:
+          description: The url of the collection.
+          example: https://www.freepik.com/collection/shining
+          format: uri
+          type: string
+        items:
+          description: Other resources which belongs to a public collection of the author Magnific.
+          items:
+            $ref: '#/components/schemas/resource'
+          type: array
+      required:
+      - items
+      - url
+      type:
+      - object
+      - 'null'
+  examples:
+    200-download-photo:
+      summary: Success - Download photo
+      value:
+        data:
+          filename: 9126.jpg
+          url: https://downloadscdn7.freepik.com/188544/10/9126.jpg?filename=painting-mountain-lake-with-mountain-background&token=exp=1691754014~hmac=36873e9be562d19e95671ec4032feb0c
+    200-detail-photo-b2b:
+      summary: Success - Detail Photo resource information
+      value:
+        data:
+          id: 770012
+          name: Abstract of white lines background generative ai
+          slug: abstract-white-lines-background-generative-ai
+          type: photo
+          vertical: photo
+          is_ai_generated: false
+          premium: true
+          new: true
+          url: https://www.freepik.com/premium-photo/abstract-white-lines-background-generative-ai_39178780.htm
+          preview:
+            url: https://www.freepik.com/premium-photo/abstract-white-lines-background-generative-ai_39178780.htm
+            width: 300
+            height: 200
+          has_prompt: false
+          author:
+            id: 744082
+            name: flaticon
+            avatar: https://avatar.cdnpk.net/744082.jpg
+            slug: flaticon
+            assets: 100
+          license: https://www.freepik.com/profile/license/pdf/4350594
+          created: 2020-01-01 00:00:00+00:00
+          dimensions:
+            width: 1000
+            height: 1000
+          download_size: 1024
+          available_formats:
+            jpg:
+              total: 1
+              items:
+              - size: 100
+          related_resources:
+            suggested:
+            - id: 770011
+              name: Sports bike
+              slug: sports-bike
+              type: vector
+              is_ai_generated: true
+              premium: false
+              new: true
+              url: https://www.freepik.com/free-vector/sports-bike_770011.htm
+              preview:
+                url: https://www.freepik.com/free-vector/sports-bike_770011.jpg
+                width: 300
+                height: 200
+              has_prompt: true
+              author:
+                id: 744082
+                name: flaticon
+                avatar: https://avatar.cdnpk.net/744082.jpg
+                slug: flaticon
+                assets: 100
+            same_author:
+            - id: 770011
+              name: Sports bike
+              slug: sports-bike
+              type: vector
+              is_ai_generated: true
+              premium: false
+              new: true
+              url: https://www.freepik.com/free-vector/sports-bike_770011.htm
+              preview:
+                url: https://www.freepik.com/free-vector/sports-bike_770011.jpg
+                width: 300
+                height: 200
+              has_prompt: true
+              author:
+                id: 744082
+                name: flaticon
+                avatar: https://avatar.cdnpk.net/744082.jpg
+                slug: flaticon
+                assets: 100
+            same_collection:
+              url: https://www.freepik.com/collection/shining/2552
+              items:
+              - id: 770011
+                name: Sports bike
+                slug: sports-bike
+                type: vector
+                is_ai_generated: true
+                premium: false
+                new: true
+                url: https://www.freepik.com/free-vector/sports-bike_770011.htm
+                preview:
+                  url: https://www.freepik.com/free-vector/sports-bike_770011.jpg
+                  width: 300
+                  height: 200
+                has_prompt: true
+                author:
+                  id: 744082
+                  name: flaticon
+                  avatar: https://avatar.cdnpk.net/744082.jpg
+                  slug: flaticon
+                  assets: 100
+            same_series:
+              url: https://www.freepik.com/serie/32689488
+              items:
+              - id: 770011
+                name: Sports bike
+                slug: sports-bike
+                type: vector
+                is_ai_generated: true
+                premium: false
+                new: true
+                url: https://www.freepik.com/free-vector/sports-bike_770011.htm
+                preview:
+                  url: https://www.freepik.com/free-vector/sports-bike_770011.jpg
+                  width: 300
+                  height: 200
+                has_prompt: true
+                author:
+                  id: 744082
+                  name: flaticon
+                  avatar: https://avatar.cdnpk.net/744082.jpg
+                  slug: flaticon
+                  assets: 100
+          related_tags:
+          - name: coloring pages
+            slug: coloring-pages
+            url: https://www.freepik.com/free-photos-vectors/coloring-pages
+          - slug: kawaii-coloring-page
+            name: kawaii coloring page
+          - slug: cute-kawaii
+            name: cute kawaii
+          - slug: adorable
+            name: adorable
+          - slug: chibi
+            name: chibi
+          - slug: line-art
+            name: line art
+    200-detail-vector-b2b:
+      summary: Success - Detail Vector resource information
+      value:
+        data:
+          id: 770011
+          name: Sports car
+          slug: sports-car
+          type: vector
+          vertical: vector
+          is_ai_generated: false
+          premium: false
+          new: true
+          url: https://www.freepik.com/free-vector/sports-car_770011.htm
+          preview:
+            url: https://www.freepik.com/free-vector/sports-car_770011.jpg
+            width: 300
+            height: 200
+          has_prompt: false
+          license: https://www.freepik.com/profile/license/pdf/4350594
+          created: 2020-01-01 00:00:00+00:00
+          download_size: 1024
+          available_formats:
+            jpg:
+              total: 2
+              items:
+              - id: 444
+                name: Sports car
+                colorspace: RGB
+                size: 100
+              - id: 555
+                name: Sports car
+                colorspace: RGB
+                size: 200
+          author:
+            id: 744082
+            name: flaticon
+            avatar: https://avatar.cdnpk.net/744082.jpg
+            slug: flaticon
+            assets: 100
+          related_resources:
+            suggested:
+            - id: 770011
+              name: Sports car
+              slug: sports-car
+              type: vector
+              is_ai_generated: true
+              premium: false
+              new: true
+              url: https://www.freepik.com/free-vector/sports-car_770011.htm
+              preview:
+                url: https://www.freepik.com/free-vector/sports-car_770011.jpg
+                width: 300
+                height: 200
+              has_prompt: true
+              author:
+                id: 744082
+                name: flaticon
+                avatar: https://avatar.cdnpk.net/744082.jpg
+                slug: flaticon
+                assets: 100
+            same_author:
+            - id: 770011
+              name: Sports car
+              slug: sports-car
+              type: vector
+              is_ai_generated: true
+              premium: false
+              new: true
+              url: https://www.freepik.com/free-vector/sports-car_770011.htm
+              preview:
+                url: https://www.freepik.com/free-vector/sports-car_770011.jpg
+                width: 300
+                height: 200
+              has_prompt: true
+              author:
+                id: 744082
+                name: flaticon
+                avatar: https://avatar.cdnpk.net/744082.jpg
+                slug: flaticon
+                assets: 100
+            same_collection:
+              url: https://www.freepik.com/collection/shining
+              items:
+              - id: 770011
+                name: Sports car
+                slug: sports-car
+                type: vector
+                is_ai_generated: true
+                premium: false
+                new: true
+                url: https://www.freepik.com/free-vector/sports-car_770011.htm
+                preview:
+                  url: https://www.freepik.com/free-vector/sports-car_770011.jpg
+                  width: 300
+                  height: 200
+                has_prompt: true
+                author:
+                  id: 744082
+                  name: flaticon
+                  avatar: https://avatar.cdnpk.net/744082.jpg
+                  slug: flaticon
+                  assets: 100
+            same_series:
+              url: https://www.freepik.com/serie/32689488
+              items:
+              - id: 770011
+                name: Sports bike
+                slug: sports-bike
+                type: vector
+                is_ai_generated: true
+                premium: false
+                new: true
+                url: https://www.freepik.com/free-vector/sports-bike_770011.htm
+                preview:
+                  url: https://www.freepik.com/free-vector/sports-bike_770011.jpg
+                  width: 300
+                  height: 200
+                has_prompt: true
+                author:
+                  id: 744082
+                  name: flaticon
+                  avatar: https://avatar.cdnpk.net/744082.jpg
+                  slug: flaticon
+                  assets: 100
+          related_tags:
+          - slug: coloring-pages
+            name: coloring pages
+          - slug: kawaii-coloring-page
+            name: kawaii coloring page
+          - slug: cute-kawaii
+            name: cute kawaii
+          - slug: adorable
+            name: adorable
+          - slug: chibi
+            name: chibi
+          - slug: line-art
+            name: line art
+    200-download-vector-or-psd:
+      summary: Success - Download resource
+      value:
+        data:
+          filename: Mother-and-daughter.zip
+          url: https://downloadscdn5.freepik.com/d/999999/23/99999/8888888/mother-and-daughter.zip?token=exp=1689689298~hmac=1234567890abcde
+    200-detail-psd-b2b:
+      summary: Success - Detail PSD resource information
+      value:
+        data:
+          id: 770012
+          name: T-shirts mockup psd in black
+          slug: t-shirts-mockup-psd-in-black
+          type: psd
+          vertical: mockup
+          is_ai_generated: false
+          premium: true
+          new: true
+          url: https://www.freepik.com/premium-psd/t-shirts-mockup-psd-black_17860378.htm
+          preview:
+            url: https://www.freepik.com/premium-psd/t-shirts-mockup-psd-black_17860378.htm
+            width: 300
+            height: 200
+          has_prompt: false
+          license: https://www.freepik.com/profile/license/pdf/4350594
+          created: 2020-01-01 00:00:00+00:00
+          download_size: 1024
+          available_formats:
+            jpg:
+              total: 2
+              items:
+              - id: 444
+                name: T-shirts mockup psd in black
+                colorspace: RGB
+                size: 100
+              - id: 555
+                name: T-shirts mockup psd in black
+                colorspace: RGB
+                size: 200
+            ai:
+              total: 1
+              items:
+              - id: 444
+                name: T-shirts mockup psd in black
+                colorspace: RGB
+                size: 100
+          author:
+            id: 744082
+            name: flaticon
+            avatar: https://avatar.cdnpk.net/744082.jpg
+            slug: flaticon
+            assets: 100
+          related_resources:
+            suggested:
+            - id: 770011
+              name: Sports bike
+              slug: sports-bike
+              type: vector
+              is_ai_generated: true
+              premium: false
+              new: true
+              url: https://www.freepik.com/free-vector/sports-bike_770011.htm
+              preview:
+                url: https://www.freepik.com/free-vector/sports-bike_770011.jpg
+                width: 300
+                height: 200
+              has_prompt: true
+              author:
+                id: 744082
+                name: flaticon
+                avatar: https://avatar.cdnpk.net/744082.jpg
+                slug: flaticon
+                assets: 100
+            same_author:
+            - id: 770011
+              name: Sports bike
+              slug: sports-bike
+              type: vector
+              is_ai_generated: true
+              premium: false
+              new: true
+              url: https://www.freepik.com/free-vector/sports-bike_770011.htm
+              preview:
+                url: https://www.freepik.com/free-vector/sports-bike_770011.jpg
+                width: 300
+                height: 200
+              has_prompt: true
+              author:
+                id: 744082
+                name: flaticon
+                avatar: https://avatar.cdnpk.net/744082.jpg
+                slug: flaticon
+                assets: 100
+            same_collection:
+              url: https://www.freepik.com/collection/shining
+              items:
+              - id: 770011
+                name: Sports bike
+                slug: sports-bike
+                type: vector
+                is_ai_generated: true
+                premium: false
+                new: true
+                url: https://www.freepik.com/free-vector/sports-bike_770011.htm
+                preview:
+                  url: https://www.freepik.com/free-vector/sports-bike_770011.jpg
+                  width: 300
+                  height: 200
+                has_prompt: true
+                author:
+                  id: 744082
+                  name: flaticon
+                  avatar: https://avatar.cdnpk.net/744082.jpg
+                  slug: flaticon
+                  assets: 100
+            same_series:
+              url: https://www.freepik.com/serie/32689488
+              items:
+              - id: 770011
+                name: Sports bike
+                slug: sports-bike
+                type: vector
+                is_ai_generated: true
+                premium: false
+                new: true
+                url: https://www.freepik.com/free-vector/sports-bike_770011.htm
+                preview:
+                  url: https://www.freepik.com/free-vector/sports-bike_770011.jpg
+                  width: 300
+                  height: 200
+                has_prompt: true
+                author:
+                  id: 744082
+                  name: flaticon
+                  avatar: https://avatar.cdnpk.net/744082.jpg
+                  slug: flaticon
+                  assets: 100
+          related_tags:
+          - slug: coloring-pages
+            name: coloring pages
+          - slug: kawaii-coloring-page
+            name: kawaii coloring page
+          - slug: cute-kawaii
+            name: cute kawaii
+          - slug: adorable
+            name: adorable
+          - slug: chibi
+            name: chibi
+          - slug: line-art
+            name: line art
+    200-detail-ai-b2b:
+      summary: Success - Detail AI Photo information
+      value:
+        data:
+          id: 770012
+          name: Abstract of white lines background generative ai
+          slug: abstract-white-lines-background-generative-ai
+          type: photo
+          vertical: photo
+          is_ai_generated: true
+          premium: true
+          new: true
+          url: https://www.freepik.com/premium-photo/abstract-white-lines-background-generative-ai_39178780.htm
+          preview:
+            url: https://www.freepik.com/premium-photo/abstract-white-lines-background-generative-ai_39178780.htm
+            width: 300
+            height: 200
+          has_prompt: true
+          author:
+            id: 744082
+            name: flaticon
+            avatar: https://avatar.cdnpk.net/744082.jpg
+            slug: flaticon
+            assets: 100
+          license: https://www.freepik.com/profile/license/pdf/4350594
+          created: 2020-01-01 00:00:00+00:00
+          model_type: Midjourney
+          model_subtype: Midjourney 5
+          dimensions:
+            width: 1000
+            height: 1000
+          download_size: 1024
+          available_formats:
+            jpg:
+              total: 1
+              items:
+              - size: 100
+          related_resources:
+            suggested:
+            - id: 770011
+              name: Sports bike
+              slug: sports-bike
+              type: vector
+              is_ai_generated: true
+              premium: false
+              new: true
+              url: https://www.freepik.com/free-vector/sports-bike_770011.htm
+              preview:
+                url: https://www.freepik.com/free-vector/sports-bike_770011.jpg
+                width: 300
+                height: 200
+              has_prompt: true
+              author:
+                id: 744082
+                name: flaticon
+                avatar: https://avatar.cdnpk.net/744082.jpg
+                slug: flaticon
+                assets: 100
+          related_tags:
+          - slug: coloring-pages
+            name: coloring pages
+          - slug: kawaii-coloring-page
+            name: kawaii coloring page
+          - slug: cute-kawaii
+            name: cute kawaii
+          - slug: adorable
+            name: adorable
+          - slug: chibi
+            name: chibi
+          - slug: line-art
+            name: line art
+    200-b2b-full-list-pagination:
+      summary: Success - Found matched resources in English
+      value:
+        data:
+        - id: 770011
+          title: Sports car
+          url: https://www.freepik.com/free-icon/sports-car_770011.htm
+          filename: sports-car.zip
+          licenses:
+          - type: freemium
+            url: https://www.freepik.com/profile/license/pdf/770011?lang=en
+          products: []
+          meta:
+            published_at: 2022-01-14 20:45:28+00:00
+            is_new: true
+            available_formats:
+              jpg:
+                total: 2
+                items:
+                - id: 444
+                  name: Sports car
+                  colorspace: RGB
+                  size: 100
+                - id: 555
+                  name: Sports car
+                  colorspace: RGB
+                  size: 200
+          image:
+            type: photo
+            orientation: square
+            source:
+              url: https://img.flaticon.com/icons/png/512/67/67994.png
+              key: large
+              size: 128x128
+          related:
+            serie: []
+            others: []
+            keywords: []
+          stats:
+            downloads: 52527
+            likes: 137
+          author:
+            id: 744082
+            name: flaticon
+            avatar: https://avatar.cdnpk.net/744082.jpg
+            slug: flaticon
+        - id: 1540200
+          title: Grey car logo collection
+          url: https://www.freepik.com/free-vector/grey-car-logo-collection_1540200.htm
+          filename: grey-car-logo-collection.zip
+          licenses:
+          - type: freemium
+            url: https://www.freepik.com/profile/license/pdf/1540200?lang=en
+          products:
+          - type: essential
+            url: https://www.freepik.com/profile/license/pdf/1540200?lang=en
+          meta:
+            published_at: 2022-01-14 16:06:23+00:00
+            is_new: true
+            available_formats:
+              jpg:
+                total: 2
+                items:
+                - id: 444
+                  size: 100
+                - id: 555
+                  size: 200
+          image:
+            type: vector
+            orientation: square
+            source:
+              url: https://
+              key: large
+              size: 626x626
+          related:
+            serie: []
+            others: []
+            keywords: []
+          stats:
+            downloads: 1639
+            likes: 18
+          author:
+            id: 23
+            name: magnific
+            avatar: https://avatar.cdnpk.net/23.jpg
+            slug: magnific
+        meta:
+          current_page: 1
+          last_page: 32
+          per_page: 2
+          total: 63
+    200-download-ai-resource:
+      summary: Success - Download ai resource
+      value:
+        data:
+          filename: lovely-cats.zip
+          url: https://downloadscdn5.freepik.com/d/999999/23/99999/8888888/lovely-cats.zip?token=exp=1689689298~hmac=1234567890abcde
+          prompt: There are three lovely cats in the picture. They are playing with each other. They are very cute.
+  responses:
+    401-unauthorized:
+      content:
+        application/json:
+          examples:
+            invalid_api_key:
+              summary: API key is not valid
+              value:
+                message: Invalid API key
+            missing_api_key:
+              summary: API key is not provided
+              value:
+                message: Missing API key
+          schema:
+            $ref: '#/components/schemas/inline_object'
+      description: Unauthorized - The client must authenticate itself to get the requested response.
+    403-forbidden:
+      content:
+        application/json:
+          examples:
+            user_not_authorized:
+              summary: User has not privileges to access some resource
+              value:
+                message: User is not authorized to access this resource
+            user_not_owner:
+              summary: Collection author id is different from current user's id
+              value:
+                message: User is not owner of requested collection
+            item_is_premium:
+              summary: The user cannot download this item because it is premium
+              value:
+                message: The user cannot download this item because it is premium
+            creator_not_authorized:
+              summary: Creator has not privileges to access some resource
+              value:
+                message: Creator is not authorized to access this resource
+            transaction_stats_access_denied:
+              summary: Group admin is not allowed to access the requested transaction stats
+              value:
+                message: Access denied to transaction stats for the current role
+            credit_filter_not_allowed:
+              summary: Group admin tried to use a credit-usage filter dimension not allowed for their role
+              value:
+                message: Credit filter not allowed for the current role
+          schema:
+            $ref: '#/components/schemas/inline_object'
+      description: Forbidden - The client does not have permission to access the requested resource.
+    503-service-unavailable:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_3'
+      description: Service Unavailable
+    400-bad-request:
+      content:
+        application/json:
+          examples:
+            invalid_page:
+              summary: Parameter 'page' is not valid
+              value:
+                message: Parameter 'page' must be greater than 0
+            invalid_query:
+              summary: Parameter 'query' is not valid
+              value:
+                message: Parameter 'query' must not be empty
+            invalid_filter:
+              summary: Parameter 'filter' is not valid
+              value:
+                message: Parameter 'filter' is not valid
+            generic_bad_request:
+              summary: Bad Request
+              value:
+                message: Parameter ':attribute' is not valid
+          schema:
+            $ref: '#/components/schemas/inline_object'
+        application/problem+json:
+          examples:
+            invalid_page:
+              summary: Parameter 'page' is not valid
+              value:
+                message: Validation error
+                invalid_params:
+                - field: page
+                  reason: Parameter 'page' must be greater than 0
+                - field: per_page
+                  reason: Parameter 'per_page' must be greater than 0
+          schema:
+            $ref: '#/components/schemas/inline_object_1'
+      description: Bad Request - The server could not understand the request due to invalid syntax.
+    404-not-found:
+      content:
+        application/json:
+          examples:
+            ai_resource_not_found:
+              summary: AI resource with provided id does not exist
+              value:
+                message: AI resource not found
+            collection_not_found:
+              summary: Collection with provided id does not exist
+              value:
+                message: Collection not found
+            resource_not_found:
+              summary: Resource with provided id does not exist
+              value:
+                message: Resource not found
+            resources_not_found:
+              summary: Resources not found
+              value:
+                message: Resources not found
+            user_not_found:
+              summary: User with provided id does not exist
+              value:
+                message: User not found
+            video_not_found:
+              summary: Video with provided id does not exist
+              value:
+                message: Video not found
+            video_assets_not_found:
+              summary: Video with provided id has not associated assets
+              value:
+                message: Video not found
+            icon_not_found:
+              summary: Icon with provided id does not exist
+              value:
+                message: Icon not found
+            author_not_found:
+              summary: Author with provided id does not exist
+              value:
+                message: Author not found
+            developer_not_found:
+              summary: Developer with provided email does not exist
+              value:
+                message: Developer not found
+            country_not_found:
+              summary: Country with provided code does not exist
+              value:
+                message: Country not found
+            generic_not_found:
+              summary: Not Found
+              value:
+                message: Not found
+          schema:
+            $ref: '#/components/schemas/inline_object'
+      description: Not Found - The server can not find the requested resource.
+    500-internal-server-error:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_2'
+      description: Internal Server Error - The server has encountered a situation it doesn't know how to handle.
+    429-too-many-requests:
+      content:
+        application/json:
+          examples:
+            generic:
+              summary: Generic message for 429 errors
+              value:
+                message: Too many requests
+            download_limit_reached:
+              summary: The download limits has been reached.
+              value:
+                message: The user can't download more items because the download limits has been reached.
+            edit_limit_reached:
+              summary: Free user icon edit limits has been reached.
+              value:
+                message: Limit for free users reached.
+          schema:
+            $ref: '#/components/schemas/inline_object'
+      description: Too Many Requests - The client has sent too many requests in a given amount of time.
   securitySchemes:
-    ApiKey:
-      type: apiKey
+    magnificApiKey:
+      description: 'Your Magnific API key. Required for authentication. [Learn how to obtain an API key](https://docs.magnific.com/quickstart)
+
+        '
       in: header
       name: x-magnific-api-key
+      type: apiKey

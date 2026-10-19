@@ -1,0 +1,270 @@
+openapi: 3.2.0
+info:
+  description: The Magnific API is your gateway to a vast collection of high-quality digital resources for your applications and projects. As a leading platform, it offers a wide range of graphics, including vectors, photos, illustrations, icons, PSD templates, and more, all curated by talented designers from around the world.
+  title: Magnific Kling V3 Turbo I2v 1080p API
+  version: 1.0.0
+servers:
+- description: B2B API Production V1
+  url: https://api.magnific.com
+security:
+- magnificApiKey: []
+tags:
+- name: kling-v3-turbo-i2v-1080p
+paths:
+  /v1/ai/image-to-video/kling-v3-turbo-1080p:
+    post:
+      description: 'Generate AI video from a first-frame image using Kling 3.0 Turbo at 1080p resolution, a fast image-to-video model from the Kling 3.0 family.
+
+
+        **Features:**
+
+        - **Image-to-video**: Animate a static image into a dynamic video
+
+        - **Optional prompt**: Guide the motion and animation style with text
+
+        - **Resolution**: Fixed 1080p output
+
+        - **Duration**: 3-15 seconds
+
+
+        **How it works:**
+
+        1. Submit an image (URL or Base64) to use as the first frame, with an optional prompt
+
+        2. Receive a task ID to track progress
+
+        3. Poll the status endpoint or use a `webhook_url` to get notified when the task completes
+
+        4. Download the generated video from the result URL (valid for 30 minutes)'
+      operationId: postAiImageToVideoKlingV3Turbo1080p
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/kling-v3-turbo-i2v-request'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/task-detail-200-default-response'
+          description: OK - Task created successfully
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Kling 3.0 Turbo I2V 1080p - Generate video
+      tags:
+      - kling-v3-turbo-i2v-1080p
+components:
+  schemas:
+    inline_object:
+      example:
+        message: message
+      properties:
+        message:
+          type: string
+      type: object
+    task-detail-200-default-response:
+      description: OK - The task exists and the status is returned
+    inline_object_3:
+      example:
+        message: Service Unavailable. Please try again later.
+      properties:
+        message:
+          example: Service Unavailable. Please try again later.
+          type: string
+      type: object
+    inline_object_1_problem_invalid_params_inner:
+      properties:
+        name:
+          description: Name of the invalid parameter.
+          example: page
+          type: string
+        field:
+          description: Field of the invalid parameter. Mirrors `name`.
+          example: page
+          type: string
+        reason:
+          example: Parameter 'page' must be greater than 0
+          type: string
+      required:
+      - field
+      - name
+      - reason
+      type: object
+    inline_object_1:
+      properties:
+        problem:
+          $ref: '#/components/schemas/inline_object_1_problem'
+      type: object
+    inline_object_1_problem:
+      properties:
+        message:
+          example: Validation error
+          type: string
+        invalid_params:
+          items:
+            $ref: '#/components/schemas/inline_object_1_problem_invalid_params_inner'
+          type: array
+      required:
+      - invalid_params
+      - message
+      type: object
+    inline_object_2:
+      example:
+        message: Internal Server Error
+      properties:
+        message:
+          example: Internal Server Error
+          type: string
+      type: object
+    kling-v3-turbo-i2v-request:
+      properties:
+        webhook_url:
+          description: 'Optional callback URL that will receive asynchronous notifications whenever the task changes status. The payload sent to this URL is the same as the corresponding GET endpoint response, but without the data field.
+
+            '
+          example: https://www.example.com/webhook
+          format: uri
+          type: string
+        image:
+          description: 'First-frame image used to start the video. Supports Base64 encoding (including a `data:image/...;base64,...` data URI)
+
+            or a publicly accessible image URL.
+
+
+            **Image requirements:**
+
+            - Minimum: 300x300 pixels
+
+            - Maximum: 50MB file size
+
+            - Aspect ratio: 1:2.5 to 2.5:1
+
+            - Formats: JPG, JPEG, PNG
+
+            - Only the first frame is supported
+
+            '
+          example: https://example.com/my-image.jpg
+          type: string
+        prompt:
+          description: 'Optional text prompt to guide the motion and animation style. If omitted, motion is inferred from the
+
+            source image. Maximum 2500 characters.
+
+
+            **Tips for better results:**
+
+            - Describe the movement, camera behavior, and visual style
+
+            - Add negative descriptions inline (for example, "no text, no blur") to steer the model away from unwanted elements
+
+            '
+          example: The subject slowly turns their head and smiles
+          maxLength: 2500
+          type: string
+        duration:
+          default: '5'
+          description: 'Duration of the generated video in seconds.
+
+
+            **Range:** 3-15 seconds
+
+            '
+          enum:
+          - '3'
+          - '4'
+          - '5'
+          - '6'
+          - '7'
+          - '8'
+          - '9'
+          - '10'
+          - '11'
+          - '12'
+          - '13'
+          - '14'
+          - '15'
+          type: string
+      required:
+      - image
+      type: object
+  responses:
+    401-unauthorized:
+      content:
+        application/json:
+          examples:
+            invalid_api_key:
+              summary: API key is not valid
+              value:
+                message: Invalid API key
+            missing_api_key:
+              summary: API key is not provided
+              value:
+                message: Missing API key
+          schema:
+            $ref: '#/components/schemas/inline_object'
+      description: Unauthorized - The client must authenticate itself to get the requested response.
+    500-internal-server-error:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_2'
+      description: Internal Server Error - The server has encountered a situation it doesn't know how to handle.
+    400-bad-request:
+      content:
+        application/json:
+          examples:
+            invalid_page:
+              summary: Parameter 'page' is not valid
+              value:
+                message: Parameter 'page' must be greater than 0
+            invalid_query:
+              summary: Parameter 'query' is not valid
+              value:
+                message: Parameter 'query' must not be empty
+            invalid_filter:
+              summary: Parameter 'filter' is not valid
+              value:
+                message: Parameter 'filter' is not valid
+            generic_bad_request:
+              summary: Bad Request
+              value:
+                message: Parameter ':attribute' is not valid
+          schema:
+            $ref: '#/components/schemas/inline_object'
+        application/problem+json:
+          examples:
+            invalid_page:
+              summary: Parameter 'page' is not valid
+              value:
+                message: Validation error
+                invalid_params:
+                - field: page
+                  reason: Parameter 'page' must be greater than 0
+                - field: per_page
+                  reason: Parameter 'per_page' must be greater than 0
+          schema:
+            $ref: '#/components/schemas/inline_object_1'
+      description: Bad Request - The server could not understand the request due to invalid syntax.
+    503-service-unavailable:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_3'
+      description: Service Unavailable
+  securitySchemes:
+    magnificApiKey:
+      description: 'Your Magnific API key. Required for authentication. [Learn how to obtain an API key](https://docs.magnific.com/quickstart)
+
+        '
+      in: header
+      name: x-magnific-api-key
+      type: apiKey

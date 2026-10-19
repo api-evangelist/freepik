@@ -1,0 +1,1330 @@
+openapi: 3.2.0
+info:
+  description: The Magnific API is your gateway to a vast collection of high-quality digital resources for your applications and projects. As a leading platform, it offers a wide range of graphics, including vectors, photos, illustrations, icons, PSD templates, and more, all curated by talented designers from around the world.
+  title: Magnific Flows API
+  version: 1.0.0
+servers:
+- description: B2B API Production V1
+  url: https://api.magnific.com
+security:
+- magnificApiKey: []
+tags:
+- name: Flows
+paths:
+  /v1/ai/flows:
+    get:
+      description: 'Returns all flows **published as tools** that the authenticated user can execute.
+
+        Each item includes the flow identifier, name, and tool metadata.
+
+
+        Flows are visual AI pipelines built in Magnific Spaces.
+
+        Each flow chains together multiple AI tools (upscale, generate, edit, etc.) and can be executed via API.
+
+
+        **Use this endpoint to discover** runnable flows, then call the detail endpoint to get input definitions before running them.'
+      operationId: list_flows
+      parameters:
+      - description: Filter flows by name (case-insensitive substring match).
+        example: cartoon
+        in: query
+        name: search
+        required: false
+        schema:
+          maxLength: 200
+          type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/list-200-response'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Flows - List flows
+      tags:
+      - Flows
+  /v1/ai/flows/{flow-id}:
+    get:
+      description: 'Returns the full definition of a flow, including its dynamic inputs and cost.
+
+
+        **Inputs** define what values the caller must provide when running the flow:
+
+        - `creation` type: accepts an image/media URL, base64-encoded data, or an existing creation identifier
+
+        - `text` type: accepts a plain text string (prompt, label, etc.)
+
+        - `number` type: accepts a numeric value
+
+        - `select` type: accepts a value from predefined options
+
+
+        Use each input''s `api_key` field (recommended, human-friendly node name) as the identifier when calling the run endpoint.
+
+        The UUID-based `id` field is still accepted for backward compatibility.
+
+        The `tool_metadata.total_cost` field indicates the credit cost per execution.'
+      operationId: get_flow
+      parameters:
+      - description: Short unique identifier (sqid) of the flow. Discover flow identifiers via GET /v1/ai/flows.
+        in: path
+        name: flow-id
+        required: true
+        schema:
+          example: uqzQLDr2Aw
+          type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/detail-200-response'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '404':
+          description: Flow not found.
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Flows - Get flow definition
+      tags:
+      - Flows
+  /v1/ai/flows/{flow-id}/run:
+    post:
+      description: 'Triggers the execution of a flow. Provide values for all required inputs
+
+        defined in the flow''s definition (see the GET endpoint).
+
+
+        The `inputs` object maps each input''s `api_key` (recommended) or its `id` (UUID, legacy) to its value:
+
+
+        | Input Type | Accepted Values |
+
+        |------------|----------------|
+
+        | `creation` | Image URL (`https://...`), base64-encoded image string, or existing creation identifier |
+
+        | `text` | Plain text string |
+
+        | `number` | Numeric value |
+
+        | `select` | Value from allowed options |
+
+
+        **This endpoint is asynchronous.** It returns immediately with `status: "running"` and a
+
+        `workflow_run_identifier`. Provide a `webhook` URL to receive notifications when the execution
+
+        completes. The webhook receives two events: `initialized` (run started) and `finished`/`failed` (run completed).
+
+
+        The webhook payload for a completed run includes a `result` object containing `images`, `videos`,
+
+        and `audios` arrays with download URLs for the generated assets.'
+      operationId: run_flow
+      parameters:
+      - description: Short unique identifier (sqid) of the flow to execute. Discover flow identifiers via GET /v1/ai/flows.
+        in: path
+        name: flow-id
+        required: true
+        schema:
+          example: uqzQLDr2Aw
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              inputs:
+                image: car in the forest
+              webhook: https://www.example.com/webhook
+            schema:
+              $ref: '#/components/schemas/run-request'
+        required: true
+      responses:
+        '202':
+          $ref: '#/components/responses/run-202-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '404':
+          description: Flow not found.
+        '422':
+          description: Validation error on input values.
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Flows - Run a flow
+      tags:
+      - Flows
+  /v1/ai/flows/runs/{run-id}:
+    get:
+      description: 'Retrieve the current status and results of a flow execution run.
+
+
+        Use this endpoint to **poll** the status of a run after calling the
+
+        `POST /v1/ai/flows/{flow-id}/run` endpoint. The `run_id` path parameter
+
+        corresponds to the `workflow_run_identifier` returned in the run response.
+
+
+        **Polling strategy:**
+
+        - Wait 2-3 seconds after starting the run before the first poll
+
+        - Poll every 3-5 seconds
+
+        - When `status` is `completed`, the `result` field contains download URLs
+
+        - When `status` is `failed`, the `error_message` field describes the failure
+
+
+        **Asset URLs** in the `result` field are temporary and valid for **12 hours**.
+
+
+        **Statuses:**
+
+        | Status | Description |
+
+        |--------|-------------|
+
+        | `pending` | Run is queued but has not started yet |
+
+        | `running` | Flow is executing |
+
+        | `completed` | Finished successfully, `result` is available |
+
+        | `completed_with_errors` | Execution finished but some nodes failed |
+
+        | `failed` | Execution failed, see `error_message` |
+
+        | `cancelled` | Execution was cancelled |'
+      operationId: get_flow_run
+      parameters:
+      - description: 'Unique identifier (SQID) of the flow run. This is the
+
+          `workflow_run_identifier` value returned by the `POST /v1/ai/flows/{flow-id}/run` endpoint.
+
+          '
+        in: path
+        name: run-id
+        required: true
+        schema:
+          example: omps2OH829
+          type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/run-detail-200-response'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '403':
+          $ref: '#/components/responses/403-forbidden'
+        '404':
+          $ref: '#/components/responses/404-not-found'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Flows - Get run status
+      tags:
+      - Flows
+  /v1/ai/me/flows:
+    get:
+      description: 'Returns all flows **owned** by the authenticated user, including drafts and unpublished workflows.
+
+
+        Unlike `GET /v1/ai/flows` which returns only flows published as tools, this endpoint returns
+
+        every flow the user has created — regardless of whether it has been published as a tool.
+
+
+        Each item includes the flow identifier and name.'
+      operationId: list_my_flows
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                success:
+                  $ref: '#/components/examples/200-list-my-flows'
+              schema:
+                $ref: '#/components/schemas/list_my_flows_200_response'
+          description: OK - List of user's flows.
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Flows - List my flows
+      tags:
+      - Flows
+components:
+  schemas:
+    input-definition:
+      description: 'Defines a single input parameter for the flow.
+
+        Use the `api_key` field (recommended) or the `id` field (legacy) as the identifier in the `inputs` object when calling the run endpoint.
+
+        '
+      example:
+        id: input-4050c3f3-8a26-4953-97a8-cb97bceb4816-1
+        api_key: text_prompt
+        key: text_prompt
+        type: text
+        label: 'Text #1'
+        config: null
+        nodeId: 4050c3f3-8a26-4953-97a8-cb97bceb4816
+        default: null
+        required: true
+        presentation:
+          mode: textarea
+          type: text
+      properties:
+        id:
+          description: 'UUID-based identifier for this input. Format: `input-{nodeId}-{n}`.
+
+            Still accepted as a key in the `inputs` object for backward compatibility; prefer `api_key`.
+
+            '
+          example: input-4050c3f3-8a26-4953-97a8-cb97bceb4816-1
+          type: string
+        api_key:
+          description: 'Human-friendly identifier for this input, matching the node name.
+
+            Recommended identifier to use as the key in the `inputs` object when running the flow.
+
+            '
+          example: text_prompt
+          type: string
+        key:
+          deprecated: true
+          description: '(Deprecated) Legacy human-readable key. Superseded by `api_key`; may be absent in newer responses. Prefer `api_key`.
+
+            '
+          example: text_prompt
+          type: string
+        type:
+          description: 'The type of input value expected:
+
+            - `creation`: Image or media file (accepts URL, base64, or creation sqid)
+
+            - `text`: Text prompt or string
+
+            - `number`: Numeric value
+
+            - `select`: Choice from predefined options
+
+            '
+          enum:
+          - creation
+          - text
+          - number
+          - select
+          example: text
+          type: string
+        label:
+          description: Human-readable label for display.
+          example: 'Text #1'
+          type: string
+        config:
+          $ref: '#/components/schemas/input_definition_config'
+        nodeId:
+          description: UUID of the flow node this input feeds into.
+          example: 4050c3f3-8a26-4953-97a8-cb97bceb4816
+          format: uuid
+          type: string
+        default:
+          description: Default value if not provided by the caller. Null means no default.
+        required:
+          description: Whether this input must be provided when running the flow.
+          example: true
+          type: boolean
+        presentation:
+          $ref: '#/components/schemas/input_definition_presentation'
+      required:
+      - id
+      - key
+      - required
+      - type
+      type: object
+    list_my_flows_200_response_data_inner:
+      example:
+        name: My Custom Sketch to Image
+        sqid: uqzQLDr2Aw
+      properties:
+        sqid:
+          description: Short unique identifier of the flow.
+          example: uqzQLDr2Aw
+          type: string
+        name:
+          description: Human-readable name of the flow.
+          example: My Custom Sketch to Image
+          type: string
+      type: object
+    inline_object_1_problem_invalid_params_inner:
+      properties:
+        name:
+          description: Name of the invalid parameter.
+          example: page
+          type: string
+        field:
+          description: Field of the invalid parameter. Mirrors `name`.
+          example: page
+          type: string
+        reason:
+          example: Parameter 'page' must be greater than 0
+          type: string
+      required:
+      - field
+      - name
+      - reason
+      type: object
+    input_definition_presentation:
+      description: 'UI presentation hints for rendering the input.
+
+        Present for `text` type inputs; null or absent for other types.
+
+        '
+      properties:
+        mode:
+          description: The UI control mode (e.g. `textarea`, `input`).
+          example: textarea
+          type: string
+        type:
+          description: The presentation type.
+          example: text
+          type: string
+      type:
+      - object
+      - 'null'
+    run_detail_result:
+      description: 'Execution output. Contains arrays of generated assets grouped by media type.
+
+        Null while the run is still in progress or if the execution failed.
+
+
+        Asset URLs are **temporary** and valid for 12 hours.
+
+        '
+      example:
+        images:
+        - duration: 0.8008281904610115
+          width: 6
+          created_at: 2026-02-11 10:14:15+00:00
+          id: LSFgqqrswO
+          url: https://pikaso.cdnpk.net/private/production/3280037299/render.png?token=...
+          tool: text-to-image
+          height: 1
+        - duration: 0.8008281904610115
+          width: 6
+          created_at: 2026-02-11 10:14:15+00:00
+          id: LSFgqqrswO
+          url: https://pikaso.cdnpk.net/private/production/3280037299/render.png?token=...
+          tool: text-to-image
+          height: 1
+        audios:
+        - duration: 0.8008281904610115
+          width: 6
+          created_at: 2026-02-11 10:14:15+00:00
+          id: LSFgqqrswO
+          url: https://pikaso.cdnpk.net/private/production/3280037299/render.png?token=...
+          tool: text-to-image
+          height: 1
+        - duration: 0.8008281904610115
+          width: 6
+          created_at: 2026-02-11 10:14:15+00:00
+          id: LSFgqqrswO
+          url: https://pikaso.cdnpk.net/private/production/3280037299/render.png?token=...
+          tool: text-to-image
+          height: 1
+        videos:
+        - duration: 0.8008281904610115
+          width: 6
+          created_at: 2026-02-11 10:14:15+00:00
+          id: LSFgqqrswO
+          url: https://pikaso.cdnpk.net/private/production/3280037299/render.png?token=...
+          tool: text-to-image
+          height: 1
+        - duration: 0.8008281904610115
+          width: 6
+          created_at: 2026-02-11 10:14:15+00:00
+          id: LSFgqqrswO
+          url: https://pikaso.cdnpk.net/private/production/3280037299/render.png?token=...
+          tool: text-to-image
+          height: 1
+      properties:
+        images:
+          description: Generated image assets.
+          items:
+            $ref: '#/components/schemas/webhook-result-item'
+          type: array
+        videos:
+          description: Generated video assets.
+          items:
+            $ref: '#/components/schemas/webhook-result-item'
+          type: array
+        audios:
+          description: Generated audio assets.
+          items:
+            $ref: '#/components/schemas/webhook-result-item'
+          type: array
+      type:
+      - object
+      - 'null'
+    inline_object_9:
+      example:
+        data:
+          error_message: error_message
+          result:
+            images:
+            - duration: 0.8008281904610115
+              width: 6
+              created_at: 2026-02-11 10:14:15+00:00
+              id: LSFgqqrswO
+              url: https://pikaso.cdnpk.net/private/production/3280037299/render.png?token=...
+              tool: text-to-image
+              height: 1
+            - duration: 0.8008281904610115
+              width: 6
+              created_at: 2026-02-11 10:14:15+00:00
+              id: LSFgqqrswO
+              url: https://pikaso.cdnpk.net/private/production/3280037299/render.png?token=...
+              tool: text-to-image
+              height: 1
+            audios:
+            - duration: 0.8008281904610115
+              width: 6
+              created_at: 2026-02-11 10:14:15+00:00
+              id: LSFgqqrswO
+              url: https://pikaso.cdnpk.net/private/production/3280037299/render.png?token=...
+              tool: text-to-image
+              height: 1
+            - duration: 0.8008281904610115
+              width: 6
+              created_at: 2026-02-11 10:14:15+00:00
+              id: LSFgqqrswO
+              url: https://pikaso.cdnpk.net/private/production/3280037299/render.png?token=...
+              tool: text-to-image
+              height: 1
+            videos:
+            - duration: 0.8008281904610115
+              width: 6
+              created_at: 2026-02-11 10:14:15+00:00
+              id: LSFgqqrswO
+              url: https://pikaso.cdnpk.net/private/production/3280037299/render.png?token=...
+              tool: text-to-image
+              height: 1
+            - duration: 0.8008281904610115
+              width: 6
+              created_at: 2026-02-11 10:14:15+00:00
+              id: LSFgqqrswO
+              url: https://pikaso.cdnpk.net/private/production/3280037299/render.png?token=...
+              tool: text-to-image
+              height: 1
+          completed_at: 2026-02-25 12:02:00+00:00
+          run_id: omps2OH829
+          started_at: 2026-02-25 12:00:00+00:00
+          app_id: uqzQLDr2Aw
+          status: completed
+      properties:
+        data:
+          $ref: '#/components/schemas/run-detail'
+      required:
+      - data
+      type: object
+    inline_object_7:
+      example:
+        data:
+          inputs:
+          - id: input-4050c3f3-8a26-4953-97a8-cb97bceb4816-1
+            api_key: text_prompt
+            key: text_prompt
+            type: text
+            label: 'Text #1'
+            config: null
+            nodeId: 4050c3f3-8a26-4953-97a8-cb97bceb4816
+            default: null
+            required: true
+            presentation:
+              mode: textarea
+              type: text
+          - id: input-4050c3f3-8a26-4953-97a8-cb97bceb4816-1
+            api_key: text_prompt
+            key: text_prompt
+            type: text
+            label: 'Text #1'
+            config: null
+            nodeId: 4050c3f3-8a26-4953-97a8-cb97bceb4816
+            default: null
+            required: true
+            presentation:
+              mode: textarea
+              type: text
+          name: Sketch to Realism
+          tool_metadata:
+            total_cost: 5
+            icon: workflow
+            translation_key: translation_key
+            description_key: description_key
+            category: general
+            sort_order: 999
+          sqid: uqzQLDr2Aw
+      properties:
+        data:
+          $ref: '#/components/schemas/flow-detail'
+      required:
+      - data
+      type: object
+    run_request_inputs_value:
+      oneOf:
+      - type: string
+      - type: number
+    inline_object_6:
+      example:
+        data:
+        - name: Sketch to Realism
+          tool_metadata:
+            total_cost: 5
+            icon: workflow
+            translation_key: translation_key
+            description_key: description_key
+            category: general
+            sort_order: 999
+          sqid: uqzQLDr2Aw
+        - name: Sketch to Realism
+          tool_metadata:
+            total_cost: 5
+            icon: workflow
+            translation_key: translation_key
+            description_key: description_key
+            category: general
+            sort_order: 999
+          sqid: uqzQLDr2Aw
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/flow-summary'
+          type: array
+      required:
+      - data
+      type: object
+    run-request:
+      properties:
+        inputs:
+          additionalProperties:
+            $ref: '#/components/schemas/run_request_inputs_value'
+          description: 'Map of input identifier to value. Use each input''s `api_key` (recommended) or its `id` (UUID, legacy) as the key — both are accepted.
+
+
+            Value types by input type:
+
+            - `creation` (image/media): URL string, base64-encoded string, or existing creation sqid
+
+            - `text`: Plain text string
+
+            - `number`: Numeric value
+
+            - `select`: Value from allowed options
+
+            '
+          type: object
+        webhook:
+          description: 'Optional callback URL that receives status notifications during execution.
+
+            The webhook receives POST requests with the event payload (see webhook event schema).
+
+            Events are sent when the run starts (`initialized`) and when it finishes (`finished` or `failed`).
+
+            '
+          example: https://www.example.com/webhook
+          format: uri
+          type: string
+      required:
+      - inputs
+      type: object
+    inline_object_1:
+      properties:
+        problem:
+          $ref: '#/components/schemas/inline_object_1_problem'
+      type: object
+    run-status:
+      description: 'Execution status of the flow run:
+
+        - `pending`: Run is queued but has not started yet
+
+        - `running`: Flow is executing
+
+        - `completed`: Finished successfully, result is available
+
+        - `completed_with_errors`: Execution finished but some nodes failed
+
+        - `failed`: Execution failed entirely
+
+        - `cancelled`: Execution was cancelled
+
+        '
+      enum:
+      - pending
+      - running
+      - completed
+      - completed_with_errors
+      - failed
+      - cancelled
+      example: completed
+      type: string
+    inline_object_1_problem:
+      properties:
+        message:
+          example: Validation error
+          type: string
+        invalid_params:
+          items:
+            $ref: '#/components/schemas/inline_object_1_problem_invalid_params_inner'
+          type: array
+      required:
+      - invalid_params
+      - message
+      type: object
+    input_definition_config:
+      description: 'Type-specific configuration.
+
+        For `creation` type: contains `mediaType` (image, video, audio).
+
+        For `select` type: may contain `options`.
+
+        Null when not applicable (e.g. for `text` type).
+
+        '
+      properties:
+        mediaType:
+          description: For `creation` type — the expected media kind.
+          enum:
+          - image
+          - video
+          - audio
+          example: image
+          type: string
+      type:
+      - object
+      - 'null'
+    inline_object_2:
+      example:
+        message: Internal Server Error
+      properties:
+        message:
+          example: Internal Server Error
+          type: string
+      type: object
+    inline_object:
+      example:
+        message: message
+      properties:
+        message:
+          type: string
+      type: object
+    run-detail:
+      description: Status and result of a single flow execution run.
+      example:
+        error_message: error_message
+        result:
+          images:
+          - duration: 0.8008281904610115
+            width: 6
+            created_at: 2026-02-11 10:14:15+00:00
+            id: LSFgqqrswO
+            url: https://pikaso.cdnpk.net/private/production/3280037299/render.png?token=...
+            tool: text-to-image
+            height: 1
+          - duration: 0.8008281904610115
+            width: 6
+            created_at: 2026-02-11 10:14:15+00:00
+            id: LSFgqqrswO
+            url: https://pikaso.cdnpk.net/private/production/3280037299/render.png?token=...
+            tool: text-to-image
+            height: 1
+          audios:
+          - duration: 0.8008281904610115
+            width: 6
+            created_at: 2026-02-11 10:14:15+00:00
+            id: LSFgqqrswO
+            url: https://pikaso.cdnpk.net/private/production/3280037299/render.png?token=...
+            tool: text-to-image
+            height: 1
+          - duration: 0.8008281904610115
+            width: 6
+            created_at: 2026-02-11 10:14:15+00:00
+            id: LSFgqqrswO
+            url: https://pikaso.cdnpk.net/private/production/3280037299/render.png?token=...
+            tool: text-to-image
+            height: 1
+          videos:
+          - duration: 0.8008281904610115
+            width: 6
+            created_at: 2026-02-11 10:14:15+00:00
+            id: LSFgqqrswO
+            url: https://pikaso.cdnpk.net/private/production/3280037299/render.png?token=...
+            tool: text-to-image
+            height: 1
+          - duration: 0.8008281904610115
+            width: 6
+            created_at: 2026-02-11 10:14:15+00:00
+            id: LSFgqqrswO
+            url: https://pikaso.cdnpk.net/private/production/3280037299/render.png?token=...
+            tool: text-to-image
+            height: 1
+        completed_at: 2026-02-25 12:02:00+00:00
+        run_id: omps2OH829
+        started_at: 2026-02-25 12:00:00+00:00
+        app_id: uqzQLDr2Aw
+        status: completed
+      properties:
+        run_id:
+          description: Unique identifier (SQID) for this execution run. Matches the `workflow_run_identifier` returned by the run endpoint.
+          example: omps2OH829
+          type: string
+        status:
+          $ref: '#/components/schemas/run-status'
+        app_id:
+          description: SQID of the flow that was executed. (Field name retained from the underlying execution payload.)
+          example: uqzQLDr2Aw
+          type: string
+        started_at:
+          description: ISO 8601 timestamp when execution started. Null while the run is pending.
+          example: 2026-02-25 12:00:00+00:00
+          format: date-time
+          type:
+          - string
+          - 'null'
+        completed_at:
+          description: ISO 8601 timestamp when execution completed. Null while the run is still in progress.
+          example: 2026-02-25 12:02:00+00:00
+          format: date-time
+          type:
+          - string
+          - 'null'
+        error_message:
+          description: Error details when the execution fails or completes with errors. Null on success.
+          type:
+          - string
+          - 'null'
+          example: null
+        result:
+          $ref: '#/components/schemas/run_detail_result'
+      required:
+      - app_id
+      - completed_at
+      - error_message
+      - result
+      - run_id
+      - started_at
+      - status
+      type: object
+    inline_object_3:
+      example:
+        message: Service Unavailable. Please try again later.
+      properties:
+        message:
+          example: Service Unavailable. Please try again later.
+          type: string
+      type: object
+    tool-metadata:
+      description: Metadata about the tool (UI hints, cost, categorization).
+      example:
+        total_cost: 5
+        icon: workflow
+        translation_key: translation_key
+        description_key: description_key
+        category: general
+        sort_order: 999
+      properties:
+        icon:
+          description: Icon identifier for UI rendering.
+          example: workflow
+          type: string
+        description_key:
+          description: Translation key for the tool description.
+          type:
+          - string
+          - 'null'
+        translation_key:
+          description: Translation key for the tool name.
+          type:
+          - string
+          - 'null'
+        category:
+          description: Category for grouping tools.
+          example: general
+          type: string
+        sort_order:
+          description: Display order within category.
+          example: 999
+          type: integer
+        total_cost:
+          description: Total credit cost per execution (sum of all workflow nodes).
+          example: 5
+          type: integer
+      type: object
+    list_my_flows_200_response:
+      example:
+        data:
+        - name: My Custom Sketch to Image
+          sqid: uqzQLDr2Aw
+        - name: My Custom Sketch to Image
+          sqid: uqzQLDr2Aw
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/list_my_flows_200_response_data_inner'
+          type: array
+      required:
+      - data
+      type: object
+    inline_object_8:
+      example:
+        workflow_run_identifier: vCrK3Aa47y
+        status: running
+      properties:
+        status:
+          description: Current execution status.
+          enum:
+          - running
+          example: running
+          type: string
+        workflow_run_identifier:
+          description: Unique identifier for this flow execution run. Matches the `run_id` in webhook events.
+          example: vCrK3Aa47y
+          type: string
+      required:
+      - status
+      - workflow_run_identifier
+      type: object
+    flow-summary:
+      description: Summary of a flow as returned in list endpoints.
+      example:
+        name: Sketch to Realism
+        tool_metadata:
+          total_cost: 5
+          icon: workflow
+          translation_key: translation_key
+          description_key: description_key
+          category: general
+          sort_order: 999
+        sqid: uqzQLDr2Aw
+      properties:
+        sqid:
+          description: Short unique identifier of the flow.
+          example: uqzQLDr2Aw
+          type: string
+        name:
+          description: Human-readable name of the flow.
+          example: Sketch to Realism
+          type: string
+        tool_metadata:
+          $ref: '#/components/schemas/tool-metadata'
+      type: object
+    flow-detail:
+      description: Full definition of a flow including dynamic inputs and cost.
+      example:
+        inputs:
+        - id: input-4050c3f3-8a26-4953-97a8-cb97bceb4816-1
+          api_key: text_prompt
+          key: text_prompt
+          type: text
+          label: 'Text #1'
+          config: null
+          nodeId: 4050c3f3-8a26-4953-97a8-cb97bceb4816
+          default: null
+          required: true
+          presentation:
+            mode: textarea
+            type: text
+        - id: input-4050c3f3-8a26-4953-97a8-cb97bceb4816-1
+          api_key: text_prompt
+          key: text_prompt
+          type: text
+          label: 'Text #1'
+          config: null
+          nodeId: 4050c3f3-8a26-4953-97a8-cb97bceb4816
+          default: null
+          required: true
+          presentation:
+            mode: textarea
+            type: text
+        name: Sketch to Realism
+        tool_metadata:
+          total_cost: 5
+          icon: workflow
+          translation_key: translation_key
+          description_key: description_key
+          category: general
+          sort_order: 999
+        sqid: uqzQLDr2Aw
+      properties:
+        sqid:
+          description: Short unique identifier.
+          example: uqzQLDr2Aw
+          type: string
+        name:
+          description: Human-readable name set by the creator.
+          example: Sketch to Realism
+          type: string
+        inputs:
+          description: 'Dynamic input definitions. Each input corresponds to an entry node
+
+            in the flow. The caller must provide values for all `required`
+
+            inputs when calling the run endpoint.
+
+            '
+          items:
+            $ref: '#/components/schemas/input-definition'
+          type: array
+        tool_metadata:
+          $ref: '#/components/schemas/tool-metadata'
+      required:
+      - inputs
+      - name
+      - sqid
+      type: object
+    webhook-result-item:
+      description: A single generated asset from the flow execution.
+      example:
+        duration: 0.8008281904610115
+        width: 6
+        created_at: 2026-02-11 10:14:15+00:00
+        id: LSFgqqrswO
+        url: https://pikaso.cdnpk.net/private/production/3280037299/render.png?token=...
+        tool: text-to-image
+        height: 1
+      properties:
+        id:
+          description: Unique identifier of the generated asset.
+          example: LSFgqqrswO
+          type: string
+        url:
+          description: Download URL for the generated asset.
+          example: https://pikaso.cdnpk.net/private/production/3280037299/render.png?token=...
+          format: uri
+          type: string
+        tool:
+          description: The AI tool that produced this asset (e.g. `text-to-image`, `image-upscaler`).
+          example: text-to-image
+          type: string
+        duration:
+          description: Duration in seconds (for video/audio assets). Null for images.
+          type:
+          - number
+          - 'null'
+        width:
+          description: Width in pixels.
+          type:
+          - integer
+          - 'null'
+        height:
+          description: Height in pixels.
+          type:
+          - integer
+          - 'null'
+        created_at:
+          description: ISO 8601 creation timestamp of the asset.
+          example: 2026-02-11 10:14:15+00:00
+          format: date-time
+          type: string
+      type: object
+  responses:
+    401-unauthorized:
+      content:
+        application/json:
+          examples:
+            invalid_api_key:
+              summary: API key is not valid
+              value:
+                message: Invalid API key
+            missing_api_key:
+              summary: API key is not provided
+              value:
+                message: Missing API key
+          schema:
+            $ref: '#/components/schemas/inline_object'
+      description: Unauthorized - The client must authenticate itself to get the requested response.
+    list-200-response:
+      content:
+        application/json:
+          example:
+            data:
+            - sqid: uqzQLDr2Aw
+              name: Sketch to Realism
+              tool_metadata:
+                icon: workflow
+                description_key: null
+                translation_key: null
+                category: general
+                sort_order: 999
+                total_cost: 5
+            - sqid: n0LYQDBl58
+              name: Product Photoshoot
+              tool_metadata:
+                icon: workflow
+                description_key: null
+                translation_key: null
+                category: general
+                sort_order: 999
+                total_cost: 8
+            - sqid: hCivqLJltZ
+              name: Anime Style Transfer
+              tool_metadata:
+                icon: workflow
+                description_key: null
+                translation_key: null
+                category: general
+                sort_order: 999
+                total_cost: 5
+          schema:
+            $ref: '#/components/schemas/inline_object_6'
+      description: OK - List of flows.
+    detail-200-response:
+      content:
+        application/json:
+          example:
+            data:
+              sqid: uqzQLDr2Aw
+              name: Sketch to Realism
+              inputs:
+              - id: input-a1b2c3d4-e5f6-7890-abcd-ef1234567890-1
+                api_key: image
+                key: image
+                type: creation
+                label: Image
+                config:
+                  mediaType: image
+                nodeId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                default: null
+                required: true
+                presentation: null
+              tool_metadata:
+                icon: workflow
+                description_key: null
+                translation_key: null
+                category: general
+                sort_order: 999
+                total_cost: 5
+          schema:
+            $ref: '#/components/schemas/inline_object_7'
+      description: OK - Flow definition with inputs and cost.
+    403-forbidden:
+      content:
+        application/json:
+          examples:
+            user_not_authorized:
+              summary: User has not privileges to access some resource
+              value:
+                message: User is not authorized to access this resource
+            user_not_owner:
+              summary: Collection author id is different from current user's id
+              value:
+                message: User is not owner of requested collection
+            item_is_premium:
+              summary: The user cannot download this item because it is premium
+              value:
+                message: The user cannot download this item because it is premium
+            creator_not_authorized:
+              summary: Creator has not privileges to access some resource
+              value:
+                message: Creator is not authorized to access this resource
+            transaction_stats_access_denied:
+              summary: Group admin is not allowed to access the requested transaction stats
+              value:
+                message: Access denied to transaction stats for the current role
+            credit_filter_not_allowed:
+              summary: Group admin tried to use a credit-usage filter dimension not allowed for their role
+              value:
+                message: Credit filter not allowed for the current role
+          schema:
+            $ref: '#/components/schemas/inline_object'
+      description: Forbidden - The client does not have permission to access the requested resource.
+    run-202-response:
+      content:
+        application/json:
+          example:
+            status: running
+            workflow_run_identifier: vCrK3Aa47y
+          schema:
+            $ref: '#/components/schemas/inline_object_8'
+      description: Accepted - Flow execution started. Use the webhook to receive results.
+    503-service-unavailable:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_3'
+      description: Service Unavailable
+    400-bad-request:
+      content:
+        application/json:
+          examples:
+            invalid_page:
+              summary: Parameter 'page' is not valid
+              value:
+                message: Parameter 'page' must be greater than 0
+            invalid_query:
+              summary: Parameter 'query' is not valid
+              value:
+                message: Parameter 'query' must not be empty
+            invalid_filter:
+              summary: Parameter 'filter' is not valid
+              value:
+                message: Parameter 'filter' is not valid
+            generic_bad_request:
+              summary: Bad Request
+              value:
+                message: Parameter ':attribute' is not valid
+          schema:
+            $ref: '#/components/schemas/inline_object'
+        application/problem+json:
+          examples:
+            invalid_page:
+              summary: Parameter 'page' is not valid
+              value:
+                message: Validation error
+                invalid_params:
+                - field: page
+                  reason: Parameter 'page' must be greater than 0
+                - field: per_page
+                  reason: Parameter 'per_page' must be greater than 0
+          schema:
+            $ref: '#/components/schemas/inline_object_1'
+      description: Bad Request - The server could not understand the request due to invalid syntax.
+    404-not-found:
+      content:
+        application/json:
+          examples:
+            ai_resource_not_found:
+              summary: AI resource with provided id does not exist
+              value:
+                message: AI resource not found
+            collection_not_found:
+              summary: Collection with provided id does not exist
+              value:
+                message: Collection not found
+            resource_not_found:
+              summary: Resource with provided id does not exist
+              value:
+                message: Resource not found
+            resources_not_found:
+              summary: Resources not found
+              value:
+                message: Resources not found
+            user_not_found:
+              summary: User with provided id does not exist
+              value:
+                message: User not found
+            video_not_found:
+              summary: Video with provided id does not exist
+              value:
+                message: Video not found
+            video_assets_not_found:
+              summary: Video with provided id has not associated assets
+              value:
+                message: Video not found
+            icon_not_found:
+              summary: Icon with provided id does not exist
+              value:
+                message: Icon not found
+            author_not_found:
+              summary: Author with provided id does not exist
+              value:
+                message: Author not found
+            developer_not_found:
+              summary: Developer with provided email does not exist
+              value:
+                message: Developer not found
+            country_not_found:
+              summary: Country with provided code does not exist
+              value:
+                message: Country not found
+            generic_not_found:
+              summary: Not Found
+              value:
+                message: Not found
+          schema:
+            $ref: '#/components/schemas/inline_object'
+      description: Not Found - The server can not find the requested resource.
+    500-internal-server-error:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_2'
+      description: Internal Server Error - The server has encountered a situation it doesn't know how to handle.
+    run-detail-200-response:
+      content:
+        application/json:
+          examples:
+            completed:
+              summary: Completed run with image results
+              value:
+                data:
+                  run_id: omps2OH829
+                  status: completed
+                  app_id: uqzQLDr2Aw
+                  started_at: 2026-02-25 12:00:00+00:00
+                  completed_at: 2026-02-25 12:02:00+00:00
+                  error_message: null
+                  result:
+                    images:
+                    - id: abc123
+                      url: https://pikaso.cdnpk.net/private/production/1234567890/render.png?token=exp_1234567890~hmac_abc123
+                      tool: text-to-image
+                      duration: null
+                      width: 1024
+                      height: 1024
+                      created_at: 2026-02-25 12:02:00+00:00
+                    videos: []
+                    audios: []
+            running:
+              summary: Run still in progress
+              value:
+                data:
+                  run_id: omps2OH829
+                  status: running
+                  app_id: uqzQLDr2Aw
+                  started_at: 2026-02-25 12:00:00+00:00
+                  completed_at: null
+                  error_message: null
+                  result: null
+            failed:
+              summary: Failed run
+              value:
+                data:
+                  run_id: omps2OH829
+                  status: failed
+                  app_id: uqzQLDr2Aw
+                  started_at: 2026-02-25 12:00:00+00:00
+                  completed_at: 2026-02-25 12:01:30+00:00
+                  error_message: 'Node ''image-upscaler'' failed: input image exceeds maximum resolution'
+                  result: null
+          schema:
+            $ref: '#/components/schemas/inline_object_9'
+      description: OK - Run status and result.
+  examples:
+    200-list-my-flows:
+      summary: Success - List of user's own flows
+      value:
+        data:
+        - sqid: uqzQLDr2Aw
+          name: My Custom Sketch to Image
+        - sqid: n0LYQDBl58
+          name: Product Background Remover
+        - sqid: hCivqLJltZ
+          name: Anime Style Transfer
+  securitySchemes:
+    magnificApiKey:
+      description: 'Your Magnific API key. Required for authentication. [Learn how to obtain an API key](https://docs.magnific.com/quickstart)
+
+        '
+      in: header
+      name: x-magnific-api-key
+      type: apiKey

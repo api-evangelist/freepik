@@ -1,0 +1,499 @@
+openapi: 3.2.0
+info:
+  description: The Magnific API is your gateway to a vast collection of high-quality digital resources for your applications and projects. As a leading platform, it offers a wide range of graphics, including vectors, photos, illustrations, icons, PSD templates, and more, all curated by talented designers from around the world.
+  title: Magnific Creations API
+  version: 1.0.0
+servers:
+- description: B2B API Production V1
+  url: https://api.magnific.com
+security:
+- magnificApiKey: []
+tags:
+- name: Creations
+paths:
+  /v1/creations/recent:
+    get:
+      description: Returns the most recent files (creations) belonging to the user identified by the API key, enriched with the metadata of the creation that produced each file. Results are paginated and ordered from newest to oldest.
+      operationId: getRecentCreations
+      parameters:
+      - description: Results per page. It must be greater than 0.
+        example: 100
+        in: query
+        name: per_page
+        schema:
+          type: integer
+      - description: Page number. It must be greater than 0.
+        example: 1
+        in: query
+        name: page
+        required: false
+        schema:
+          type: integer
+      - description: Filter the creations by the tool that produced them.
+        example: text-to-image
+        in: query
+        name: tool_name
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getRecentCreations_200_response'
+          description: OK Response
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '403':
+          $ref: '#/components/responses/403-forbidden'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+      security:
+      - magnificApiKey: []
+      summary: Get the user's most recent creations
+      tags:
+      - Creations
+components:
+  schemas:
+    inline_object:
+      example:
+        message: message
+      properties:
+        message:
+          type: string
+      type: object
+    pagination:
+      description: Metainformation about pagination
+      example:
+        per_page: 1
+        total: 1
+        last_page: 1
+        current_page: 1
+      properties:
+        current_page:
+          description: The current page.
+          example: 1
+          type: integer
+        per_page:
+          description: The limit of resources per page.
+          example: 1
+          type: integer
+        last_page:
+          description: The total number of pages.
+          example: 1
+          type: integer
+        total:
+          description: The total number of resources.
+          example: 1
+          type: integer
+      type: object
+    inline_object_1_problem_invalid_params_inner:
+      properties:
+        name:
+          description: Name of the invalid parameter.
+          example: page
+          type: string
+        field:
+          description: Field of the invalid parameter. Mirrors `name`.
+          example: page
+          type: string
+        reason:
+          example: Parameter 'page' must be greater than 0
+          type: string
+      required:
+      - field
+      - name
+      - reason
+      type: object
+    inline_object_1:
+      properties:
+        problem:
+          $ref: '#/components/schemas/inline_object_1_problem'
+      type: object
+    getRecentCreations_200_response:
+      example:
+        data:
+        - reference: 4fef9987-75d0-44d1-b336-65f42f883bff
+          tool_name: text-to-image
+          folder_reference: 1e041aff-d0cf-48e0-a424-e8b2853ea8f8
+          thumbnail:
+            url: https://cdn.freepik.com/thumbnails/8421.jpg
+          updated_at: 2023-03-07 23:05:26+00:00
+          user_id: 159327
+          name: My awesome creation
+          created_at: 2023-03-07 23:05:26+00:00
+          external_id: '8421'
+          id: 1337
+          folder_id: 98764
+          creation:
+            preview: https://openapi-generator.tech
+            identifier: a1b2c3d4
+            metadata: '{}'
+            nsfw: false
+            raw: https://openapi-generator.tech
+            created_at: 2023-03-07 23:05:26+00:00
+            tool: text-to-image
+            url: https://cdn.freepik.com/creations/8421.png
+            public: false
+            user_id: 159327
+            large_preview: https://openapi-generator.tech
+            id: 8421
+            family: image
+            status: completed
+        - reference: 4fef9987-75d0-44d1-b336-65f42f883bff
+          tool_name: text-to-image
+          folder_reference: 1e041aff-d0cf-48e0-a424-e8b2853ea8f8
+          thumbnail:
+            url: https://cdn.freepik.com/thumbnails/8421.jpg
+          updated_at: 2023-03-07 23:05:26+00:00
+          user_id: 159327
+          name: My awesome creation
+          created_at: 2023-03-07 23:05:26+00:00
+          external_id: '8421'
+          id: 1337
+          folder_id: 98764
+          creation:
+            preview: https://openapi-generator.tech
+            identifier: a1b2c3d4
+            metadata: '{}'
+            nsfw: false
+            raw: https://openapi-generator.tech
+            created_at: 2023-03-07 23:05:26+00:00
+            tool: text-to-image
+            url: https://cdn.freepik.com/creations/8421.png
+            public: false
+            user_id: 159327
+            large_preview: https://openapi-generator.tech
+            id: 8421
+            family: image
+            status: completed
+        meta:
+          pagination:
+            per_page: 1
+            total: 1
+            last_page: 1
+            current_page: 1
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/recent_creation'
+          type: array
+        meta:
+          $ref: '#/components/schemas/getRecentCreations_200_response_meta'
+      type: object
+    recent_creation:
+      description: A user file enriched with the metadata of its creation.
+      example:
+        reference: 4fef9987-75d0-44d1-b336-65f42f883bff
+        tool_name: text-to-image
+        folder_reference: 1e041aff-d0cf-48e0-a424-e8b2853ea8f8
+        thumbnail:
+          url: https://cdn.freepik.com/thumbnails/8421.jpg
+        updated_at: 2023-03-07 23:05:26+00:00
+        user_id: 159327
+        name: My awesome creation
+        created_at: 2023-03-07 23:05:26+00:00
+        external_id: '8421'
+        id: 1337
+        folder_id: 98764
+        creation:
+          preview: https://openapi-generator.tech
+          identifier: a1b2c3d4
+          metadata: '{}'
+          nsfw: false
+          raw: https://openapi-generator.tech
+          created_at: 2023-03-07 23:05:26+00:00
+          tool: text-to-image
+          url: https://cdn.freepik.com/creations/8421.png
+          public: false
+          user_id: 159327
+          large_preview: https://openapi-generator.tech
+          id: 8421
+          family: image
+          status: completed
+      properties:
+        id:
+          description: The ID of the file.
+          example: 1337
+          type: integer
+        reference:
+          description: Reference id of the file.
+          example: 4fef9987-75d0-44d1-b336-65f42f883bff
+          format: uuid
+          type: string
+        user_id:
+          description: The ID of the owner user.
+          example: 159327
+          type: integer
+        folder_id:
+          description: The id of the folder where the file is located.
+          example: 98764
+          type:
+          - integer
+          - 'null'
+        folder_reference:
+          description: The reference of the folder where the file is located.
+          example: 1e041aff-d0cf-48e0-a424-e8b2853ea8f8
+          format: uuid
+          type:
+          - string
+          - 'null'
+        name:
+          description: The name of the file.
+          example: My awesome creation
+          type: string
+        external_id:
+          description: The ID of the file on the external tool (creation id).
+          example: '8421'
+          type:
+          - string
+          - 'null'
+        thumbnail:
+          $ref: '#/components/schemas/recent_creation_thumbnail'
+        tool_name:
+          description: The tool that produced the file.
+          example: text-to-image
+          type:
+          - string
+          - 'null'
+        created_at:
+          description: The date when the file was created.
+          example: 2023-03-07 23:05:26+00:00
+          format: date-time
+          type: string
+        updated_at:
+          description: The date when the file was updated.
+          example: 2023-03-07 23:05:26+00:00
+          format: date-time
+          type: string
+        creation:
+          $ref: '#/components/schemas/creation'
+      type: object
+    inline_object_1_problem:
+      properties:
+        message:
+          example: Validation error
+          type: string
+        invalid_params:
+          items:
+            $ref: '#/components/schemas/inline_object_1_problem_invalid_params_inner'
+          type: array
+      required:
+      - invalid_params
+      - message
+      type: object
+    recent_creation_thumbnail:
+      description: Thumbnail of the file.
+      example:
+        url: https://cdn.freepik.com/thumbnails/8421.jpg
+      properties:
+        url:
+          example: https://cdn.freepik.com/thumbnails/8421.jpg
+          format: uri
+          type: string
+      type:
+      - object
+      - 'null'
+    getRecentCreations_200_response_meta:
+      example:
+        pagination:
+          per_page: 1
+          total: 1
+          last_page: 1
+          current_page: 1
+      properties:
+        pagination:
+          $ref: '#/components/schemas/pagination'
+      type: object
+    inline_object_2:
+      example:
+        message: Internal Server Error
+      properties:
+        message:
+          example: Internal Server Error
+          type: string
+      type: object
+    creation:
+      description: 'Metadata of the creation that produced the file. Present only when the file is linked to a creation owned by the user.
+
+        '
+      example:
+        preview: https://openapi-generator.tech
+        identifier: a1b2c3d4
+        metadata: '{}'
+        nsfw: false
+        raw: https://openapi-generator.tech
+        created_at: 2023-03-07 23:05:26+00:00
+        tool: text-to-image
+        url: https://cdn.freepik.com/creations/8421.png
+        public: false
+        user_id: 159327
+        large_preview: https://openapi-generator.tech
+        id: 8421
+        family: image
+        status: completed
+      properties:
+        id:
+          example: 8421
+          type: integer
+        identifier:
+          description: Public short identifier of the creation.
+          example: a1b2c3d4
+          type: string
+        family:
+          example: image
+          type:
+          - string
+          - 'null'
+        tool:
+          example: text-to-image
+          type: string
+        url:
+          description: Temporary URL of the creation media.
+          example: https://cdn.freepik.com/creations/8421.png
+          format: uri
+          type:
+          - string
+          - 'null'
+        raw:
+          description: Temporary URL of the raw (original) media.
+          format: uri
+          type:
+          - string
+          - 'null'
+        preview:
+          description: Temporary URL of the preview media.
+          format: uri
+          type:
+          - string
+          - 'null'
+        large_preview:
+          description: Temporary URL of the large preview media.
+          format: uri
+          type:
+          - string
+          - 'null'
+        public:
+          example: false
+          type: boolean
+        nsfw:
+          example: false
+          type: boolean
+        status:
+          example: completed
+          type: string
+        user_id:
+          example: 159327
+          type: integer
+        created_at:
+          example: 2023-03-07 23:05:26+00:00
+          format: date-time
+          type: string
+        metadata:
+          description: Tool-specific metadata of the creation.
+          type:
+          - object
+          - 'null'
+      type:
+      - object
+      - 'null'
+  responses:
+    401-unauthorized:
+      content:
+        application/json:
+          examples:
+            invalid_api_key:
+              summary: API key is not valid
+              value:
+                message: Invalid API key
+            missing_api_key:
+              summary: API key is not provided
+              value:
+                message: Missing API key
+          schema:
+            $ref: '#/components/schemas/inline_object'
+      description: Unauthorized - The client must authenticate itself to get the requested response.
+    403-forbidden:
+      content:
+        application/json:
+          examples:
+            user_not_authorized:
+              summary: User has not privileges to access some resource
+              value:
+                message: User is not authorized to access this resource
+            user_not_owner:
+              summary: Collection author id is different from current user's id
+              value:
+                message: User is not owner of requested collection
+            item_is_premium:
+              summary: The user cannot download this item because it is premium
+              value:
+                message: The user cannot download this item because it is premium
+            creator_not_authorized:
+              summary: Creator has not privileges to access some resource
+              value:
+                message: Creator is not authorized to access this resource
+            transaction_stats_access_denied:
+              summary: Group admin is not allowed to access the requested transaction stats
+              value:
+                message: Access denied to transaction stats for the current role
+            credit_filter_not_allowed:
+              summary: Group admin tried to use a credit-usage filter dimension not allowed for their role
+              value:
+                message: Credit filter not allowed for the current role
+          schema:
+            $ref: '#/components/schemas/inline_object'
+      description: Forbidden - The client does not have permission to access the requested resource.
+    500-internal-server-error:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_2'
+      description: Internal Server Error - The server has encountered a situation it doesn't know how to handle.
+    400-bad-request:
+      content:
+        application/json:
+          examples:
+            invalid_page:
+              summary: Parameter 'page' is not valid
+              value:
+                message: Parameter 'page' must be greater than 0
+            invalid_query:
+              summary: Parameter 'query' is not valid
+              value:
+                message: Parameter 'query' must not be empty
+            invalid_filter:
+              summary: Parameter 'filter' is not valid
+              value:
+                message: Parameter 'filter' is not valid
+            generic_bad_request:
+              summary: Bad Request
+              value:
+                message: Parameter ':attribute' is not valid
+          schema:
+            $ref: '#/components/schemas/inline_object'
+        application/problem+json:
+          examples:
+            invalid_page:
+              summary: Parameter 'page' is not valid
+              value:
+                message: Validation error
+                invalid_params:
+                - field: page
+                  reason: Parameter 'page' must be greater than 0
+                - field: per_page
+                  reason: Parameter 'per_page' must be greater than 0
+          schema:
+            $ref: '#/components/schemas/inline_object_1'
+      description: Bad Request - The server could not understand the request due to invalid syntax.
+  securitySchemes:
+    magnificApiKey:
+      description: 'Your Magnific API key. Required for authentication. [Learn how to obtain an API key](https://docs.magnific.com/quickstart)
+
+        '
+      in: header
+      name: x-magnific-api-key
+      type: apiKey

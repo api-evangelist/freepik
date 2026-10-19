@@ -1,0 +1,461 @@
+openapi: 3.2.0
+info:
+  description: The Magnific API is your gateway to a vast collection of high-quality digital resources for your applications and projects. As a leading platform, it offers a wide range of graphics, including vectors, photos, illustrations, icons, PSD templates, and more, all curated by talented designers from around the world.
+  title: Magnific Video Upscaler Topaz API
+  version: 1.0.0
+servers:
+- description: B2B API Production V1
+  url: https://api.magnific.com
+security:
+- magnificApiKey: []
+tags:
+- name: video-upscaler-topaz
+paths:
+  /v1/ai/video-upscaler-topaz:
+    get:
+      description: Returns a list of all video upscaler topaz tasks. Each task includes its ID, current status, and output URL if completed.
+      operationId: getAiVideoUpscalerTopazTasks
+      responses:
+        '200':
+          $ref: '#/components/responses/task-list-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Video Upscaler Topaz - List tasks
+      tags:
+      - video-upscaler-topaz
+    post:
+      description: 'Upscales a video with Topaz Starlight generative enhancement.
+
+        Supports output resolutions of 720p, 1k, 2k, or 4k, an optional frame-rate change with AI frame interpolation, and noise control.'
+      operationId: postAiVideoUpscalerTopaz
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/request-content_6'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/get_style_transfer_task_status_200_response'
+          description: OK - Task created.
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Video Upscaler Topaz - Upscale video
+      tags:
+      - video-upscaler-topaz
+  /v1/ai/video-upscaler-topaz/{task-id}:
+    get:
+      description: Returns the current status and output URL of a specific video upscaler topaz task. The output URL is included only if the task has completed successfully.
+      operationId: getAiVideoUpscalerTopazTask
+      parameters:
+      - description: ID of the task
+        in: path
+        name: task-id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Video Upscaler Topaz - Get task status
+      tags:
+      - video-upscaler-topaz
+components:
+  schemas:
+    inline_object_4:
+      example:
+        data:
+          generated:
+          - https://openapi-generator.tech
+          - https://openapi-generator.tech
+          task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: CREATED
+      properties:
+        data:
+          $ref: '#/components/schemas/task-detail_1'
+      required:
+      - data
+      type: object
+    inline_object_1_problem_invalid_params_inner:
+      properties:
+        name:
+          description: Name of the invalid parameter.
+          example: page
+          type: string
+        field:
+          description: Field of the invalid parameter. Mirrors `name`.
+          example: page
+          type: string
+        reason:
+          example: Parameter 'page' must be greater than 0
+          type: string
+      required:
+      - field
+      - name
+      - reason
+      type: object
+    task:
+      example:
+        task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        status: CREATED
+      properties:
+        task_id:
+          description: Task identifier
+          format: uuid
+          type: string
+        status:
+          description: Task status
+          enum:
+          - CREATED
+          - IN_PROGRESS
+          - COMPLETED
+          - FAILED
+          type: string
+      required:
+      - status
+      - task_id
+      type: object
+    frame-interpolation:
+      default: apollo
+      description: 'Frame interpolation model used when `target_fps` differs from the source frame rate:
+
+        - `apollo`: recommended for most videos (default)
+
+        - `chronos`: optimized for slow-motion and large frame-rate changes
+
+        '
+      enum:
+      - apollo
+      - chronos
+      type: string
+    inline_object_1:
+      properties:
+        problem:
+          $ref: '#/components/schemas/inline_object_1_problem'
+      type: object
+    inline_object_1_problem:
+      properties:
+        message:
+          example: Validation error
+          type: string
+        invalid_params:
+          items:
+            $ref: '#/components/schemas/inline_object_1_problem_invalid_params_inner'
+          type: array
+      required:
+      - invalid_params
+      - message
+      type: object
+    inline_object_2:
+      example:
+        message: Internal Server Error
+      properties:
+        message:
+          example: Internal Server Error
+          type: string
+      type: object
+    resolution_2:
+      default: 2k
+      description: 'Output resolution for the video upscaling. The aspect ratio of the source video is preserved:
+
+        - `720p`: HD output
+
+        - `1k`: Standard definition output
+
+        - `2k`: High definition output (default)
+
+        - `4k`: Ultra high definition output
+
+        '
+      enum:
+      - 720p
+      - 1k
+      - 2k
+      - 4k
+      type: string
+    inline_object:
+      example:
+        message: message
+      properties:
+        message:
+          type: string
+      type: object
+    request-content_6:
+      properties:
+        video:
+          description: 'Source video to upscale. A publicly accessible HTTPS URL pointing to the video, or an uploaded file reference (`upl_...`).
+
+            '
+          type: string
+        enhancement_model:
+          $ref: '#/components/schemas/enhancement-model'
+        resolution:
+          $ref: '#/components/schemas/resolution_2'
+        target_fps:
+          description: 'Target output frame rate. When it differs from the source frame rate, AI frame interpolation is applied (see `frame_interpolation`). Omit to keep the source frame rate.
+
+            Note: frame interpolation requires a target of at least 15 fps.
+
+            '
+          maximum: 60
+          minimum: 1
+          type: integer
+        frame_interpolation:
+          $ref: '#/components/schemas/frame-interpolation'
+        noise:
+          default: 0
+          description: 'Noise reduction / addition intensity applied by the enhancement model.
+
+            Valid values range from 0 to 1. Default is 0.
+
+            '
+          maximum: 1
+          minimum: 0
+          type: number
+        webhook_url:
+          description: 'Optional callback URL that will receive asynchronous notifications when the upscaling task completes.
+
+            The webhook will be called with the task status and the upscaled video URL.
+
+            '
+          format: uri
+          type: string
+      required:
+      - enhancement_model
+      - video
+      type: object
+    enhancement-model:
+      default: starlight_precise_2_5
+      description: 'Topaz Starlight enhancement model:
+
+        - `starlight_precise_2_5`: highest-quality generative upscaler (default)
+
+        - `starlight_fast_2`: faster generative upscaler with a slight trade-off in quality
+
+        '
+      enum:
+      - starlight_precise_2_5
+      - starlight_fast_2
+      type: string
+    get_style_transfer_task_status_200_response:
+      example:
+        data:
+          generated:
+          - https://openapi-generator.tech
+          - https://openapi-generator.tech
+          task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: CREATED
+      properties:
+        data:
+          $ref: '#/components/schemas/task-detail'
+      required:
+      - data
+      type: object
+    inline_object_3:
+      example:
+        message: Service Unavailable. Please try again later.
+      properties:
+        message:
+          example: Service Unavailable. Please try again later.
+          type: string
+      type: object
+    get_all_style_transfer_tasks_200_response:
+      example:
+        data:
+        - task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: CREATED
+        - task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: CREATED
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/task'
+          type: array
+      required:
+      - data
+      type: object
+    task-detail:
+      allOf:
+      - $ref: '#/components/schemas/task'
+      - properties:
+          generated:
+            items:
+              description: URL of the generated image
+              format: uri
+              type: string
+            type: array
+        required:
+        - generated
+        type: object
+      example:
+        generated:
+        - https://openapi-generator.tech
+        - https://openapi-generator.tech
+        task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        status: CREATED
+    task-detail_1:
+      allOf:
+      - $ref: '#/components/schemas/task'
+      - properties:
+          generated:
+            items:
+              description: URL of the generated image
+              format: uri
+              type: string
+            type: array
+        required:
+        - generated
+        type: object
+      example:
+        generated:
+        - https://openapi-generator.tech
+        - https://openapi-generator.tech
+        task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        status: CREATED
+  responses:
+    401-unauthorized:
+      content:
+        application/json:
+          examples:
+            invalid_api_key:
+              summary: API key is not valid
+              value:
+                message: Invalid API key
+            missing_api_key:
+              summary: API key is not provided
+              value:
+                message: Missing API key
+          schema:
+            $ref: '#/components/schemas/inline_object'
+      description: Unauthorized - The client must authenticate itself to get the requested response.
+    503-service-unavailable:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_3'
+      description: Service Unavailable
+    task-detail-200-default-response:
+      content:
+        application/json:
+          examples:
+            success - created task:
+              $ref: '#/components/examples/200-task-created'
+            success - in progress task:
+              $ref: '#/components/examples/200-task-in-progress'
+            success - completed task:
+              $ref: '#/components/examples/200-task-completed'
+            success - failed task:
+              $ref: '#/components/examples/200-task-failed'
+          schema:
+            $ref: '#/components/schemas/inline_object_4'
+      description: OK - The task exists and the status is returned
+    400-bad-request:
+      content:
+        application/json:
+          examples:
+            invalid_page:
+              summary: Parameter 'page' is not valid
+              value:
+                message: Parameter 'page' must be greater than 0
+            invalid_query:
+              summary: Parameter 'query' is not valid
+              value:
+                message: Parameter 'query' must not be empty
+            invalid_filter:
+              summary: Parameter 'filter' is not valid
+              value:
+                message: Parameter 'filter' is not valid
+            generic_bad_request:
+              summary: Bad Request
+              value:
+                message: Parameter ':attribute' is not valid
+          schema:
+            $ref: '#/components/schemas/inline_object'
+        application/problem+json:
+          examples:
+            invalid_page:
+              summary: Parameter 'page' is not valid
+              value:
+                message: Validation error
+                invalid_params:
+                - field: page
+                  reason: Parameter 'page' must be greater than 0
+                - field: per_page
+                  reason: Parameter 'per_page' must be greater than 0
+          schema:
+            $ref: '#/components/schemas/inline_object_1'
+      description: Bad Request - The server could not understand the request due to invalid syntax.
+    500-internal-server-error:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_2'
+      description: Internal Server Error - The server has encountered a situation it doesn't know how to handle.
+    task-list-200-default-response:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/get_all_style_transfer_tasks_200_response'
+      description: OK - Returns a list of tasks for the current type of Task
+  examples:
+    200-task-failed:
+      summary: Success - Task failed
+      value:
+        data:
+          generated: []
+          task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: FAILED
+    200-task-in-progress:
+      summary: Success - Task in progress
+      value:
+        data:
+          generated: []
+          task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: IN_PROGRESS
+    200-task-created:
+      summary: Success - Task created
+      value:
+        data:
+          generated: []
+          task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: CREATED
+    200-task-completed:
+      summary: Success - Task completed
+      value:
+        data:
+          generated:
+          - https://ai-statics.freepik.com/completed_task_image.jpg
+          task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: COMPLETED
+  securitySchemes:
+    magnificApiKey:
+      description: 'Your Magnific API key. Required for authentication. [Learn how to obtain an API key](https://docs.magnific.com/quickstart)
+
+        '
+      in: header
+      name: x-magnific-api-key
+      type: apiKey

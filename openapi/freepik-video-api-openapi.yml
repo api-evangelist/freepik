@@ -1,0 +1,4831 @@
+openapi: 3.2.0
+info:
+  description: The Magnific API is your gateway to a vast collection of high-quality digital resources for your applications and projects. As a leading platform, it offers a wide range of graphics, including vectors, photos, illustrations, icons, PSD templates, and more, all curated by talented designers from around the world.
+  title: Magnific Video API
+  version: 1.0.0
+servers:
+- description: B2B API Production V1
+  url: https://api.magnific.com
+security:
+- magnificApiKey: []
+tags:
+- name: Video
+paths:
+  /v1/ai/video/kling-v2-6-motion-control-pro:
+    post:
+      description: Transfer motion from a reference video to a character image using Kling 2.6 Pro. The model preserves the character's appearance while applying motion patterns from the reference video.
+      operationId: postAiVideoKlingV26MotionControlPro
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/motion-control-request'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/task-detail-200-default-response'
+          description: OK
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+      summary: Kling 2.6 Pro - Motion control video
+      tags:
+      - Video
+  /v1/ai/video/kling-v2-6-motion-control-std:
+    post:
+      description: Transfer motion from a reference video to a character image using Kling 2.6 Standard. The model preserves the character's appearance while applying motion patterns from the reference video.
+      operationId: postAiVideoKlingV26MotionControlStd
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/motion-control-request'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/task-detail-200-default-response'
+          description: OK
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+      summary: Kling 2.6 Standard - Motion control video
+      tags:
+      - Video
+  /v1/ai/video/kling-v3-motion-control-pro:
+    get:
+      description: Retrieve the list of all Kling 3 Pro Motion Control video generation tasks for the authenticated user.
+      operationId: getAiVideoKlingV3MotionControlProTasks
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/get_all_style_transfer_tasks_200_response'
+          description: OK - The list of Kling 3 Pro Motion Control tasks is returned
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Kling 3 Pro Motion Control - List tasks
+      tags:
+      - Video
+    post:
+      description: Transfer motion from a reference video to a character image using Kling 3 Pro. The model preserves the character's appearance while applying motion patterns from the reference video.
+      operationId: postAiVideoKlingV3MotionControlPro
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/motion-control-request'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/task-detail-200-default-response'
+          description: OK
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+      summary: Kling 3 Pro - Motion control video
+      tags:
+      - Video
+  /v1/ai/video/kling-v3-motion-control-pro/{task-id}:
+    get:
+      description: Retrieve the status and result of a specific Kling 3 Pro Motion Control video generation task by its task ID.
+      operationId: getAiVideoKlingV3MotionControlProTask
+      parameters:
+      - description: ID of the task
+        in: path
+        name: task-id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                success - completed task:
+                  $ref: '#/components/examples/200-task-completed'
+                success - in progress task:
+                  $ref: '#/components/examples/200-task-in-progress'
+              schema:
+                $ref: '#/components/schemas/get_style_transfer_task_status_200_response'
+          description: OK - The task exists and the status is returned
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Kling 3 Pro Motion Control - Get task status
+      tags:
+      - Video
+  /v1/ai/video/kling-v3-motion-control-std:
+    get:
+      description: Retrieve the list of all Kling 3 Standard Motion Control video generation tasks for the authenticated user.
+      operationId: getAiVideoKlingV3MotionControlStdTasks
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/get_all_style_transfer_tasks_200_response'
+          description: OK - The list of Kling 3 Standard Motion Control tasks is returned
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Kling 3 Standard Motion Control - List tasks
+      tags:
+      - Video
+    post:
+      description: Transfer motion from a reference video to a character image using Kling 3 Standard. The model preserves the character's appearance while applying motion patterns from the reference video.
+      operationId: postAiVideoKlingV3MotionControlStd
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/motion-control-request'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/task-detail-200-default-response'
+          description: OK
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+      summary: Kling 3 Standard - Motion control video
+      tags:
+      - Video
+  /v1/ai/video/kling-v3-motion-control-std/{task-id}:
+    get:
+      description: Retrieve the status and result of a specific Kling 3 Standard Motion Control video generation task by its task ID.
+      operationId: getAiVideoKlingV3MotionControlStdTask
+      parameters:
+      - description: ID of the task
+        in: path
+        name: task-id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                success - completed task:
+                  $ref: '#/components/examples/200-task-completed'
+                success - in progress task:
+                  $ref: '#/components/examples/200-task-in-progress'
+              schema:
+                $ref: '#/components/schemas/get_style_transfer_task_status_200_response'
+          description: OK - The task exists and the status is returned
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Kling 3 Standard Motion Control - Get task status
+      tags:
+      - Video
+  /v1/ai/video/kling-v3-pro:
+    post:
+      description: 'Generate AI video using Kling 3 Pro with text-to-video or image-to-video capabilities.
+
+
+        **Features:**
+
+        - **Text-to-video**: Generate videos from text prompts
+
+        - **Image-to-video**: Use start and/or end frame images to guide generation
+
+        - **Multi-shot**: Create videos with up to 6 shots (max 15s total)
+
+        - **Element control**: Include reference images for consistent character/style
+
+
+        **Duration:** 3-15 seconds
+
+        **Quality:** Pro mode offers highest quality output with longer processing time.'
+      operationId: postAiVideoKlingV3Pro
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/kling-v3-request'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/task-detail-200-default-response'
+          description: OK - Task created successfully
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Kling 3 Pro - Generate video
+      tags:
+      - Video
+  /v1/ai/video/kling-v3-std:
+    post:
+      description: 'Generate AI video using Kling 3 Standard with text-to-video or image-to-video capabilities.
+
+
+        **Features:**
+
+        - **Text-to-video**: Generate videos from text prompts
+
+        - **Image-to-video**: Use start and/or end frame images to guide generation
+
+        - **Multi-shot**: Create videos with up to 6 shots (max 15s total)
+
+        - **Element control**: Include reference images for consistent character/style
+
+
+        **Duration:** 3-15 seconds
+
+        **Quality:** Standard mode offers faster generation at slightly lower quality compared to Pro.'
+      operationId: postAiVideoKlingV3Std
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/kling-v3-request'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/task-detail-200-default-response'
+          description: OK - Task created successfully
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Kling 3 Standard - Generate video
+      tags:
+      - Video
+  /v1/ai/video/kling-v3:
+    get:
+      description: Retrieve the list of all Kling 3 video generation tasks for the authenticated user.
+      operationId: getAiVideoKlingV3Tasks
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/get_all_style_transfer_tasks_200_response'
+          description: OK - The list of Kling 3 tasks is returned
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Kling 3 - List tasks
+      tags:
+      - Video
+  /v1/ai/video/kling-v3/{task-id}:
+    get:
+      description: Retrieve the status and result of a specific Kling 3 video generation task by its task ID.
+      operationId: getAiVideoKlingV3Task
+      parameters:
+      - description: ID of the task
+        in: path
+        name: task-id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                success - completed task:
+                  $ref: '#/components/examples/200-task-completed'
+                success - in progress task:
+                  $ref: '#/components/examples/200-task-in-progress'
+              schema:
+                $ref: '#/components/schemas/get_style_transfer_task_status_200_response'
+          description: OK - The task exists and the status is returned
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Kling 3 - Get task status
+      tags:
+      - Video
+  /v1/ai/video/kling-v3-omni-pro:
+    post:
+      description: 'Generate AI video using Kling 3 Omni Pro with advanced multi-modal capabilities.
+
+
+        **Features:**
+
+        - **Text-to-video**: Generate videos from text prompts
+
+        - **Image-to-video**: Use start and/or end frame images to guide generation
+
+        - **Multi-shot**: Create videos with up to 6 shots (max 15s total)
+
+        - **Element control**: Include reference images for consistent character/style
+
+
+        **Duration:** 3-15 seconds
+
+        **Quality:** Pro mode offers highest quality output.
+
+
+        **Note:** For video-to-video generation using a reference video, use the `/ai/reference-to-video/kling-v3-omni-pro` endpoint instead.'
+      operationId: postAiVideoKlingV3OmniPro
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/kling-v3-omni-request'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/task-detail-200-default-response'
+          description: OK - Task created successfully
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Kling 3 Omni Pro - Generate video from text or image
+      tags:
+      - Video
+  /v1/ai/video/kling-v3-omni-std:
+    post:
+      description: 'Generate AI video using Kling 3 Omni Standard with advanced multi-modal capabilities.
+
+
+        **Features:**
+
+        - **Text-to-video**: Generate videos from text prompts
+
+        - **Image-to-video**: Use start and/or end frame images to guide generation
+
+        - **Multi-shot**: Create videos with up to 6 shots (max 15s total)
+
+        - **Element control**: Include reference images for consistent character/style
+
+
+        **Duration:** 3-15 seconds
+
+        **Quality:** Standard mode offers faster generation at slightly lower quality.
+
+
+        **Note:** For video-to-video generation using a reference video, use the `/ai/reference-to-video/kling-v3-omni-std` endpoint instead.'
+      operationId: postAiVideoKlingV3OmniStd
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/kling-v3-omni-request'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/task-detail-200-default-response'
+          description: OK - Task created successfully
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Kling 3 Omni Standard - Generate video from text or image
+      tags:
+      - Video
+  /v1/ai/video/kling-v3-omni-4k:
+    post:
+      description: 'Generate AI video using Kling 3 Omni at 4K resolution, with the same multi-modal capabilities.
+
+
+        **Features:**
+
+        - **Text-to-video**: Generate videos from text prompts
+
+        - **Image-to-video**: Use start and/or end frame images to guide generation
+
+        - **Multi-shot**: Create videos with up to 6 shots (max 15s total)
+
+        - **Element control**: Include reference images for consistent character/style
+
+
+        **Duration:** 3-15 seconds
+
+        **Quality:** 4K is generated natively by the model, it is not an upscale of a lower resolution
+
+        output. Generation takes longer and is priced differently than Pro and Standard.
+
+
+        **Note:** For video-to-video generation using a reference video, use the `/ai/reference-to-video/kling-v3-omni-pro` endpoint instead.'
+      operationId: postAiVideoKlingV3Omni4k
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/kling-v3-omni-request'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/task-detail-200-default-response'
+          description: OK - Task created successfully
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Kling 3 Omni 4K - Generate 4K video from text or image
+      tags:
+      - Video
+  /v1/ai/video/kling-v3-omni:
+    get:
+      description: Retrieve the list of all Kling 3 Omni video generation tasks for the authenticated user.
+      operationId: getAiVideoKlingV3OmniTasks
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/get_all_style_transfer_tasks_200_response'
+          description: OK - The list of Kling 3 Omni tasks is returned
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Kling 3 Omni - List tasks
+      tags:
+      - Video
+  /v1/ai/video/kling-v3-omni/{task-id}:
+    get:
+      description: Retrieve the status and result of a specific Kling 3 Omni video generation task by its task ID.
+      operationId: getAiVideoKlingV3OmniTask
+      parameters:
+      - description: ID of the task
+        in: path
+        name: task-id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                success - completed task:
+                  $ref: '#/components/examples/200-task-completed'
+                success - in progress task:
+                  $ref: '#/components/examples/200-task-in-progress'
+              schema:
+                $ref: '#/components/schemas/get_style_transfer_task_status_200_response'
+          description: OK - The task exists and the status is returned
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Kling 3 Omni - Get task status
+      tags:
+      - Video
+  /v1/ai/video/kling-4k-i2v:
+    get:
+      description: Retrieve the list of all Kling 4K Image-to-Video tasks for the authenticated user.
+      operationId: getAiVideoKling4kI2vTasks
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/get_all_style_transfer_tasks_200_response'
+          description: OK - The list of Kling 4K I2V tasks is returned
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Kling 4K I2V - List tasks
+      tags:
+      - Video
+    post:
+      description: 'Generate AI video in 4K resolution from an image using Kling 4K Image-to-Video.
+
+
+        **Features:**
+
+        - **Image-to-video**: Use a reference image to guide 4K video generation
+
+        - **End frame control**: Optionally specify an end frame image
+
+        - **Motion brush**: Use static and dynamic masks for precise motion control
+
+
+        **Duration:** 3-15 seconds
+
+        **Resolution:** 4K output quality.'
+      operationId: postAiVideoKling4kI2v
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/kling-4k-i2v-request'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/task-detail-200-default-response'
+          description: OK - Task created successfully
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Kling 4K I2V - Generate video from image
+      tags:
+      - Video
+  /v1/ai/video/kling-4k-i2v/{task-id}:
+    get:
+      description: Retrieve the status and result of a specific Kling 4K Image-to-Video task by its task ID.
+      operationId: getAiVideoKling4kI2vTask
+      parameters:
+      - description: ID of the task
+        in: path
+        name: task-id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                success - completed task:
+                  $ref: '#/components/examples/200-task-completed'
+                success - in progress task:
+                  $ref: '#/components/examples/200-task-in-progress'
+              schema:
+                $ref: '#/components/schemas/get_style_transfer_task_status_200_response'
+          description: OK - The task exists and the status is returned
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Kling 4K I2V - Get task status
+      tags:
+      - Video
+  /v1/ai/video/kling-4k-t2v:
+    get:
+      description: Retrieve the list of all Kling 4K Text-to-Video tasks for the authenticated user.
+      operationId: getAiVideoKling4kT2vTasks
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/get_all_style_transfer_tasks_200_response'
+          description: OK - The list of Kling 4K T2V tasks is returned
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Kling 4K T2V - List tasks
+      tags:
+      - Video
+    post:
+      description: 'Generate AI video in 4K resolution from a text prompt using Kling 4K Text-to-Video.
+
+
+        **Features:**
+
+        - **Text-to-video**: Generate 4K videos from text prompts
+
+        - **Camera control**: Optionally specify camera movement type and configuration
+
+
+        **Duration:** 3-15 seconds
+
+        **Resolution:** 4K output quality.'
+      operationId: postAiVideoKling4kT2v
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/kling-4k-t2v-request'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/task-detail-200-default-response'
+          description: OK - Task created successfully
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Kling 4K T2V - Generate video from text
+      tags:
+      - Video
+  /v1/ai/video/kling-4k-t2v/{task-id}:
+    get:
+      description: Retrieve the status and result of a specific Kling 4K Text-to-Video task by its task ID.
+      operationId: getAiVideoKling4kT2vTask
+      parameters:
+      - description: ID of the task
+        in: path
+        name: task-id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                success - completed task:
+                  $ref: '#/components/examples/200-task-completed'
+                success - in progress task:
+                  $ref: '#/components/examples/200-task-in-progress'
+              schema:
+                $ref: '#/components/schemas/get_style_transfer_task_status_200_response'
+          description: OK - The task exists and the status is returned
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Kling 4K T2V - Get task status
+      tags:
+      - Video
+  /v1/ai/text-to-video/kling-v3-turbo-720p:
+    post:
+      description: 'Generate AI video from a text prompt using Kling 3.0 Turbo at 720p resolution, a fast text-to-video model from the Kling 3.0 family.
+
+
+        **Features:**
+
+        - **Text-to-video**: Generate videos from detailed text prompts
+
+        - **Resolution**: Fixed 720p output
+
+        - **Aspect ratio**: Landscape (16:9), portrait (9:16), or square (1:1)
+
+        - **Duration**: 3-15 seconds
+
+
+        **How it works:**
+
+        1. Submit a text prompt describing your desired video
+
+        2. Receive a task ID to track progress
+
+        3. Poll the status endpoint or use a `webhook_url` to get notified when the task completes
+
+        4. Download the generated video from the result URL (valid for 30 minutes)'
+      operationId: postAiTextToVideoKlingV3Turbo720p
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/kling-v3-turbo-t2v-request'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/task-detail-200-default-response'
+          description: OK - Task created successfully
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Kling 3.0 Turbo T2V 720p - Generate video
+      tags:
+      - Video
+  /v1/ai/text-to-video/kling-v3-turbo-1080p:
+    post:
+      description: 'Generate AI video from a text prompt using Kling 3.0 Turbo at 1080p resolution, a fast text-to-video model from the Kling 3.0 family.
+
+
+        **Features:**
+
+        - **Text-to-video**: Generate videos from detailed text prompts
+
+        - **Resolution**: Fixed 1080p output
+
+        - **Aspect ratio**: Landscape (16:9), portrait (9:16), or square (1:1)
+
+        - **Duration**: 3-15 seconds
+
+
+        **How it works:**
+
+        1. Submit a text prompt describing your desired video
+
+        2. Receive a task ID to track progress
+
+        3. Poll the status endpoint or use a `webhook_url` to get notified when the task completes
+
+        4. Download the generated video from the result URL (valid for 30 minutes)'
+      operationId: postAiTextToVideoKlingV3Turbo1080p
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/kling-v3-turbo-t2v-request'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/task-detail-200-default-response'
+          description: OK - Task created successfully
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Kling 3.0 Turbo T2V 1080p - Generate video
+      tags:
+      - Video
+  /v1/ai/text-to-video/kling-v3-turbo:
+    get:
+      description: Retrieve the list of all Kling 3.0 Turbo T2V tasks for the authenticated user, across all resolutions.
+      operationId: getAiTextToVideoKlingV3TurboTasks
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/get_all_style_transfer_tasks_200_response'
+          description: OK - The list of tasks is returned
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Kling 3.0 Turbo T2V - List tasks
+      tags:
+      - Video
+  /v1/ai/text-to-video/kling-v3-turbo/{task-id}:
+    get:
+      description: Retrieve the status and result of a specific Kling 3.0 Turbo T2V task by its task ID, regardless of the resolution it was created at.
+      operationId: getAiTextToVideoKlingV3TurboTask
+      parameters:
+      - description: ID of the task
+        in: path
+        name: task-id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                success - completed task:
+                  $ref: '#/components/examples/200-task-completed'
+                success - in progress task:
+                  $ref: '#/components/examples/200-task-in-progress'
+              schema:
+                $ref: '#/components/schemas/get_style_transfer_task_status_200_response'
+          description: OK - The task exists and the status is returned
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Kling 3.0 Turbo T2V - Get task status
+      tags:
+      - Video
+  /v1/ai/image-to-video/kling-v3-turbo-720p:
+    post:
+      description: 'Generate AI video from a first-frame image using Kling 3.0 Turbo at 720p resolution, a fast image-to-video model from the Kling 3.0 family.
+
+
+        **Features:**
+
+        - **Image-to-video**: Animate a static image into a dynamic video
+
+        - **Optional prompt**: Guide the motion and animation style with text
+
+        - **Resolution**: Fixed 720p output
+
+        - **Duration**: 3-15 seconds
+
+
+        **How it works:**
+
+        1. Submit an image (URL or Base64) to use as the first frame, with an optional prompt
+
+        2. Receive a task ID to track progress
+
+        3. Poll the status endpoint or use a `webhook_url` to get notified when the task completes
+
+        4. Download the generated video from the result URL (valid for 30 minutes)'
+      operationId: postAiImageToVideoKlingV3Turbo720p
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/kling-v3-turbo-i2v-request'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/task-detail-200-default-response'
+          description: OK - Task created successfully
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Kling 3.0 Turbo I2V 720p - Generate video
+      tags:
+      - Video
+  /v1/ai/image-to-video/kling-v3-turbo-1080p:
+    post:
+      description: 'Generate AI video from a first-frame image using Kling 3.0 Turbo at 1080p resolution, a fast image-to-video model from the Kling 3.0 family.
+
+
+        **Features:**
+
+        - **Image-to-video**: Animate a static image into a dynamic video
+
+        - **Optional prompt**: Guide the motion and animation style with text
+
+        - **Resolution**: Fixed 1080p output
+
+        - **Duration**: 3-15 seconds
+
+
+        **How it works:**
+
+        1. Submit an image (URL or Base64) to use as the first frame, with an optional prompt
+
+        2. Receive a task ID to track progress
+
+        3. Poll the status endpoint or use a `webhook_url` to get notified when the task completes
+
+        4. Download the generated video from the result URL (valid for 30 minutes)'
+      operationId: postAiImageToVideoKlingV3Turbo1080p
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/kling-v3-turbo-i2v-request'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/task-detail-200-default-response'
+          description: OK - Task created successfully
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Kling 3.0 Turbo I2V 1080p - Generate video
+      tags:
+      - Video
+  /v1/ai/image-to-video/kling-v3-turbo:
+    get:
+      description: Retrieve the list of all Kling 3.0 Turbo I2V tasks for the authenticated user, across all resolutions.
+      operationId: getAiImageToVideoKlingV3TurboTasks
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/get_all_style_transfer_tasks_200_response'
+          description: OK - The list of tasks is returned
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Kling 3.0 Turbo I2V - List tasks
+      tags:
+      - Video
+  /v1/ai/image-to-video/kling-v3-turbo/{task-id}:
+    get:
+      description: Retrieve the status and result of a specific Kling 3.0 Turbo I2V task by its task ID, regardless of the resolution it was created at.
+      operationId: getAiImageToVideoKlingV3TurboTask
+      parameters:
+      - description: ID of the task
+        in: path
+        name: task-id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                success - completed task:
+                  $ref: '#/components/examples/200-task-completed'
+                success - in progress task:
+                  $ref: '#/components/examples/200-task-in-progress'
+              schema:
+                $ref: '#/components/schemas/get_style_transfer_task_status_200_response'
+          description: OK - The task exists and the status is returned
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Kling 3.0 Turbo I2V - Get task status
+      tags:
+      - Video
+  /v1/ai/video/kling-advanced-custom-elements:
+    get:
+      deprecated: true
+      description: '**Deprecated.** This endpoint is deprecated. You can pass reference images directly in the `elements` array
+
+        of the Kling V3 video generation endpoints (`/ai/video/kling-v3-pro`, `/ai/video/kling-v3-std`)
+
+        without needing to pre-create elements.
+
+
+        Retrieve the list of all Advanced Custom Elements creation tasks for the authenticated user.'
+      operationId: getAiVideoKlingAdvancedCustomElementsTasks
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/get_all_style_transfer_tasks_200_response'
+          description: OK - The list of Advanced Custom Elements tasks is returned
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Advanced Custom Elements - List tasks
+      tags:
+      - Video
+    post:
+      deprecated: true
+      description: '**Deprecated.** This endpoint is deprecated. You can pass reference images directly in the `elements` array
+
+        of the Kling V3 video generation endpoints (`/ai/video/kling-v3-pro`, `/ai/video/kling-v3-std`)
+
+        without needing to pre-create elements.
+
+
+        Create reusable custom elements (characters, animals, items, costumes, scenes, effects) from reference images or videos.
+
+        Elements can be referenced in Kling video generation tasks for consistent identity across videos.
+
+
+        **Features:**
+
+        - Create elements from multi-angle reference images or a reference video
+
+        - Supports character, animal, item, costume, scene, and effect element types
+
+        - Optionally bind a voice to the element for video generation with speech
+
+        - Elements can be reused across multiple video generation tasks
+
+
+        **Reference types:**
+
+        - `image_refer`: Create element from 1 frontal image + up to 3 additional reference images from different angles
+
+        - `video_refer`: Create element from a single reference video (3-8 seconds, 1080P, mp4/mov)'
+      operationId: postAiVideoKlingAdvancedCustomElements
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/advanced-custom-elements-request'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/task-detail-200-default-response'
+          description: OK - Task created successfully
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Advanced Custom Elements - Create element
+      tags:
+      - Video
+  /v1/ai/video/kling-advanced-custom-elements/{task-id}:
+    get:
+      deprecated: true
+      description: '**Deprecated.** This endpoint is deprecated. You can pass reference images directly in the `elements` array
+
+        of the Kling V3 video generation endpoints (`/ai/video/kling-v3-pro`, `/ai/video/kling-v3-std`)
+
+        without needing to pre-create elements.
+
+
+        Retrieve the status and result of a specific Advanced Custom Elements creation task by its task ID.'
+      operationId: getAiVideoKlingAdvancedCustomElementsTask
+      parameters:
+      - description: ID of the task
+        in: path
+        name: task-id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                success - completed task:
+                  $ref: '#/components/examples/200-task-completed'
+                success - in progress task:
+                  $ref: '#/components/examples/200-task-in-progress'
+              schema:
+                $ref: '#/components/schemas/get_style_transfer_task_status_200_response'
+          description: OK - The task exists and the status is returned
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Advanced Custom Elements - Get task status
+      tags:
+      - Video
+  /v1/ai/video/runway-act-two:
+    get:
+      operationId: get_all_runway_act_two_tasks
+      responses:
+        '200':
+          $ref: '#/components/responses/task-list-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: RunWay Act Two - List tasks
+      tags:
+      - Video
+    post:
+      description: Generate a character performance video using RunWay Act Two model. Transfer facial expressions and body movements from a reference video to a character image or video.
+      operationId: create_video_runway_act_two
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/runway-act-two-request'
+        required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: RunWay Act Two Character Performance
+      tags:
+      - Video
+  /v1/ai/video/runway-act-two/{task-id}:
+    get:
+      operationId: get_runway_act_two_task
+      parameters:
+      - description: ID of the task
+        in: path
+        name: task-id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: RunWay Act Two - Get task status
+      tags:
+      - Video
+  /v1/ai/video/omni-human-1-5:
+    get:
+      operationId: get_all_omni_human_1_5_tasks
+      responses:
+        '200':
+          $ref: '#/components/responses/task-list-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: OmniHuman 1.5 - List tasks
+      tags:
+      - Video
+    post:
+      description: Generate animated video of a human figure driven by audio using OmniHuman 1.5 model (ByteDance). Supports natural head movements, facial expressions, and body motion synchronized to audio input.
+      operationId: create_video_omni_human_1_5
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/omni-human-1-5-request'
+        required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: OmniHuman 1.5 - Create human animation
+      tags:
+      - Video
+  /v1/ai/video/omni-human-1-5/{task-id}:
+    get:
+      operationId: get_omni_human_1_5_task
+      parameters:
+      - description: ID of the task
+        in: path
+        name: task-id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: OmniHuman 1.5 - Get task status
+      tags:
+      - Video
+  /v1/ai/video/seedance-1-5-pro-480p:
+    get:
+      operationId: get_all_seedance_1_5_pro_480p_tasks
+      responses:
+        '200':
+          $ref: '#/components/responses/task-list-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Seedance 1.5 Pro 480p - List tasks
+      tags:
+      - Video
+    post:
+      description: Generate 480p video with synchronized audio using Seedance 1.5 Pro. Supports text-to-video and image-to-video with lip-sync, dialogue, foley, and music generation.
+      operationId: create_video_seedance_1_5_pro_480p
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/seedance-1-5-pro-request'
+        required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Seedance 1.5 Pro 480p - Create video from text or image
+      tags:
+      - Video
+  /v1/ai/video/seedance-1-5-pro-480p/{task-id}:
+    get:
+      operationId: get_seedance_1_5_pro_480p_task
+      parameters:
+      - description: ID of the task
+        in: path
+        name: task-id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Seedance 1.5 Pro 480p - Get task status
+      tags:
+      - Video
+  /v1/ai/video/seedance-1-5-pro-720p:
+    get:
+      operationId: get_all_seedance_1_5_pro_720p_tasks
+      responses:
+        '200':
+          $ref: '#/components/responses/task-list-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Seedance 1.5 Pro 720p - List tasks
+      tags:
+      - Video
+    post:
+      description: Generate 720p video with synchronized audio using Seedance 1.5 Pro. Supports text-to-video and image-to-video with lip-sync, dialogue, foley, and music generation.
+      operationId: create_video_seedance_1_5_pro_720p
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/seedance-1-5-pro-request'
+        required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Seedance 1.5 Pro 720p - Create video from text or image
+      tags:
+      - Video
+  /v1/ai/video/seedance-1-5-pro-720p/{task-id}:
+    get:
+      operationId: get_seedance_1_5_pro_720p_task
+      parameters:
+      - description: ID of the task
+        in: path
+        name: task-id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Seedance 1.5 Pro 720p - Get task status
+      tags:
+      - Video
+  /v1/ai/video/seedance-1-5-pro-1080p:
+    get:
+      operationId: get_all_seedance_1_5_pro_1080p_tasks
+      responses:
+        '200':
+          $ref: '#/components/responses/task-list-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Seedance 1.5 Pro 1080p - List tasks
+      tags:
+      - Video
+    post:
+      description: Generate 1080p video with synchronized audio using Seedance 1.5 Pro. Supports text-to-video and image-to-video with lip-sync, dialogue, foley, and music generation.
+      operationId: create_video_seedance_1_5_pro_1080p
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/seedance-1-5-pro-request'
+        required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Seedance 1.5 Pro 1080p - Create video from text or image
+      tags:
+      - Video
+  /v1/ai/video/seedance-1-5-pro-1080p/{task-id}:
+    get:
+      operationId: get_seedance_1_5_pro_1080p_task
+      parameters:
+      - description: ID of the task
+        in: path
+        name: task-id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Seedance 1.5 Pro 1080p - Get task status
+      tags:
+      - Video
+  /v1/ai/video/minimax-h3-768p:
+    get:
+      operationId: get_all_minimax_h3_768p_tasks
+      responses:
+        '200':
+          $ref: '#/components/responses/task-list-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: MiniMax H3 768p - List tasks
+      tags:
+      - Video
+    post:
+      description: 'Generate 768p video with MiniMax H3. Supports text-to-video, image-to-video with an optional first and last frame, and subject reference images (up to 9, mentioned in the prompt as @Image1..@Image9). Keyframes and reference images are mutually exclusive. The response is a task: poll the GET endpoint or supply `webhook_url` to be notified; the finished task carries a time-limited MP4 URL. Reference videos are billed on top of the output duration, capped at 15 seconds.'
+      operationId: create_video_minimax_h3_768p
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/minimax-h3-request'
+        required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: MiniMax H3 768p - Create video
+      tags:
+      - Video
+  /v1/ai/video/minimax-h3-768p/{task-id}:
+    get:
+      operationId: get_minimax_h3_768p_task
+      parameters:
+      - description: ID of the task
+        in: path
+        name: task-id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: MiniMax H3 768p - Get task status
+      tags:
+      - Video
+  /v1/ai/video/minimax-h3-2k:
+    get:
+      operationId: get_all_minimax_h3_2k_tasks
+      responses:
+        '200':
+          $ref: '#/components/responses/task-list-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: MiniMax H3 2K - List tasks
+      tags:
+      - Video
+    post:
+      description: 'Generate 2K video with MiniMax H3. Supports text-to-video, image-to-video with an optional first and last frame, and subject reference images (up to 9, mentioned in the prompt as @Image1..@Image9). Keyframes and reference images are mutually exclusive. The response is a task: poll the GET endpoint or supply `webhook_url` to be notified; the finished task carries a time-limited MP4 URL. Reference videos are billed on top of the output duration, capped at 15 seconds.'
+      operationId: create_video_minimax_h3_2k
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/minimax-h3-request'
+        required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: MiniMax H3 2K - Create video
+      tags:
+      - Video
+  /v1/ai/video/minimax-h3-2k/{task-id}:
+    get:
+      operationId: get_minimax_h3_2k_task
+      parameters:
+      - description: ID of the task
+        in: path
+        name: task-id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: MiniMax H3 2K - Get task status
+      tags:
+      - Video
+  /v1/ai/video/minimax-h3-max-480p:
+    get:
+      operationId: get_all_minimax_h3_max_480p_tasks
+      responses:
+        '200':
+          $ref: '#/components/responses/task-list-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: MiniMax H3 Max 480p - List tasks
+      tags:
+      - Video
+    post:
+      description: Generate 480p video with MiniMax H3 Max, the optimised H3 build. Supports text-to-video and image-to-video with an optional first and last frame. For reference-guided generation use `/ai/video/minimax-h3-max-r2v-480p`.
+      operationId: create_video_minimax_h3_max_480p
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/minimax-h3-max-request'
+        required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: MiniMax H3 Max 480p - Create video
+      tags:
+      - Video
+  /v1/ai/video/minimax-h3-max-480p/{task-id}:
+    get:
+      operationId: get_minimax_h3_max_480p_task
+      parameters:
+      - description: ID of the task
+        in: path
+        name: task-id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: MiniMax H3 Max 480p - Get task status
+      tags:
+      - Video
+  /v1/ai/video/minimax-h3-max-768p:
+    get:
+      operationId: get_all_minimax_h3_max_768p_tasks
+      responses:
+        '200':
+          $ref: '#/components/responses/task-list-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: MiniMax H3 Max 768p - List tasks
+      tags:
+      - Video
+    post:
+      description: Generate 768p video with MiniMax H3 Max, the optimised H3 build. Supports text-to-video and image-to-video with an optional first and last frame. For reference-guided generation use `/ai/video/minimax-h3-max-r2v-768p`.
+      operationId: create_video_minimax_h3_max_768p
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/minimax-h3-max-request'
+        required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: MiniMax H3 Max 768p - Create video
+      tags:
+      - Video
+  /v1/ai/video/minimax-h3-max-768p/{task-id}:
+    get:
+      operationId: get_minimax_h3_max_768p_task
+      parameters:
+      - description: ID of the task
+        in: path
+        name: task-id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: MiniMax H3 Max 768p - Get task status
+      tags:
+      - Video
+  /v1/ai/video/minimax-h3-max-r2v-480p:
+    get:
+      operationId: get_all_minimax_h3_max_r2v_480p_tasks
+      responses:
+        '200':
+          $ref: '#/components/responses/task-list-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: MiniMax H3 Max 480p reference-to-video - List tasks
+      tags:
+      - Video
+    post:
+      description: Generate 480p video with MiniMax H3 Max, guided by reference images, videos and audios. Mention them in the prompt as @Image1, @Video1, @Audio1 and so on. At least one reference image or reference video is required, and all references together must not exceed 12 files.
+      operationId: create_video_minimax_h3_max_r2v_480p
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/minimax-h3-max-r2v-request'
+        required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: MiniMax H3 Max 480p reference-to-video - Create video
+      tags:
+      - Video
+  /v1/ai/video/minimax-h3-max-r2v-480p/{task-id}:
+    get:
+      operationId: get_minimax_h3_max_r2v_480p_task
+      parameters:
+      - description: ID of the task
+        in: path
+        name: task-id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: MiniMax H3 Max 480p reference-to-video - Get task status
+      tags:
+      - Video
+  /v1/ai/video/minimax-h3-max-r2v-768p:
+    get:
+      operationId: get_all_minimax_h3_max_r2v_768p_tasks
+      responses:
+        '200':
+          $ref: '#/components/responses/task-list-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: MiniMax H3 Max 768p reference-to-video - List tasks
+      tags:
+      - Video
+    post:
+      description: Generate 768p video with MiniMax H3 Max, guided by reference images, videos and audios. Mention them in the prompt as @Image1, @Video1, @Audio1 and so on. At least one reference image or reference video is required, and all references together must not exceed 12 files.
+      operationId: create_video_minimax_h3_max_r2v_768p
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/minimax-h3-max-r2v-request'
+        required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: MiniMax H3 Max 768p reference-to-video - Create video
+      tags:
+      - Video
+  /v1/ai/video/minimax-h3-max-r2v-768p/{task-id}:
+    get:
+      operationId: get_minimax_h3_max_r2v_768p_task
+      parameters:
+      - description: ID of the task
+        in: path
+        name: task-id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: MiniMax H3 Max 768p reference-to-video - Get task status
+      tags:
+      - Video
+  /v1/ai/video/seedance-2-pro-480p:
+    get:
+      operationId: get_all_seedance_2_pro_480p_tasks
+      responses:
+        '200':
+          $ref: '#/components/responses/task-list-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Seedance 2.0 Pro 480p - List tasks
+      tags:
+      - Video
+    post:
+      description: 'Generate 480p video using Seedance 2.0 Pro. Supports text-to-video and image-to-video with optional first and last frame images for transition videos. Also supports reference-to-video: attach up to 9 reference images via `reference_images` and mention them in the prompt with @Image1..@Image9.'
+      operationId: create_video_seedance_2_pro_480p
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/seedance-2-request'
+        required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Seedance 2.0 Pro 480p - Create video from text or image
+      tags:
+      - Video
+  /v1/ai/video/seedance-2-pro-720p:
+    get:
+      operationId: get_all_seedance_2_pro_720p_tasks
+      responses:
+        '200':
+          $ref: '#/components/responses/task-list-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Seedance 2.0 Pro 720p - List tasks
+      tags:
+      - Video
+    post:
+      description: 'Generate 720p video using Seedance 2.0 Pro. Supports text-to-video and image-to-video with optional first and last frame images for transition videos. Also supports reference-to-video: attach up to 9 reference images via `reference_images` and mention them in the prompt with @Image1..@Image9.'
+      operationId: create_video_seedance_2_pro_720p
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/seedance-2-request'
+        required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Seedance 2.0 Pro 720p - Create video from text or image
+      tags:
+      - Video
+  /v1/ai/video/seedance-2-pro-1080p:
+    get:
+      operationId: get_all_seedance_2_pro_1080p_tasks
+      responses:
+        '200':
+          $ref: '#/components/responses/task-list-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Seedance 2.0 Pro 1080p - List tasks
+      tags:
+      - Video
+    post:
+      description: 'Generate 1080p video using Seedance 2.0 Pro. Supports text-to-video and image-to-video with optional first and last frame images for transition videos. Also supports reference-to-video: attach up to 9 reference images via `reference_images` and mention them in the prompt with @Image1..@Image9.'
+      operationId: create_video_seedance_2_pro_1080p
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/seedance-2-request'
+        required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Seedance 2.0 Pro 1080p - Create video from text or image
+      tags:
+      - Video
+  /v1/ai/video/seedance-2-5-pro-480p:
+    get:
+      operationId: get_all_seedance_2_5_pro_480p_tasks
+      responses:
+        '200':
+          $ref: '#/components/responses/task-list-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Seedance 2.5 Pro 480p - List tasks
+      tags:
+      - Video
+    post:
+      description: Generate 480p video using Seedance 2.5 Pro. Supports text-to-video, image-to-video (first/last frame), and reference-to-video with up to 30 reference images (@Image1..@Image30), 10 reference videos (@Video1..@Video10) and 10 reference audios (@Audio1..@Audio10). Also supports camera motion, multishot sequences (up to 6 shots) and native audio (sound effects).
+      operationId: create_video_seedance_2_5_pro_480p
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/seedance-2-5-request'
+        required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Seedance 2.5 Pro 480p - Create video from text or image
+      tags:
+      - Video
+  /v1/ai/video/seedance-2-5-pro-480p/{task-id}:
+    get:
+      operationId: get_seedance_2_5_pro_480p_task
+      parameters:
+      - description: ID of the task
+        in: path
+        name: task-id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Seedance 2.5 Pro 480p - Get task status
+      tags:
+      - Video
+  /v1/ai/video/seedance-2-5-pro-720p:
+    get:
+      operationId: get_all_seedance_2_5_pro_720p_tasks
+      responses:
+        '200':
+          $ref: '#/components/responses/task-list-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Seedance 2.5 Pro 720p - List tasks
+      tags:
+      - Video
+    post:
+      description: Generate 720p video using Seedance 2.5 Pro. Supports text-to-video, image-to-video (first/last frame), and reference-to-video with up to 30 reference images (@Image1..@Image30), 10 reference videos (@Video1..@Video10) and 10 reference audios (@Audio1..@Audio10). Also supports camera motion, multishot sequences (up to 6 shots) and native audio (sound effects).
+      operationId: create_video_seedance_2_5_pro_720p
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/seedance-2-5-request'
+        required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Seedance 2.5 Pro 720p - Create video from text or image
+      tags:
+      - Video
+  /v1/ai/video/seedance-2-5-pro-720p/{task-id}:
+    get:
+      operationId: get_seedance_2_5_pro_720p_task
+      parameters:
+      - description: ID of the task
+        in: path
+        name: task-id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Seedance 2.5 Pro 720p - Get task status
+      tags:
+      - Video
+  /v1/ai/video/seedance-2-5-pro-1080p:
+    get:
+      operationId: get_all_seedance_2_5_pro_1080p_tasks
+      responses:
+        '200':
+          $ref: '#/components/responses/task-list-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Seedance 2.5 Pro 1080p - List tasks
+      tags:
+      - Video
+    post:
+      description: Generate 1080p video using Seedance 2.5 Pro. Supports text-to-video, image-to-video (first/last frame), and reference-to-video with up to 30 reference images (@Image1..@Image30), 10 reference videos (@Video1..@Video10) and 10 reference audios (@Audio1..@Audio10). Also supports camera motion, multishot sequences (up to 6 shots) and native audio (sound effects).
+      operationId: create_video_seedance_2_5_pro_1080p
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/seedance-2-5-request'
+        required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Seedance 2.5 Pro 1080p - Create video from text or image
+      tags:
+      - Video
+  /v1/ai/video/seedance-2-5-pro-1080p/{task-id}:
+    get:
+      operationId: get_seedance_2_5_pro_1080p_task
+      parameters:
+      - description: ID of the task
+        in: path
+        name: task-id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Seedance 2.5 Pro 1080p - Get task status
+      tags:
+      - Video
+  /v1/ai/video/seedance-2-pro-4k:
+    get:
+      operationId: get_all_seedance_2_pro_4k_tasks
+      responses:
+        '200':
+          $ref: '#/components/responses/task-list-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Seedance 2.0 Pro 4K - List tasks
+      tags:
+      - Video
+    post:
+      description: 'Generate 4K video using Seedance 2.0 Pro. Supports text-to-video and image-to-video with optional first and last frame images for transition videos. Also supports reference-to-video: attach up to 9 reference images via `reference_images` and mention them in the prompt with @Image1..@Image9.'
+      operationId: create_video_seedance_2_pro_4k
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/seedance-2-request'
+        required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Seedance 2.0 Pro 4K - Create video from text or image
+      tags:
+      - Video
+  /v1/ai/video/seedance-2-fast-480p:
+    get:
+      operationId: get_all_seedance_2_fast_480p_tasks
+      responses:
+        '200':
+          $ref: '#/components/responses/task-list-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Seedance 2.0 Fast 480p - List tasks
+      tags:
+      - Video
+    post:
+      description: 'Generate 480p video using Seedance 2.0 Fast. Faster generation with slightly reduced quality compared to Pro. Supports text-to-video and image-to-video with optional first and last frame images. Also supports reference-to-video: attach up to 9 reference images via `reference_images` and mention them in the prompt with @Image1..@Image9.'
+      operationId: create_video_seedance_2_fast_480p
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/seedance-2-request'
+        required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Seedance 2.0 Fast 480p - Create video from text or image
+      tags:
+      - Video
+  /v1/ai/video/seedance-2-fast-720p:
+    get:
+      operationId: get_all_seedance_2_fast_720p_tasks
+      responses:
+        '200':
+          $ref: '#/components/responses/task-list-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Seedance 2.0 Fast 720p - List tasks
+      tags:
+      - Video
+    post:
+      description: 'Generate 720p video using Seedance 2.0 Fast. Faster generation with slightly reduced quality compared to Pro. Supports text-to-video and image-to-video with optional first and last frame images. Also supports reference-to-video: attach up to 9 reference images via `reference_images` and mention them in the prompt with @Image1..@Image9.'
+      operationId: create_video_seedance_2_fast_720p
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/seedance-2-request'
+        required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Seedance 2.0 Fast 720p - Create video from text or image
+      tags:
+      - Video
+  /v1/ai/video/seedance-2-fast-1080p:
+    get:
+      deprecated: true
+      operationId: get_all_seedance_2_fast_1080p_tasks
+      responses:
+        '200':
+          $ref: '#/components/responses/task-list-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Seedance 2.0 Fast 1080p - List tasks
+      tags:
+      - Video
+    post:
+      deprecated: true
+      description: 'Generate 1080p video using Seedance 2.0 Fast. Faster generation with slightly reduced quality compared to Pro. Supports text-to-video and image-to-video with optional first and last frame images. Also supports reference-to-video: attach up to 9 reference images via `reference_images` and mention them in the prompt with @Image1..@Image9.'
+      operationId: create_video_seedance_2_fast_1080p
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/seedance-2-request'
+        required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Seedance 2.0 Fast 1080p - Create video from text or image
+      tags:
+      - Video
+  /v1/ai/video/seedance-2-pro:
+    get:
+      operationId: get_seedance_2_pro_tasks
+      responses:
+        '200':
+          $ref: '#/components/responses/task-list-200-default-response'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+      summary: Seedance 2.0 Pro - List all tasks
+      tags:
+      - Video
+  /v1/ai/video/seedance-2-pro/{task-id}:
+    get:
+      operationId: get_seedance_2_pro_task
+      parameters:
+      - description: Unique identifier of the generation task
+        in: path
+        name: task-id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '404':
+          $ref: '#/components/responses/404-not-found'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+      summary: Seedance 2.0 Pro - Get task status
+      tags:
+      - Video
+  /v1/ai/video/seedance-2-fast:
+    get:
+      operationId: get_seedance_2_fast_tasks
+      responses:
+        '200':
+          $ref: '#/components/responses/task-list-200-default-response'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+      summary: Seedance 2.0 Fast - List all tasks
+      tags:
+      - Video
+  /v1/ai/video/seedance-2-fast/{task-id}:
+    get:
+      operationId: get_seedance_2_fast_task
+      parameters:
+      - description: Unique identifier of the generation task
+        in: path
+        name: task-id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '404':
+          $ref: '#/components/responses/404-not-found'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+      summary: Seedance 2.0 Fast - Get task status
+      tags:
+      - Video
+  /v1/ai/video/seedance-2-mini-480p:
+    get:
+      operationId: get_all_seedance_2_mini_480p_tasks
+      responses:
+        '200':
+          $ref: '#/components/responses/task-list-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Seedance 2.0 Mini 480p - List tasks
+      tags:
+      - Video
+    post:
+      description: 'Generate 480p video using Seedance 2.0 Mini, the most affordable and fastest variant of the Seedance 2.0 family. Available in 480p and 720p with durations from 4 to 15 seconds. Supports text-to-video and image-to-video with optional first and last frame images. Also supports reference-to-video: attach up to 9 reference images via `reference_images` and mention them in the prompt with @Image1..@Image9.'
+      operationId: create_video_seedance_2_mini_480p
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/seedance-2-mini-request'
+        required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Seedance 2.0 Mini 480p - Create video from text or image
+      tags:
+      - Video
+  /v1/ai/video/seedance-2-mini-720p:
+    get:
+      operationId: get_all_seedance_2_mini_720p_tasks
+      responses:
+        '200':
+          $ref: '#/components/responses/task-list-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Seedance 2.0 Mini 720p - List tasks
+      tags:
+      - Video
+    post:
+      description: 'Generate 720p video using Seedance 2.0 Mini, the most affordable and fastest variant of the Seedance 2.0 family. Available in 480p and 720p with durations from 4 to 15 seconds. Supports text-to-video and image-to-video with optional first and last frame images. Also supports reference-to-video: attach up to 9 reference images via `reference_images` and mention them in the prompt with @Image1..@Image9.'
+      operationId: create_video_seedance_2_mini_720p
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/seedance-2-mini-request'
+        required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Seedance 2.0 Mini 720p - Create video from text or image
+      tags:
+      - Video
+  /v1/ai/video/seedance-2-mini:
+    get:
+      operationId: get_seedance_2_mini_tasks
+      responses:
+        '200':
+          $ref: '#/components/responses/task-list-200-default-response'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+      summary: Seedance 2.0 Mini - List all tasks
+      tags:
+      - Video
+  /v1/ai/video/seedance-2-mini/{task-id}:
+    get:
+      operationId: get_seedance_2_mini_task
+      parameters:
+      - description: Unique identifier of the generation task
+        in: path
+        name: task-id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '404':
+          $ref: '#/components/responses/404-not-found'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+      summary: Seedance 2.0 Mini - Get task status
+      tags:
+      - Video
+  /v1/ai/video/vfx:
+    get:
+      description: Retrieve the status of all VFX video effect tasks for the authenticated user.
+      operationId: get_all_vfx_tasks
+      responses:
+        '200':
+          $ref: '#/components/responses/task-list-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: VFX - List tasks
+      tags:
+      - Video
+    post:
+      description: 'Apply professional visual effects and filters to your videos using the VFX API. Transform any video with cinematic effects like film grain, motion blur, VHS retro style, and anamorphic lens distortion.
+
+
+        **Available filters:**
+
+        - `1` Film grain - Adds cinematic grain texture for a classic film look
+
+        - `2` Motion blur - Creates motion blur effect (configurable kernel size and decay)
+
+        - `3` Fish eye - Applies fish eye lens distortion
+
+        - `4` VHS - Retro VHS tape effect with scan lines and color distortion
+
+        - `5` Shake - Camera shake effect for dynamic footage
+
+        - `6` VGA - Low resolution VGA effect for retro aesthetics
+
+        - `7` Bloom - Glowing bloom effect (adjustable contrast)
+
+        - `8` Anamorphic lens - Cinematic anamorphic lens effect with horizontal flares
+
+
+        **Use cases:** Social media content, music videos, film production, advertising, retro-style videos, and creative projects.'
+      operationId: create_video_vfx
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/vfx-request'
+        required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: VFX - Apply visual effects to video
+      tags:
+      - Video
+  /v1/ai/video/vfx/{task-id}:
+    get:
+      description: Retrieve the status and results of a specific VFX video effect task by its task ID.
+      operationId: get_vfx_task
+      parameters:
+      - description: ID of the task
+        in: path
+        name: task-id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: VFX - Get task status
+      tags:
+      - Video
+components:
+  schemas:
+    inline_object_4:
+      example:
+        data:
+          generated:
+          - https://openapi-generator.tech
+          - https://openapi-generator.tech
+          task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: CREATED
+      properties:
+        data:
+          $ref: '#/components/schemas/task-detail_1'
+      required:
+      - data
+      type: object
+    kling-v3-duration:
+      default: '5'
+      description: 'Duration of the generated video in seconds.
+
+
+        **Range:** 3-15 seconds
+
+        **Note:** When using multi-shot mode, total duration across all shots cannot exceed 15 seconds.
+
+        '
+      enum:
+      - '3'
+      - '4'
+      - '5'
+      - '6'
+      - '7'
+      - '8'
+      - '9'
+      - '10'
+      - '11'
+      - '12'
+      - '13'
+      - '14'
+      - '15'
+      type: string
+    advanced-custom-elements-image-list:
+      description: 'Reference images for defining the element. Required when reference_type is `image_refer`, ignored when reference_type is `video_refer`.
+
+        Provide one frontal reference image and 1 to 3 additional reference images from different angles or close-ups.
+
+        '
+      properties:
+        frontal_image:
+          description: 'Frontal reference image URL or Base64 encoding. At least one frontal reference image is required. Supported formats: .jpg, .jpeg, .png. Max file size: 10MB. Min dimensions: 300px. Aspect ratio: 1:2.5 to 2.5:1.'
+          type: string
+        refer_images:
+          description: 1 to 3 additional reference images from other angles or close-ups. These should differ from the frontal reference image.
+          items:
+            $ref: '#/components/schemas/advanced-custom-elements-refer-image'
+          maxItems: 3
+          minItems: 1
+          type: array
+      required:
+      - frontal_image
+      - refer_images
+      type: object
+    omni-human-1-5-request:
+      properties:
+        webhook_url:
+          description: Webhook URL to notify the user when the task is completed
+          format: uri
+          type: string
+        image_url:
+          description: URL of the human figure image to animate. Image must be publicly accessible, contain a visible human figure, and be in jpg, jpeg, png, or webp format.
+          example: https://example.com/human-figure.jpg
+          format: uri
+          type: string
+        audio_url:
+          description: 'URL of the audio file that drives the animation. Must be publicly accessible. Supported formats: MP3, OGG, WAV, M4A, AAC. Duration limits: 720p max 60 seconds, 1080p max 30 seconds.'
+          example: https://example.com/audio.mp3
+          format: uri
+          type: string
+        prompt:
+          description: Optional text guidance for the generation. Can describe desired motion, expression, or style.
+          example: A person speaking naturally with subtle head movements
+          maxLength: 2000
+          type: string
+        turbo_mode:
+          default: false
+          description: Enable faster generation with potentially reduced quality
+          type: boolean
+        resolution:
+          $ref: '#/components/schemas/omni-human-1-5-resolution'
+      required:
+      - audio_url
+      - image_url
+      type: object
+    inline_object_1_problem_invalid_params_inner:
+      properties:
+        name:
+          description: Name of the invalid parameter.
+          example: page
+          type: string
+        field:
+          description: Field of the invalid parameter. Mirrors `name`.
+          example: page
+          type: string
+        reason:
+          example: Parameter 'page' must be greater than 0
+          type: string
+      required:
+      - field
+      - name
+      - reason
+      type: object
+    filter-type:
+      default: 1
+      description: 'Type of visual effect filter to apply to the video.
+
+
+        **Available filters:**
+
+        - `1`: Film grain - Adds cinematic grain texture
+
+        - `2`: Motion blur - Creates motion blur effect
+
+        - `3`: Fish eye - Applies fish eye lens distortion
+
+        - `4`: VHS - Retro VHS tape effect
+
+        - `5`: Shake - Camera shake effect
+
+        - `6`: VGA - Low resolution VGA effect
+
+        - `7`: Bloom - Glowing bloom effect (use bloom_filter_contrast to adjust)
+
+        - `8`: Anamorphic lens - Cinematic anamorphic lens effect
+
+        '
+      enum:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      example: 1
+      type: integer
+    task:
+      example:
+        task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        status: CREATED
+      properties:
+        task_id:
+          description: Task identifier
+          format: uuid
+          type: string
+        status:
+          description: Task status
+          enum:
+          - CREATED
+          - IN_PROGRESS
+          - COMPLETED
+          - FAILED
+          type: string
+      required:
+      - status
+      - task_id
+      type: object
+    kling-v3-request:
+      properties:
+        webhook_url:
+          description: 'Optional callback URL that receives asynchronous notifications when the task changes status.
+
+            The payload includes the task status and result URL when completed.
+
+            '
+          format: uri
+          type: string
+        prompt:
+          description: 'Text prompt describing the desired video content. Maximum 2500 characters.
+
+            Required for text-to-video mode or when not using multi_prompt.
+
+
+            **Tips for better results:**
+
+            - Be specific about motion, camera angles, and actions
+
+            - Describe the scene, characters, and atmosphere
+
+            - Reference elements in your prompt as @Element1, @Element2
+
+            - Reference voices with <<<voice_1>>> and <<<voice_2>>>
+
+            '
+          maxLength: 2500
+          type: string
+        multi_prompt:
+          description: 'Multi-shot prompts with durations for sequential video generation.
+
+            Each item specifies a prompt and duration (in seconds) for that shot.
+
+            Maximum 6 shots. Total duration across all shots cannot exceed 15 seconds.
+
+
+            Only effective when shot_type is set. When multi_prompt is provided without an explicit shot_type, it defaults to "customize".
+
+            When shot_type is "intelligent", Kling can auto-segment the video even without multi_prompt.
+
+            '
+          items:
+            $ref: '#/components/schemas/kling-v3-multi-prompt-item'
+          maxItems: 6
+          type: array
+        start_image_url:
+          description: 'URL of the image to use as the first frame of the video.
+
+            Required for image-to-video mode.
+
+
+            **Image requirements:**
+
+            - Minimum: 300x300 pixels
+
+            - Maximum: 10MB file size
+
+            - Aspect ratio: 1:2.5 to 2.5:1
+
+            - Formats: JPG, JPEG, PNG
+
+            '
+          type: string
+        end_image_url:
+          description: 'URL of the image to use as the final frame of the video.
+
+            Optional for image-to-video mode.
+
+
+            **Image requirements:**
+
+            - Same as start_image_url
+
+            '
+          type: string
+        generate_audio:
+          default: true
+          description: Whether to generate native audio for the video.
+          type: boolean
+        multi_shot:
+          default: false
+          description: 'Enable multi-shot mode for multi-scene video generation.
+
+            When true, use shot_type and multi_prompt to define scenes.
+
+            When false (default), generates a single continuous video.
+
+            '
+          type: boolean
+        shot_type:
+          default: customize
+          description: 'Controls how multi-shot video generation is segmented:
+
+            - `customize`: User provides explicit per-shot prompts and durations via the multi_prompt array. Each shot is defined manually.
+
+            - `intelligent`: Enables automatic scene segmentation by Kling AI. Can be used without multi_prompt (Kling auto-segments the video based on the main prompt) or with multi_prompt (user-defined shots combined with AI segmentation).
+
+
+            Note: This parameter maps to Kling''s internal "intelligence" spelling for the intelligent option.
+
+            Defaults to "customize" when multi_prompt is provided.
+
+            '
+          enum:
+          - customize
+          - intelligent
+          type: string
+        aspect_ratio:
+          $ref: '#/components/schemas/kling-v3-aspect-ratio'
+        duration:
+          $ref: '#/components/schemas/kling-v3-duration'
+        negative_prompt:
+          default: blur, distort, and low quality
+          description: Undesired elements to avoid in the generated video. Maximum 2500 characters.
+          maxLength: 2500
+          type: string
+        cfg_scale:
+          default: 0.5
+          description: 'Guidance scale controlling prompt adherence versus creative freedom. Range: 0 to 1.
+
+            Values above 1 are not supported for Kling 3 (only Kling 1.x models support cfg_scale up to 2).
+
+
+            - **0**: Maximum creative freedom, loosest interpretation of the prompt
+
+            - **0.5** (default): Balanced between prompt adherence and creativity
+
+            - **1**: Strongest adherence to the prompt, least creative variation
+
+            '
+          format: float
+          maximum: 1
+          minimum: 0
+          type: number
+      type: object
+    minimax-h3-request:
+      properties:
+        webhook_url:
+          description: URL to receive a webhook notification when the video generation task completes. The webhook payload includes the task ID and status.
+          format: uri
+          type: string
+        prompt:
+          description: Text prompt describing the video to generate. Chinese and English are supported. Mention reference images as @Image1, @Image2, ... matching their 1-indexed array order. For best instruction following keep it under roughly 500 Chinese characters or 1,000 English words.
+          example: A cinematic shot of a cat walking through a neon-lit alley at night
+          maxLength: 7000
+          minLength: 1
+          type: string
+        image:
+          description: Optional image to use as the first frame for image-to-video generation. Accepts a publicly accessible URL or a base64-encoded image. Mutually exclusive with `reference_images`.
+          format: byte
+          type: string
+        image_end:
+          description: 'Optional image to use as the last frame for image-to-video generation. Requires `image`: the provider rejects a last frame with no first frame. Together they generate a transition video between the two. Mutually exclusive with `reference_images`. Accepts a publicly accessible URL or a base64-encoded image.'
+          format: byte
+          type: string
+        reference_images:
+          description: Up to 9 reference images for reference-to-video generation. Each item is a publicly accessible URL or a base64-encoded image. Reference them in the prompt using @Image1, @Image2, ... @Image9 (1-indexed to the array order). Each image must be JPG, JPEG, PNG, WEBP, HEIC or HEIF, no larger than 30 MB, 256 to 5760 px per side, with an aspect ratio from 0.4 to 2.5. Mutually exclusive with `image` and `image_end`.
+          example:
+          - https://example.com/reference-1.jpg
+          items:
+            format: byte
+            type: string
+          maxItems: 9
+          type: array
+        reference_videos:
+          description: 'Up to 3 reference videos. Each item must be a publicly accessible HTTPS URL or a video upload file_id (`upl_vid_...`). Reference them in the prompt using @Video1, @Video2 or @Video3. Each video must be MP4 or MOV (H.264 or H.265), 2 to 15 seconds, 23.976 to 60 fps, no larger than 50 MB, 256 to 5760 px per side, with an aspect ratio from 0.4 to 2.5, and their combined duration must not exceed 15 seconds. Mutually exclusive with `image` and `image_end`. **These are billed**: their combined duration is added to the output duration, capped at 15 seconds.'
+          example:
+          - https://example.com/reference-1.mp4
+          items:
+            type: string
+          maxItems: 3
+          type: array
+        reference_audios:
+          description: 'Up to 3 reference audios. Each item must be a publicly accessible HTTPS URL — unlike `reference_videos`, this field does not take upload file_ids. Reference them in the prompt using @Audio1, @Audio2 or @Audio3. Each audio must be WAV or MP3, 2 to 15 seconds and no larger than 15 MB, and their combined duration must not exceed 15 seconds. Audio cannot be the only reference: at least one `reference_images` or `reference_videos` entry is required alongside it. Mutually exclusive with `image` and `image_end`. Adds nothing to the price.'
+          example:
+          - https://example.com/reference-voice.mp3
+          items:
+            format: uri
+            type: string
+          maxItems: 3
+          type: array
+        duration:
+          default: 5
+          description: Video duration in seconds. Any integer from 4 to 15. H3 accepts 4-second clips, unlike H3 Max, whose floor is 5.
+          example: 5
+          maximum: 15
+          minimum: 4
+          type: integer
+        aspect_ratio:
+          default: widescreen_16_9
+          description: 'Output video aspect ratio. Available options:
+
+            - `adaptive`: infer the ratio from the reference images
+
+            - `film_horizontal_21_9`: Ultra-wide cinematic (21:9)
+
+            - `widescreen_16_9`: Standard widescreen (16:9)
+
+            - `classic_4_3`: Classic TV format (4:3)
+
+            - `square_1_1`: Square format (1:1)
+
+            - `traditional_3_4`: Portrait classic (3:4)
+
+            - `social_story_9_16`: Vertical/social media story (9:16)
+
+
+            **`adaptive` needs something to adapt to.** It only means anything when the request carries `reference_images`; on a text-only request there is nothing to infer from and it falls back to `widescreen_16_9`.
+
+
+            **Note:** ignored when `image` or `image_end` is supplied — in keyframe mode the output always follows the aspect ratio of the supplied image.
+
+            '
+          enum:
+          - adaptive
+          - film_horizontal_21_9
+          - widescreen_16_9
+          - classic_4_3
+          - square_1_1
+          - traditional_3_4
+          - social_story_9_16
+          type: string
+        aigc_watermark:
+          default: false
+          description: Whether the provider stamps a visible AI-generated-content watermark on the output video.
+          type: boolean
+      required:
+      - prompt
+      type: object
+    kling-v3-turbo-i2v-request:
+      properties:
+        webhook_url:
+          description: 'Optional callback URL that will receive asynchronous notifications whenever the task changes status. The payload sent to this URL is the same as the corresponding GET endpoint response, but without the data field.
+
+            '
+          example: https://www.example.com/webhook
+          format: uri
+          type: string
+        image:
+          description: 'First-frame image used to start the video. Supports Base64 encoding (including a `data:image/...;base64,...` data URI)
+
+            or a publicly accessible image URL.
+
+
+            **Image requirements:**
+
+            - Minimum: 300x300 pixels
+
+            - Maximum: 50MB file size
+
+            - Aspect ratio: 1:2.5 to 2.5:1
+
+            - Formats: JPG, JPEG, PNG
+
+            - Only the first frame is supported
+
+            '
+          example: https://example.com/my-image.jpg
+          type: string
+        prompt:
+          description: 'Optional text prompt to guide the motion and animation style. If omitted, motion is inferred from the
+
+            source image. Maximum 2500 characters.
+
+
+            **Tips for better results:**
+
+            - Describe the movement, camera behavior, and visual style
+
+            - Add negative descriptions inline (for example, "no text, no blur") to steer the model away from unwanted elements
+
+            '
+          example: The subject slowly turns their head and smiles
+          maxLength: 2500
+          type: string
+        duration:
+          default: '5'
+          description: 'Duration of the generated video in seconds.
+
+
+            **Range:** 3-15 seconds
+
+            '
+          enum:
+          - '3'
+          - '4'
+          - '5'
+          - '6'
+          - '7'
+          - '8'
+          - '9'
+          - '10'
+          - '11'
+          - '12'
+          - '13'
+          - '14'
+          - '15'
+          type: string
+      required:
+      - image
+      type: object
+    runway_act_two_request_reference:
+      description: Reference video of a person performing the desired actions
+      properties:
+        type:
+          description: Must be 'video'
+          enum:
+          - video
+          type: string
+        uri:
+          description: URL to the reference performance video (3-30 seconds)
+          format: uri
+          type: string
+      required:
+      - type
+      - uri
+      type: object
+    advanced-custom-elements-video-list:
+      description: 'Reference video for defining the element. Required when reference_type is `video_refer`, ignored when reference_type is `image_refer`.
+
+        Only one video can be uploaded. If the video contains human voice, voice tone customization will be initiated.
+
+        '
+      properties:
+        refer_videos:
+          description: Reference videos. Only 1 video can be uploaded.
+          items:
+            $ref: '#/components/schemas/advanced-custom-elements-refer-video'
+          maxItems: 1
+          minItems: 1
+          type: array
+      required:
+      - refer_videos
+      type: object
+    task-detail-200-default-response:
+      description: OK - The task exists and the status is returned
+    seedance-2-request:
+      properties:
+        webhook_url:
+          description: URL to receive a webhook notification when the video generation task completes. The webhook payload includes the task ID and status.
+          format: uri
+          type: string
+        image:
+          description: Optional image to use as the first frame for image-to-video generation. Accepts a publicly accessible URL or a base64-encoded image. Mutually exclusive with `reference_images`, `reference_videos` and `reference_audios`.
+          format: byte
+          type: string
+        image_end:
+          description: 'Optional image to use as the last frame for image-to-video generation. Requires `image`: the provider rejects a last frame with no first frame. Together they generate a transition video between the two. Mutually exclusive with `reference_images`, `reference_videos` and `reference_audios`. Accepts a publicly accessible URL or a base64-encoded image.'
+          format: byte
+          type: string
+        reference_images:
+          description: Up to 9 reference images for reference-to-video generation. Each item is a publicly accessible URL or a base64-encoded image. Reference them in the prompt using @Image1, @Image2, ... @Image9 (1-indexed to the array order). Mutually exclusive with `image` and `image_end`.
+          example:
+          - https://example.com/reference-1.jpg
+          - https://example.com/reference-2.jpg
+          items:
+            format: byte
+            type: string
+          maxItems: 9
+          type: array
+        reference_videos:
+          description: Up to 3 reference videos. Each item must be a publicly accessible HTTPS URL or a video upload file_id (`upl_vid_...`). Reference them in the prompt using @Video1, @Video2, or @Video3. Each video must be MP4 or MOV, 2 to 15 seconds, 24 to 60 fps, no larger than 50 MB, with 409600 to 2086876 pixels and an aspect ratio from 0.4 to 2.5. Combined duration must not exceed 15 seconds. Mutually exclusive with `image` and `image_end`.
+          example:
+          - https://example.com/reference-1.mp4
+          items:
+            type: string
+          maxItems: 3
+          type: array
+        reference_audios:
+          description: 'Up to 3 reference audios, to guide the generated soundtrack with a voice, a piece of music or an ambience. Each item must be a publicly accessible HTTPS URL — unlike `reference_images` and `reference_videos`, this field does not take upload file_ids. Reference them in the prompt using @Audio1, @Audio2, or @Audio3.
+
+
+            **The audio is not copied into the video.** The model composes its own soundtrack, guided by the rhythm and character of what you send: a 120 BPM reference produces a soundtrack at that tempo, but it is a new recording, not your file muxed into the result. A reference with a clear beat, music or speech gives the model something to follow; a flat tone or near-silence does not.
+
+
+            Requirements for each item: MP3 or WAV, 2 to 15 seconds, no larger than 15 MB, and the combined duration of all of them must not exceed 15 seconds.
+
+
+            Requires at least one `reference_images` or `reference_videos` entry — the model rejects a request whose only reference is audio. Mutually exclusive with `image` and `image_end`.
+
+            '
+          example:
+          - https://example.com/reference-voice.mp3
+          items:
+            type: string
+          maxItems: 3
+          type: array
+        prompt:
+          description: Text prompt describing the video to generate. Mention references as @Image1, @Image2, ... @Video1, @Video2, ... or @Audio1, @Audio2, ... matching their 1-indexed array order. Maximum 40000 characters. Prompts longer than 5,000 characters are accepted, but results may become less predictable.
+          example: A cinematic shot of a cat walking through a neon-lit alley at night
+          maxLength: 40000
+          type: string
+        duration:
+          default: 5
+          description: Video duration in seconds. Any integer from 4 to 15.
+          enum:
+          - 4
+          - 5
+          - 6
+          - 7
+          - 8
+          - 9
+          - 10
+          - 11
+          - 12
+          - 13
+          - 14
+          - 15
+          type: integer
+        aspect_ratio:
+          default: widescreen_16_9
+          description: 'Output video aspect ratio. Available options:
+
+            - `film_horizontal_21_9`: Ultra-wide cinematic (21:9)
+
+            - `widescreen_16_9`: Standard widescreen (16:9)
+
+            - `classic_4_3`: Classic TV format (4:3)
+
+            - `square_1_1`: Square format (1:1)
+
+            - `traditional_3_4`: Portrait classic (3:4)
+
+            - `social_story_9_16`: Vertical/social media story (9:16)
+
+            - `film_vertical_9_21`: Ultra-tall vertical (9:21)
+
+
+            **Note:** This parameter only applies to text-to-video and reference-to-video requests. When an `image` (first frame) is provided for image-to-video generation, `aspect_ratio` is ignored: the output video inherits the aspect ratio of the start frame.
+
+            '
+          enum:
+          - film_horizontal_21_9
+          - widescreen_16_9
+          - classic_4_3
+          - square_1_1
+          - traditional_3_4
+          - social_story_9_16
+          - film_vertical_9_21
+          type: string
+        camera_fixed:
+          default: false
+          description: When set to `true`, the camera position stays fixed (tripod shot) throughout the video. When `false`, the model may apply natural camera movements.
+          type: boolean
+        seed:
+          default: -1
+          description: Random seed for reproducible video generation. Use the same seed with the same prompt to get consistent results. Use `-1` for a random seed.
+          maximum: 4294967295
+          minimum: -1
+          type: integer
+        sound_effects:
+          default: true
+          description: 'Whether to generate native audio (sound effects and ambience) for the video. Set to `false` to generate a silent video. Ignored when `reference_audios` are attached: the reference audio is what the soundtrack is built from.'
+          type: boolean
+        no_music:
+          default: false
+          description: Suppress background music in the generated native audio. Only applies when `sound_effects` is enabled.
+          type: boolean
+        enable_safety_checker:
+          default: true
+          description: Enable content safety filtering to ensure generated videos comply with safety guidelines. When `true`, the model filters unsafe content.
+          type: boolean
+      required:
+      - prompt
+      type: object
+    advanced-custom-elements-refer-video:
+      properties:
+        video_url:
+          description: 'Reference video URL. Only .mp4/.mov formats supported. Must be 1080P with duration between 3 and 8 seconds, aspect ratio 16:9 or 9:16. Max file size: 200MB.'
+          type: string
+      required:
+      - video_url
+      type: object
+    vfx-request:
+      properties:
+        webhook_url:
+          description: Webhook URL to notify when the task is completed
+          format: uri
+          type: string
+        video:
+          description: URL of the video to apply effects to. Must be publicly accessible.
+          example: https://example.com/video.mp4
+          format: uri
+          type: string
+        filter_type:
+          $ref: '#/components/schemas/filter-type'
+        fps:
+          default: 24
+          description: Frames per second for the output video
+          maximum: 60
+          minimum: 1
+          type: integer
+        bloom_filter_contrast:
+          description: Contrast value for bloom filter effect. Only applicable when filter_type is 7 (bloom).
+          example: 1.2
+          type: number
+        motion_filter_kernel_size:
+          description: Kernel size for motion blur filter. Only applicable when filter_type is 2 (motion_blur).
+          example: 5
+          type: integer
+        motion_filter_decay_factor:
+          description: Decay factor for motion blur filter. Only applicable when filter_type is 2 (motion_blur).
+          example: 0.8
+          type: number
+      required:
+      - video
+      type: object
+    seedance-2-mini-request:
+      properties:
+        webhook_url:
+          description: URL to receive a webhook notification when the video generation task completes. The webhook payload includes the task ID and status.
+          format: uri
+          type: string
+        image:
+          description: Optional image to use as the first frame for image-to-video generation. Accepts a publicly accessible URL or a base64-encoded image. Mutually exclusive with `reference_images`, `reference_videos` and `reference_audios`.
+          format: byte
+          type: string
+        image_end:
+          description: 'Optional image to use as the last frame for image-to-video generation. Requires `image`: the provider rejects a last frame with no first frame. Together they generate a transition video between the two. Mutually exclusive with `reference_images`, `reference_videos` and `reference_audios`. Accepts a publicly accessible URL or a base64-encoded image.'
+          format: byte
+          type: string
+        reference_images:
+          description: Up to 9 reference images for reference-to-video generation. Each item is a publicly accessible URL or a base64-encoded image. Reference them in the prompt using @Image1, @Image2, ... @Image9 (1-indexed to the array order). Mutually exclusive with `image` and `image_end`.
+          example:
+          - https://example.com/reference-1.jpg
+          - https://example.com/reference-2.jpg
+          items:
+            format: byte
+            type: string
+          maxItems: 9
+          type: array
+        reference_videos:
+          description: Up to 3 reference videos. Each item must be a publicly accessible HTTPS URL or a video upload file_id (`upl_vid_...`). Reference them in the prompt using @Video1, @Video2, or @Video3. Each video must be MP4 or MOV, 2 to 15 seconds, 24 to 60 fps, no larger than 50 MB, with 409600 to 2086876 pixels and an aspect ratio from 0.4 to 2.5. Combined duration must not exceed 15 seconds. Mutually exclusive with `image` and `image_end`.
+          example:
+          - https://example.com/reference-1.mp4
+          items:
+            type: string
+          maxItems: 3
+          type: array
+        reference_audios:
+          description: 'Up to 3 reference audios, to guide the generated soundtrack with a voice, a piece of music or an ambience. Each item must be a publicly accessible HTTPS URL — unlike `reference_images` and `reference_videos`, this field does not take upload file_ids. Reference them in the prompt using @Audio1, @Audio2, or @Audio3.
+
+
+            **The audio is not copied into the video.** The model composes its own soundtrack, guided by the rhythm and character of what you send: a 120 BPM reference produces a soundtrack at that tempo, but it is a new recording, not your file muxed into the result. A reference with a clear beat, music or speech gives the model something to follow; a flat tone or near-silence does not.
+
+
+            Requirements for each item: MP3 or WAV, 2 to 15 seconds, no larger than 15 MB, and the combined duration of all of them must not exceed 15 seconds.
+
+
+            Requires at least one `reference_images` or `reference_videos` entry — the model rejects a request whose only reference is audio. Mutually exclusive with `image` and `image_end`.
+
+            '
+          example:
+          - https://example.com/reference-voice.mp3
+          items:
+            type: string
+          maxItems: 3
+          type: array
+        prompt:
+          description: Text prompt describing the video to generate. Mention references as @Image1, @Image2, ... @Video1, @Video2, ... or @Audio1, @Audio2, ... matching their 1-indexed array order. Maximum 40000 characters. Prompts longer than 5,000 characters are accepted, but results may become less predictable.
+          example: A cinematic shot of a cat walking through a neon-lit alley at night
+          maxLength: 40000
+          type: string
+        duration:
+          default: 5
+          description: Video duration in seconds. Any integer from 4 to 15.
+          enum:
+          - 4
+          - 5
+          - 6
+          - 7
+          - 8
+          - 9
+          - 10
+          - 11
+          - 12
+          - 13
+          - 14
+          - 15
+          type: integer
+        aspect_ratio:
+          default: widescreen_16_9
+          description: 'Output video aspect ratio. Available options:
+
+            - `film_horizontal_21_9`: Ultra-wide cinematic (21:9)
+
+            - `widescreen_16_9`: Standard widescreen (16:9)
+
+            - `classic_4_3`: Classic TV format (4:3)
+
+            - `square_1_1`: Square format (1:1)
+
+            - `traditional_3_4`: Portrait classic (3:4)
+
+            - `social_story_9_16`: Vertical/social media story (9:16)
+
+            - `film_vertical_9_21`: Ultra-tall vertical (9:21)
+
+
+            **Note:** This parameter only applies to text-to-video and reference-to-video requests. When an `image` (first frame) is provided for image-to-video generation, `aspect_ratio` is ignored: the output video inherits the aspect ratio of the start frame.
+
+            '
+          enum:
+          - film_horizontal_21_9
+          - widescreen_16_9
+          - classic_4_3
+          - square_1_1
+          - traditional_3_4
+          - social_story_9_16
+          - film_vertical_9_21
+          type: string
+        camera_fixed:
+          default: false
+          description: When set to `true`, the camera position stays fixed (tripod shot) throughout the video. When `false`, the model may apply natural camera movements.
+          type: boolean
+        seed:
+          default: -1
+          description: Random seed for reproducible video generation. Use the same seed with the same prompt to get consistent results. Use `-1` for a random seed.
+          maximum: 4294967295
+          minimum: -1
+          type: integer
+        sound_effects:
+          default: true
+          description: 'Whether to generate native audio (sound effects and ambience) for the video. Set to `false` to generate a silent video. Ignored when `reference_audios` are attached: the reference audio is what the soundtrack is built from.'
+          type: boolean
+        no_music:
+          default: false
+          description: Suppress background music in the generated native audio. Only applies when `sound_effects` is enabled.
+          type: boolean
+      required:
+      - prompt
+      type: object
+    kling-v3-omni-request:
+      properties:
+        webhook_url:
+          description: 'Optional callback URL that receives asynchronous notifications when the task changes status.
+
+            The payload includes the task status and result URL when completed.
+
+            '
+          format: uri
+          type: string
+        prompt:
+          description: 'Text prompt describing the desired video content. Maximum 2500 characters.
+
+
+            **Usage by mode:**
+
+            - **Text-to-video:** Required unless multi_prompt is provided
+
+            - **Image-to-video:** Either prompt or multi_prompt must be provided, but not both
+
+            '
+          maxLength: 2500
+          type: string
+        multi_prompt:
+          description: 'List of prompts for multi-shot video generation. Each item is a string prompt for that shot.
+
+            Use with shot_type to control multi-shot behavior.
+
+
+            Only effective when shot_type is set. When multi_prompt is provided without an explicit shot_type, it defaults to "customize".
+
+            '
+          items:
+            type: string
+          maxItems: 6
+          type: array
+        shot_type:
+          default: customize
+          description: 'Controls how multi-shot video generation is segmented for Kling 3 Omni.
+
+            - `customize`: User provides explicit per-shot prompts via the multi_prompt array.
+
+
+            Currently only "customize" is supported for Omni endpoints.
+
+            '
+          enum:
+          - customize
+          type: string
+        image_url:
+          description: 'URL of the start frame image for image-to-video generation.
+
+            Required for image-to-video mode.
+
+
+            **Image requirements:**
+
+            - Minimum: 300x300 pixels
+
+            - Maximum: 10MB file size
+
+            - Formats: JPG, JPEG, PNG
+
+            '
+          type: string
+        start_image_url:
+          description: 'Image to use as the first frame of the video.
+
+            Use together with end_image_url to control both start and end frames in image-to-video mode.
+
+            '
+          type: string
+        end_image_url:
+          description: 'Image to use as the last frame of the video.
+
+            Optional for image-to-video mode to guide the final frame.
+
+            '
+          type: string
+        image_urls:
+          description: 'Reference images for style/appearance guidance.
+
+            Reference in your prompt as @Image1, @Image2, etc.
+
+            Maximum 4 reference images.
+
+            '
+          items:
+            type: string
+          type: array
+        generate_audio:
+          description: Whether to generate native audio for the video.
+          type: boolean
+        aspect_ratio:
+          $ref: '#/components/schemas/kling-v3-omni-aspect-ratio'
+        duration:
+          $ref: '#/components/schemas/kling-v3-duration'
+      type: object
+    inline_object_1:
+      properties:
+        problem:
+          $ref: '#/components/schemas/inline_object_1_problem'
+      type: object
+    kling-v3-turbo-t2v-request:
+      properties:
+        webhook_url:
+          description: 'Optional callback URL that will receive asynchronous notifications whenever the task changes status. The payload sent to this URL is the same as the corresponding GET endpoint response, but without the data field.
+
+            '
+          example: https://www.example.com/webhook
+          format: uri
+          type: string
+        prompt:
+          description: 'Text prompt describing the video you want to generate. Maximum 3072 characters; 2500 or fewer is recommended.
+
+
+            **Tips for better results:**
+
+            - Be specific about the scene, subjects, motion, and camera movement
+
+            - Describe the lighting, atmosphere, and visual style
+
+            - Add negative descriptions inline (for example, "no text, no blur") to steer the model away from unwanted elements
+
+            '
+          example: A beautiful sunset over the ocean, gentle waves, cinematic lighting
+          maxLength: 3072
+          minLength: 1
+          type: string
+        aspect_ratio:
+          default: 969
+          description: 'Aspect ratio of the generated video:
+
+            - `16:9`: Landscape (widescreen) - ideal for YouTube, presentations
+
+            - `9:16`: Portrait (vertical) - ideal for TikTok, Instagram Stories, Reels
+
+            - `1:1`: Square - ideal for Instagram posts, social media
+
+            '
+          enum:
+          - 969
+          - 556
+          - 61
+          type: string
+        duration:
+          default: '5'
+          description: 'Duration of the generated video in seconds.
+
+
+            **Range:** 3-15 seconds
+
+            '
+          enum:
+          - '3'
+          - '4'
+          - '5'
+          - '6'
+          - '7'
+          - '8'
+          - '9'
+          - '10'
+          - '11'
+          - '12'
+          - '13'
+          - '14'
+          - '15'
+          type: string
+      required:
+      - prompt
+      type: object
+    kling-v3-multi-prompt-item:
+      description: Multi-shot prompt item with prompt text and duration for Kling V3.
+      properties:
+        prompt:
+          description: Text prompt for this specific shot segment. Maximum 2500 characters.
+          maxLength: 2500
+          type: string
+        duration:
+          description: Duration of this segment in seconds (3-15).
+          enum:
+          - '3'
+          - '4'
+          - '5'
+          - '6'
+          - '7'
+          - '8'
+          - '9'
+          - '10'
+          - '11'
+          - '12'
+          - '13'
+          - '14'
+          - '15'
+          type: string
+      type: object
+    seedance_2_5_request_multishot_inner:
+      properties:
+        prompt:
+          description: The prompt describing this shot. Prompts longer than 5,000 characters are accepted, but results may become less predictable.
+          maxLength: 40000
+          type: string
+        duration:
+          description: Duration of this shot in seconds.
+          maximum: 12
+          minimum: 1
+          type: integer
+      required:
+      - prompt
+      type: object
+    inline_object_1_problem:
+      properties:
+        message:
+          example: Validation error
+          type: string
+        invalid_params:
+          items:
+            $ref: '#/components/schemas/inline_object_1_problem_invalid_params_inner'
+          type: array
+      required:
+      - invalid_params
+      - message
+      type: object
+    advanced-custom-elements-tag:
+      properties:
+        tag_id:
+          $ref: '#/components/schemas/advanced-custom-elements-tag-id'
+      required:
+      - tag_id
+      type: object
+    inline_object_2:
+      example:
+        message: Internal Server Error
+      properties:
+        message:
+          example: Internal Server Error
+          type: string
+      type: object
+    inline_object:
+      example:
+        message: message
+      properties:
+        message:
+          type: string
+      type: object
+    minimax-h3-max-r2v-request:
+      properties:
+        webhook_url:
+          description: URL to receive a webhook notification when the video generation task completes. The webhook payload includes the task ID and status.
+          format: uri
+          type: string
+        prompt:
+          description: Text prompt describing the video to generate. Mention references as @Image1, @Image2, ... @Video1, @Video2, ... or @Audio1, @Audio2, ... matching their 1-indexed array order.
+          example: '@Image1 walks slowly across a sunlit room, handheld camera'
+          maxLength: 50000
+          minLength: 1
+          type: string
+        reference_images:
+          description: Up to 9 reference images that steer the subject and style. Each item is a publicly accessible URL or a base64-encoded image. Reference them in the prompt using @Image1, @Image2, ... @Image9 (1-indexed to the array order). Reference images, videos and audios together must also not exceed 12 files.
+          example:
+          - https://example.com/reference-1.jpg
+          items:
+            format: byte
+            type: string
+          maxItems: 9
+          type: array
+        reference_videos:
+          description: Up to 3 reference videos that steer the motion. Each item must be a publicly accessible HTTPS URL or a video upload file_id (`upl_vid_...`). Reference them in the prompt using @Video1, @Video2 or @Video3. Each video must be 2 to 15 seconds and their combined duration must not exceed 15 seconds. Reference images, videos and audios together must also not exceed 12 files.
+          example:
+          - https://example.com/reference-1.mp4
+          items:
+            type: string
+          maxItems: 3
+          type: array
+        reference_audios:
+          description: 'Up to 3 reference audios. Each item must be a publicly accessible HTTPS URL — unlike `reference_videos`, this field does not take upload file_ids. Reference them in the prompt using @Audio1, @Audio2 or @Audio3. Each audio must be 2 to 15 seconds and their combined duration must not exceed 15 seconds. Audio cannot be the only reference: at least one `reference_images` or `reference_videos` entry is required alongside it. Reference images, videos and audios together must also not exceed 12 files.'
+          example:
+          - https://example.com/reference-voice.mp3
+          items:
+            type: string
+          maxItems: 3
+          type: array
+        duration:
+          default: 5
+          description: Video duration in seconds. Any integer from 5 to 15.
+          example: 5
+          maximum: 15
+          minimum: 5
+          type: integer
+        aspect_ratio:
+          default: adaptive
+          description: 'Output video aspect ratio. Available options:
+
+            - `adaptive`: the model picks it from the reference assets
+
+            - `film_horizontal_21_9`: Ultra-wide cinematic (21:9)
+
+            - `widescreen_16_9`: Standard widescreen (16:9)
+
+            - `classic_4_3`: Classic TV format (4:3)
+
+            - `square_1_1`: Square format (1:1)
+
+            - `traditional_3_4`: Portrait classic (3:4)
+
+            - `social_story_9_16`: Vertical/social media story (9:16)
+
+            '
+          enum:
+          - adaptive
+          - film_horizontal_21_9
+          - widescreen_16_9
+          - classic_4_3
+          - square_1_1
+          - traditional_3_4
+          - social_story_9_16
+          type: string
+        prompt_expansion_mode:
+          default: balanced
+          description: Which prompt expander runs before the generation. `disabled` sends the prompt verbatim; `fast`, `balanced` and `quality` trade latency for richer prompt rewriting.
+          enum:
+          - disabled
+          - fast
+          - balanced
+          - quality
+          type: string
+        enable_safety_checker:
+          default: true
+          description: Enable content safety filtering to ensure generated videos comply with safety guidelines.
+          type: boolean
+        seed:
+          default: -1
+          description: Random seed for reproducible video generation. Use the same seed with the same prompt to get consistent results. Use `-1` for a random seed.
+          maximum: 4294967295
+          minimum: -1
+          type: integer
+      required:
+      - prompt
+      type: object
+    get_style_transfer_task_status_200_response:
+      example:
+        data:
+          generated:
+          - https://openapi-generator.tech
+          - https://openapi-generator.tech
+          task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: CREATED
+      properties:
+        data:
+          $ref: '#/components/schemas/task-detail'
+      required:
+      - data
+      type: object
+    inline_object_3:
+      example:
+        message: Service Unavailable. Please try again later.
+      properties:
+        message:
+          example: Service Unavailable. Please try again later.
+          type: string
+      type: object
+    omni-human-1-5-resolution:
+      default: 1080p
+      description: Video resolution. 1080p allows max 30 seconds audio, 720p allows max 60 seconds audio.
+      enum:
+      - 720p
+      - 1080p
+      type: string
+    seedance-1-5-pro-request:
+      properties:
+        webhook_url:
+          description: Webhook URL to notify the user when the task is completed
+          format: uri
+          type: string
+        image:
+          description: 'Optional image to use as first frame for image-to-video generation. Supported formats: URL of the image or base64 encoding.'
+          format: byte
+          type: string
+        prompt:
+          description: The text content used for the video generation including dialogue, sounds, and scene description.
+          example: A person saying 'Hello world' while waving at the camera
+          maxLength: 2000
+          type: string
+        duration:
+          default: 5
+          description: Video duration in seconds (4-12)
+          maximum: 12
+          minimum: 4
+          type: integer
+        generate_audio:
+          default: true
+          description: Whether to generate synchronized audio (dialogue, foley, music) from the prompt
+          type: boolean
+        camera_fixed:
+          default: false
+          description: Whether the camera position should be fixed (tripod shot)
+          type: boolean
+        aspect_ratio:
+          default: widescreen_16_9
+          description: Video aspect ratio
+          enum:
+          - film_horizontal_21_9
+          - widescreen_16_9
+          - classic_4_3
+          - square_1_1
+          - traditional_3_4
+          - social_story_9_16
+          - film_vertical_9_21
+          type: string
+        seed:
+          default: -1
+          description: Random seed for video generation. Use -1 for random seed.
+          maximum: 4294967295
+          minimum: -1
+          type: integer
+      required:
+      - prompt
+      type: object
+    seedance-2-5-request:
+      properties:
+        webhook_url:
+          description: URL to receive a webhook notification when the video generation task completes. The webhook payload includes the task ID and status.
+          format: uri
+          type: string
+        image:
+          description: Optional image to use as the first frame for image-to-video generation. Accepts a publicly accessible URL or a base64-encoded image. Mutually exclusive with `reference_images` and `reference_videos`.
+          format: byte
+          type: string
+        image_end:
+          description: Optional image to use as the last frame for image-to-video generation. Requires `image`. When provided together with `image`, the model generates a transition video between the first and last frame. Mutually exclusive with `reference_images` and `reference_videos`.
+          format: byte
+          type: string
+        reference_images:
+          description: Up to 30 reference images (subjects, characters, products or style references). Each item is a publicly accessible URL or a base64-encoded image. Reference them in the prompt using @Image1, @Image2, ... @Image30 (1-indexed to the array order). Mutually exclusive with `image` and `image_end`.
+          items:
+            format: byte
+            type: string
+          maxItems: 30
+          type: array
+        reference_videos:
+          description: Up to 10 reference videos. Each item must be a publicly accessible HTTPS URL or a video upload file_id (`upl_vid_...`). Reference them in the prompt using @Video1, @Video2, ... @Video10 (1-indexed to the array order). Each video must be MP4 or MOV, 2 to 30 seconds, 24 to 60 fps, no larger than 200 MB, with 409600 to 8295044 pixels and an aspect ratio from 0.4 to 2.5. Combined duration must not exceed 30 seconds. Mutually exclusive with `image` and `image_end`.
+          example:
+          - https://example.com/reference-1.mp4
+          items:
+            type: string
+          maxItems: 10
+          type: array
+        reference_audios:
+          description: 'Up to 10 reference audios (2-60s each, mp3 or wav). Each item is a publicly accessible URL: unlike `reference_images`, this field does not take upload file_ids. Reference them in the prompt using @Audio1, @Audio2, ... @Audio10 (1-indexed to the array order).
+
+
+            **The audio is not copied into the video.** The model composes its own soundtrack, guided by the rhythm and character of what you send: a 120 BPM reference produces a soundtrack at that tempo, but it is a new recording, not your file muxed into the result. A reference with a clear beat, music or speech gives the model something to follow; a flat tone or near-silence does not.
+
+            '
+          items:
+            format: uri
+            type: string
+          maxItems: 10
+          type: array
+        prompt:
+          description: Text prompt describing the video to generate. To use references, mention them as @Image1, @Video1, @Audio1, ... matching the 1-indexed order of each reference array. Maximum 40000 characters. Prompts longer than 5,000 characters are accepted, but results may become less predictable.
+          example: A cinematic shot of a cat walking through a neon-lit alley at night
+          maxLength: 40000
+          type: string
+        duration:
+          default: 5
+          description: Video duration in seconds. Any integer from 4 to 30.
+          maximum: 30
+          minimum: 4
+          type: integer
+        aspect_ratio:
+          default: widescreen_16_9
+          description: Output video aspect ratio. Only applies to text-to-video and reference-to-video; ignored when `image` (first frame) is provided (the output inherits the start frame ratio).
+          enum:
+          - film_horizontal_21_9
+          - widescreen_16_9
+          - classic_4_3
+          - square_1_1
+          - traditional_3_4
+          - social_story_9_16
+          - film_vertical_9_21
+          type: string
+        camera_fixed:
+          default: false
+          description: When `true`, the camera position stays fixed (tripod shot). When `false`, the model may apply natural camera movements.
+          type: boolean
+        camera_motion:
+          description: Optional camera movement to guide the shot. Each value is expanded into a descriptive instruction appended to the prompt.
+          enum:
+          - static
+          - moveLeft
+          - moveRight
+          - moveUp
+          - moveDown
+          - pushIn
+          - pullOut
+          - zoomIn
+          - zoomOut
+          - panLeft
+          - panRight
+          - tiltUp
+          - tiltDown
+          - truckLeft
+          - truckRight
+          - pedestalUp
+          - pedestalDown
+          - superDollyIn
+          - superDollyOut
+          - crashZoomIn
+          - crashZoomOut
+          - doubleDolly
+          - jibUp
+          - jibDown
+          - craneUp
+          - craneDown
+          - craneOverTheHead
+          - orbitLeft
+          - orbitRight
+          - 360Orbit
+          - leftCircling
+          - rightCircling
+          - leftWalking
+          - rightWalking
+          - upwardTilt
+          - downwardTilt
+          - fisheye
+          - overhead
+          - objectPov
+          - whipPan
+          - dutchAngle
+          - dirtyLens
+          - lensCrack
+          - lensFlare
+          - focusChange
+          - lowShutter
+          - fpvDrone
+          - handheld
+          - headTracking
+          - snorricam
+          - stageLeft
+          - stageRight
+          - scenicShot
+          - carChasing
+          - throughObjectIn
+          - timelapseHuman
+          - timelapseLandscape
+          type: string
+        multishot:
+          description: Optional multishot sequence of up to 6 shots. When provided, the shots drive the generation and replace the top-level `prompt` (which is still required). If any shot has a `duration`, all shots must have one and the durations must sum to `duration`.
+          items:
+            $ref: '#/components/schemas/seedance_2_5_request_multishot_inner'
+          maxItems: 6
+          type: array
+        seed:
+          default: -1
+          description: Random seed for reproducible video generation. Use `-1` for a random seed.
+          maximum: 4294967295
+          minimum: -1
+          type: integer
+        sound_effects:
+          default: true
+          description: Whether to generate native audio (sound effects and ambience) for the video.
+          type: boolean
+        no_music:
+          default: false
+          description: Suppress background music in the generated native audio. Only applies when `sound_effects` is enabled.
+          type: boolean
+        output_format:
+          default: mp4
+          description: Container format of the generated video. `mov` trades file size for colour fidelity; `mp4` is the default.
+          enum:
+          - mp4
+          - mov
+          type: string
+        enable_safety_checker:
+          default: true
+          description: Enable content safety filtering to ensure generated videos comply with safety guidelines.
+          type: boolean
+      required:
+      - prompt
+      type: object
+    advanced-custom-elements-request:
+      properties:
+        element_name:
+          description: Name of the custom element. Must not exceed 20 characters.
+          maxLength: 20
+          type: string
+        element_description:
+          description: Description of the custom element. Must not exceed 100 characters.
+          maxLength: 100
+          type: string
+        reference_type:
+          $ref: '#/components/schemas/advanced-custom-elements-reference-type'
+        element_image_list:
+          $ref: '#/components/schemas/advanced-custom-elements-image-list'
+        element_video_list:
+          $ref: '#/components/schemas/advanced-custom-elements-video-list'
+        element_voice_id:
+          description: 'Bind the element to an existing voice from the tone library. When empty, the element is not bound to a voice.
+
+            The voice ID can be obtained through the voice-related API. Only elements customized via video reference support voice binding.
+
+            '
+          type: string
+        tag_list:
+          description: Configure category tags for the element. One element can have multiple tags.
+          items:
+            $ref: '#/components/schemas/advanced-custom-elements-tag'
+          type: array
+        webhook_url:
+          description: 'Optional callback URL that will receive asynchronous notifications whenever the task changes status. The payload sent to this URL is the same as the corresponding GET endpoint response, but without the data field.
+
+            '
+          example: https://www.example.com/webhook
+          format: uri
+          type: string
+      required:
+      - element_description
+      - element_name
+      - reference_type
+      type: object
+    motion-control-request:
+      properties:
+        webhook_url:
+          description: Webhook URL to notify you when the task completes. When provided, the server will send a POST request to this URL with the task result.
+          format: uri
+          type: string
+        image_url:
+          description: 'URL of the character/reference image. The motion from the reference video will be transferred to this character.
+
+
+            **Requirements:**
+
+            - Must be a publicly accessible URL
+
+            - Minimum resolution: 300x300 pixels
+
+            - Maximum file size: 10MB
+
+            - Supported formats: JPG, JPEG, PNG, WEBP
+
+            '
+          format: uri
+          type: string
+        video_url:
+          description: 'URL of the reference video containing the motion to transfer.
+
+
+            **Requirements:**
+
+            - Must be a publicly accessible URL
+
+            - Duration: 3-30 seconds
+
+            - Supported formats: MP4, MOV, WEBM, M4V
+
+            '
+          format: uri
+          type: string
+        prompt:
+          description: Optional text prompt to guide the motion transfer. Cannot exceed 2500 characters.
+          maxLength: 2500
+          type: string
+        character_orientation:
+          default: video
+          description: 'How the model interprets spatial information and constrains output duration.
+
+
+            - **video**: Orientation matches reference video. Better for complex motions. Maximum output duration: 30 seconds.
+
+            - **image**: Orientation matches reference image. Better for following camera movements. Maximum output duration: 10 seconds.
+
+            '
+          enum:
+          - video
+          - image
+          type: string
+        cfg_scale:
+          default: 0.5
+          description: The CFG (Classifier Free Guidance) scale controls how closely the model follows the prompt. Higher values mean stronger adherence to the prompt but less flexibility.
+          format: float
+          maximum: 1
+          minimum: 0
+          type: number
+      required:
+      - image_url
+      - video_url
+      type: object
+    kling-v3-omni-aspect-ratio:
+      default: 969
+      description: 'Aspect ratio for Kling V3 Omni video generation:
+
+        - `auto`: Automatically match the input image aspect ratio (image-to-video only)
+
+        - `16:9`: Landscape (widescreen)
+
+        - `9:16`: Portrait (vertical)
+
+        - `1:1`: Square
+
+        '
+      enum:
+      - auto
+      - 969
+      - 556
+      - 61
+      type: string
+    advanced-custom-elements-refer-image:
+      properties:
+        image_url:
+          description: 'Reference image URL or Base64 encoding. Supported formats: .jpg, .jpeg, .png. Max file size: 10MB. Min dimensions: 300px.'
+          type: string
+      required:
+      - image_url
+      type: object
+    minimax-h3-max-request:
+      properties:
+        webhook_url:
+          description: URL to receive a webhook notification when the video generation task completes. The webhook payload includes the task ID and status.
+          format: uri
+          type: string
+        prompt:
+          description: Text prompt describing the video to generate.
+          example: A cinematic shot of a cat walking through a neon-lit alley at night
+          maxLength: 50000
+          minLength: 1
+          type: string
+        image:
+          description: Optional image to use as the first frame for image-to-video generation. Its aspect ratio determines the aspect ratio of the output. Accepts a publicly accessible URL or a base64-encoded image.
+          format: byte
+          type: string
+        image_end:
+          description: 'Optional image to use as the last frame for image-to-video generation. Requires `image`: the provider rejects a last frame with no first frame. Accepts a publicly accessible URL or a base64-encoded image.'
+          format: byte
+          type: string
+        duration:
+          default: 5
+          description: Video duration in seconds. Any integer from 5 to 15.
+          example: 5
+          maximum: 15
+          minimum: 5
+          type: integer
+        aspect_ratio:
+          default: widescreen_16_9
+          description: 'Output video aspect ratio. Available options:
+
+            - `film_horizontal_21_9`: Ultra-wide cinematic (21:9)
+
+            - `widescreen_16_9`: Standard widescreen (16:9)
+
+            - `classic_4_3`: Classic TV format (4:3)
+
+            - `square_1_1`: Square format (1:1)
+
+            - `traditional_3_4`: Portrait classic (3:4)
+
+            - `social_story_9_16`: Vertical/social media story (9:16)
+
+
+            **Note:** only applies to text-to-video requests. When `image` is supplied the output follows the aspect ratio of that image.
+
+            '
+          enum:
+          - film_horizontal_21_9
+          - widescreen_16_9
+          - classic_4_3
+          - square_1_1
+          - traditional_3_4
+          - social_story_9_16
+          type: string
+        prompt_expansion_mode:
+          default: balanced
+          description: Which prompt expander runs before the generation. `disabled` sends the prompt verbatim; `fast`, `balanced` and `quality` trade latency for richer prompt rewriting.
+          enum:
+          - disabled
+          - fast
+          - balanced
+          - quality
+          type: string
+        enable_safety_checker:
+          default: true
+          description: Enable content safety filtering to ensure generated videos comply with safety guidelines.
+          type: boolean
+        seed:
+          default: -1
+          description: Random seed for reproducible video generation. Use the same seed with the same prompt to get consistent results. Use `-1` for a random seed.
+          maximum: 4294967295
+          minimum: -1
+          type: integer
+      required:
+      - prompt
+      type: object
+    runway-act-two-request:
+      properties:
+        webhook_url:
+          description: Webhook URL to notify the user when the task is completed
+          format: uri
+          type: string
+        character:
+          $ref: '#/components/schemas/runway_act_two_request_character'
+        reference:
+          $ref: '#/components/schemas/runway_act_two_request_reference'
+        ratio:
+          $ref: '#/components/schemas/runway-aspect-ratio'
+        body_control:
+          default: true
+          description: Enable body control for non-facial movements and gestures
+          type: boolean
+        expression_intensity:
+          default: 3
+          description: Intensity of character's expressions (1-5)
+          maximum: 5
+          minimum: 1
+          type: integer
+        seed:
+          description: Random seed for reproducibility
+          maximum: 4294967295
+          minimum: 0
+          type: integer
+      required:
+      - character
+      - reference
+      type: object
+    itvkp_request_content_dynamic_masks_inner_trajectories_inner:
+      properties:
+        x:
+          description: Horizontal coordinate (X-coordinate) in 2D pixel system.
+          type: integer
+        y:
+          description: Vertical coordinate (Y-coordinate) in 2D pixel system.
+          type: integer
+      required:
+      - x
+      - y
+      type: object
+    runway_act_two_request_character:
+      description: The character to control. A visually recognizable face must be visible.
+      properties:
+        type:
+          description: Type of character input (video or image)
+          enum:
+          - video
+          - image
+          type: string
+        uri:
+          description: URL to the character video/image (must be publicly accessible)
+          format: uri
+          type: string
+      required:
+      - type
+      - uri
+      type: object
+    runway-aspect-ratio:
+      default: 1280:720
+      description: Aspect ratio for the generated video (width:height)
+      enum:
+      - 1280:720
+      - 720:1280
+      - 1104:832
+      - 832:1104
+      - 960:960
+      - 1584:672
+      type: string
+    itvkp_request_content_dynamic_masks_inner:
+      properties:
+        mask:
+          description: 'Dynamic mask image for defining motion brush application areas with trajectories.
+
+
+            ● Support inputting image Base64 encoding or image URL (ensure the URL is accessible and follows the same format requirements as the image field).
+
+            ● Supported image formats include .jpg / .jpeg / .png
+
+            ● The aspect ratio of the mask image must match the input image (image field); otherwise, the task will fail (failed).
+
+            ● The resolutions of the static_mask image and the dynamic_masks.mask image must be identical; otherwise, the task will fail (failed).'
+          type: string
+        trajectories:
+          description: Motion Trajectory Coordinate Sequence
+          items:
+            $ref: '#/components/schemas/itvkp_request_content_dynamic_masks_inner_trajectories_inner'
+          type: array
+      required:
+      - mask
+      - trajectories
+      type: object
+    get_all_style_transfer_tasks_200_response:
+      example:
+        data:
+        - task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: CREATED
+        - task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: CREATED
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/task'
+          type: array
+      required:
+      - data
+      type: object
+    kling-4k-i2v-request:
+      properties:
+        webhook_url:
+          description: 'Optional callback URL that receives asynchronous notifications when the task changes status.
+
+            The payload includes the task status and result URL when completed.
+
+            '
+          format: uri
+          type: string
+        image:
+          description: 'Reference image for video generation. Supports Base64 encoding or URL (ensure accessibility).
+
+            For URL, must be publicly accessible.
+
+
+            **Image requirements:**
+
+            - Minimum: 300x300 pixels
+
+            - Maximum: 10MB file size
+
+            - Aspect ratio: 1:2.5 to 2.5:1
+
+            - Formats: JPG, JPEG, PNG
+
+            '
+          type: string
+        image_tail:
+          description: 'Optional end frame control image. Supports Base64 encoding or URL.
+
+            For URL, must be publicly accessible. Must follow the same format requirements as the `image` field.
+
+
+            **Image requirements:**
+
+            - Same as `image` field
+
+            '
+          type: string
+        prompt:
+          description: 'Text prompt describing the desired video content. Maximum 2500 characters.
+
+
+            **Tips for better results:**
+
+            - Be specific about motion, camera angles, and actions
+
+            - Describe the scene, characters, and atmosphere
+
+            '
+          maxLength: 2500
+          type: string
+        negative_prompt:
+          default: blur, distort, and low quality
+          description: Undesired elements to avoid in the generated video. Maximum 2500 characters.
+          maxLength: 2500
+          type: string
+        cfg_scale:
+          default: 0.5
+          description: 'Guidance scale controlling prompt adherence versus creative freedom. Range: 0 to 1.
+
+
+            - **0**: Maximum creative freedom, loosest interpretation of the prompt
+
+            - **0.5** (default): Balanced between prompt adherence and creativity
+
+            - **1**: Strongest adherence to the prompt, least creative variation
+
+            '
+          format: float
+          maximum: 1
+          minimum: 0
+          type: number
+        duration:
+          default: '5'
+          description: 'Duration of the generated video in seconds.
+
+
+            **Range:** 3-15 seconds
+
+            '
+          enum:
+          - '3'
+          - '4'
+          - '5'
+          - '6'
+          - '7'
+          - '8'
+          - '9'
+          - '10'
+          - '11'
+          - '12'
+          - '13'
+          - '14'
+          - '15'
+          type: string
+        static_mask:
+          description: 'Static mask image for defining motion brush application areas.
+
+
+            ● Supports both Base64 encoding and image URLs (ensure URLs are publicly accessible and follow the same format requirements as the `image` field).
+
+            ● Supported image formats include .jpg / .jpeg / .png.
+
+            ● The aspect ratio of the mask image MUST match the input image (`image` field); otherwise, the task will fail.
+
+            ● The resolutions of the `static_mask` image and the `dynamic_masks.mask` images must be identical; otherwise, the task will fail.
+
+            ● The static brush feature allows you to define areas where motion will be applied in the generated video.'
+          type: string
+        dynamic_masks:
+          items:
+            $ref: '#/components/schemas/itvkp_request_content_dynamic_masks_inner'
+          type: array
+      required:
+      - image
+      type: object
+    advanced-custom-elements-reference-type:
+      description: 'Reference method for defining the element''s appearance:
+
+        - `image_refer`: Multi-Image Elements. The element appearance is defined from reference images (element_image_list). Supported formats: .jpg, .jpeg, .png. Max 10MB per image. Min 300px dimensions. Aspect ratio between 1:2.5 and 2.5:1.
+
+        - `video_refer`: Video Character Elements. The element appearance is defined from a reference video (element_video_list). Only .mp4/.mov formats, 1080P, 3-8 seconds duration, 16:9 or 9:16 aspect ratio, max 200MB.
+
+        '
+      enum:
+      - image_refer
+      - video_refer
+      type: string
+    kling-4k-t2v-request:
+      properties:
+        webhook_url:
+          description: 'Optional callback URL that receives asynchronous notifications when the task changes status.
+
+            The payload includes the task status and result URL when completed.
+
+            '
+          format: uri
+          type: string
+        prompt:
+          description: 'Text prompt describing the desired video content. Maximum 2500 characters.
+
+
+            **Tips for better results:**
+
+            - Be specific about motion, camera angles, and actions
+
+            - Describe the scene, characters, and atmosphere
+
+            '
+          maxLength: 2500
+          type: string
+        negative_prompt:
+          default: blur, distort, and low quality
+          description: Undesired elements to avoid in the generated video. Maximum 2500 characters.
+          maxLength: 2500
+          type: string
+        cfg_scale:
+          default: 0.5
+          description: 'Guidance scale controlling prompt adherence versus creative freedom. Range: 0 to 1.
+
+
+            - **0**: Maximum creative freedom, loosest interpretation of the prompt
+
+            - **0.5** (default): Balanced between prompt adherence and creativity
+
+            - **1**: Strongest adherence to the prompt, least creative variation
+
+            '
+          format: float
+          maximum: 1
+          minimum: 0
+          type: number
+        aspect_ratio:
+          default: 969
+          description: 'Aspect ratio for the generated video:
+
+            - `16:9`: Landscape (widescreen) - ideal for YouTube, presentations
+
+            - `9:16`: Portrait (vertical) - ideal for TikTok, Instagram Stories, Reels
+
+            - `1:1`: Square - ideal for Instagram posts, social media
+
+            '
+          enum:
+          - 969
+          - 556
+          - 61
+          type: string
+        duration:
+          default: '5'
+          description: 'Duration of the generated video in seconds.
+
+
+            **Range:** 3-15 seconds
+
+            '
+          enum:
+          - '3'
+          - '4'
+          - '5'
+          - '6'
+          - '7'
+          - '8'
+          - '9'
+          - '10'
+          - '11'
+          - '12'
+          - '13'
+          - '14'
+          - '15'
+          type: string
+      required:
+      - prompt
+      type: object
+    kling-v3-aspect-ratio:
+      default: 969
+      description: 'Aspect ratio for the generated video:
+
+        - `16:9`: Landscape (widescreen) - ideal for YouTube, presentations
+
+        - `9:16`: Portrait (vertical) - ideal for TikTok, Instagram Stories, Reels
+
+        - `1:1`: Square - ideal for Instagram posts, social media
+
+        '
+      enum:
+      - 969
+      - 556
+      - 61
+      type: string
+    advanced-custom-elements-tag-id:
+      description: 'Tag category for the element:
+
+        - `o_101`: Hottest
+
+        - `o_102`: Character
+
+        - `o_103`: Animal
+
+        - `o_104`: Item
+
+        - `o_105`: Costume
+
+        - `o_106`: Scene
+
+        - `o_107`: Effect
+
+        - `o_108`: Others
+
+        '
+      enum:
+      - o_101
+      - o_102
+      - o_103
+      - o_104
+      - o_105
+      - o_106
+      - o_107
+      - o_108
+      type: string
+    task-detail:
+      allOf:
+      - $ref: '#/components/schemas/task'
+      - properties:
+          generated:
+            items:
+              description: URL of the generated image
+              format: uri
+              type: string
+            type: array
+        required:
+        - generated
+        type: object
+      example:
+        generated:
+        - https://openapi-generator.tech
+        - https://openapi-generator.tech
+        task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        status: CREATED
+    task-detail_1:
+      allOf:
+      - $ref: '#/components/schemas/task'
+      - properties:
+          generated:
+            items:
+              description: URL of the generated image
+              format: uri
+              type: string
+            type: array
+        required:
+        - generated
+        type: object
+      example:
+        generated:
+        - https://openapi-generator.tech
+        - https://openapi-generator.tech
+        task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        status: CREATED
+  examples:
+    200-task-failed:
+      summary: Success - Task failed
+      value:
+        data:
+          generated: []
+          task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: FAILED
+    200-task-in-progress:
+      summary: Success - Task in progress
+      value:
+        data:
+          generated: []
+          task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: IN_PROGRESS
+    200-task-created:
+      summary: Success - Task created
+      value:
+        data:
+          generated: []
+          task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: CREATED
+    200-task-completed:
+      summary: Success - Task completed
+      value:
+        data:
+          generated:
+          - https://ai-statics.freepik.com/completed_task_image.jpg
+          task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: COMPLETED
+  responses:
+    401-unauthorized:
+      content:
+        application/json:
+          examples:
+            invalid_api_key:
+              summary: API key is not valid
+              value:
+                message: Invalid API key
+            missing_api_key:
+              summary: API key is not provided
+              value:
+                message: Missing API key
+          schema:
+            $ref: '#/components/schemas/inline_object'
+      description: Unauthorized - The client must authenticate itself to get the requested response.
+    503-service-unavailable:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_3'
+      description: Service Unavailable
+    task-detail-200-default-response:
+      content:
+        application/json:
+          examples:
+            success - created task:
+              $ref: '#/components/examples/200-task-created'
+            success - in progress task:
+              $ref: '#/components/examples/200-task-in-progress'
+            success - completed task:
+              $ref: '#/components/examples/200-task-completed'
+            success - failed task:
+              $ref: '#/components/examples/200-task-failed'
+          schema:
+            $ref: '#/components/schemas/inline_object_4'
+      description: OK - The task exists and the status is returned
+    400-bad-request:
+      content:
+        application/json:
+          examples:
+            invalid_page:
+              summary: Parameter 'page' is not valid
+              value:
+                message: Parameter 'page' must be greater than 0
+            invalid_query:
+              summary: Parameter 'query' is not valid
+              value:
+                message: Parameter 'query' must not be empty
+            invalid_filter:
+              summary: Parameter 'filter' is not valid
+              value:
+                message: Parameter 'filter' is not valid
+            generic_bad_request:
+              summary: Bad Request
+              value:
+                message: Parameter ':attribute' is not valid
+          schema:
+            $ref: '#/components/schemas/inline_object'
+        application/problem+json:
+          examples:
+            invalid_page:
+              summary: Parameter 'page' is not valid
+              value:
+                message: Validation error
+                invalid_params:
+                - field: page
+                  reason: Parameter 'page' must be greater than 0
+                - field: per_page
+                  reason: Parameter 'per_page' must be greater than 0
+          schema:
+            $ref: '#/components/schemas/inline_object_1'
+      description: Bad Request - The server could not understand the request due to invalid syntax.
+    404-not-found:
+      content:
+        application/json:
+          examples:
+            ai_resource_not_found:
+              summary: AI resource with provided id does not exist
+              value:
+                message: AI resource not found
+            collection_not_found:
+              summary: Collection with provided id does not exist
+              value:
+                message: Collection not found
+            resource_not_found:
+              summary: Resource with provided id does not exist
+              value:
+                message: Resource not found
+            resources_not_found:
+              summary: Resources not found
+              value:
+                message: Resources not found
+            user_not_found:
+              summary: User with provided id does not exist
+              value:
+                message: User not found
+            video_not_found:
+              summary: Video with provided id does not exist
+              value:
+                message: Video not found
+            video_assets_not_found:
+              summary: Video with provided id has not associated assets
+              value:
+                message: Video not found
+            icon_not_found:
+              summary: Icon with provided id does not exist
+              value:
+                message: Icon not found
+            author_not_found:
+              summary: Author with provided id does not exist
+              value:
+                message: Author not found
+            developer_not_found:
+              summary: Developer with provided email does not exist
+              value:
+                message: Developer not found
+            country_not_found:
+              summary: Country with provided code does not exist
+              value:
+                message: Country not found
+            generic_not_found:
+              summary: Not Found
+              value:
+                message: Not found
+          schema:
+            $ref: '#/components/schemas/inline_object'
+      description: Not Found - The server can not find the requested resource.
+    500-internal-server-error:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_2'
+      description: Internal Server Error - The server has encountered a situation it doesn't know how to handle.
+    task-list-200-default-response:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/get_all_style_transfer_tasks_200_response'
+      description: OK - Returns a list of tasks for the current type of Task
+  securitySchemes:
+    magnificApiKey:
+      description: 'Your Magnific API key. Required for authentication. [Learn how to obtain an API key](https://docs.magnific.com/quickstart)
+
+        '
+      in: header
+      name: x-magnific-api-key
+      type: apiKey

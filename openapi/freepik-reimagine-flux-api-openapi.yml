@@ -1,0 +1,289 @@
+openapi: 3.2.0
+info:
+  description: The Magnific API is your gateway to a vast collection of high-quality digital resources for your applications and projects. As a leading platform, it offers a wide range of graphics, including vectors, photos, illustrations, icons, PSD templates, and more, all curated by talented designers from around the world.
+  title: Magnific Reimagine Flux API
+  version: 1.0.0
+servers:
+- description: B2B API Production V1
+  url: https://api.magnific.com
+security:
+- magnificApiKey: []
+tags:
+- name: reimagine-flux
+paths:
+  /v1/ai/beta/text-to-image/reimagine-flux:
+    post:
+      description: (Beta, synchronous) Reimagine Flux is a new AI model that allows you to generate images from text prompts.
+      requestBody:
+        content:
+          application/json:
+            examples:
+              all-params:
+                $ref: '#/components/examples/request-reimagine-flux-all-params'
+              required-params:
+                $ref: '#/components/examples/request-reimagine-flux-required-params'
+            schema:
+              $ref: '#/components/schemas/reimagine-flux-request'
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                success - completed task:
+                  $ref: '#/components/examples/200-task-completed'
+              schema:
+                $ref: '#/components/schemas/task-detail'
+          description: Success - The image has been generated
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Flux Reimagine - Transform image
+      tags:
+      - reimagine-flux
+      operationId: postV1AiBetaTextToImageReimagineFlux
+      x-operation-id-source: derived
+components:
+  schemas:
+    inline_object:
+      example:
+        message: message
+      properties:
+        message:
+          type: string
+      type: object
+    inline_object_2:
+      example:
+        message: Internal Server Error
+      properties:
+        message:
+          example: Internal Server Error
+          type: string
+      type: object
+    reimagine-flux-request:
+      properties:
+        prompt:
+          example: A beautiful sunset over a calm ocean
+          type: string
+        webhook_url:
+          description: 'Optional callback URL that will receive asynchronous notifications whenever the task changes status. The payload sent to this URL is the same as the corresponding GET endpoint response, but without the data field.
+
+            '
+          example: https://www.example.com/webhook
+          format: uri
+          type: string
+        image:
+          description: Base64 image to do the reimagination
+          format: byte
+          type: string
+        imagination:
+          description: Imagination type
+          enum:
+          - wild
+          - subtle
+          - vivid
+          type: string
+        aspect_ratio:
+          default: original
+          description: 'Image size with the aspect ratio. The aspect ratio is the proportional relationship between an image''s width and height, expressed as *_width_height (e.g., square_1_1, widescreen_16_9). It is calculated by dividing the width by the height.\
+
+            If not present, the default is `original`.
+
+            '
+          enum:
+          - original
+          - square_1_1
+          - classic_4_3
+          - traditional_3_4
+          - widescreen_16_9
+          - social_story_9_16
+          - standard_3_2
+          - portrait_2_3
+          - horizontal_2_1
+          - vertical_1_2
+          - social_post_4_5
+          type: string
+      required:
+      - image
+      type: object
+    inline_object_3:
+      example:
+        message: Service Unavailable. Please try again later.
+      properties:
+        message:
+          example: Service Unavailable. Please try again later.
+          type: string
+      type: object
+    inline_object_1_problem_invalid_params_inner:
+      properties:
+        name:
+          description: Name of the invalid parameter.
+          example: page
+          type: string
+        field:
+          description: Field of the invalid parameter. Mirrors `name`.
+          example: page
+          type: string
+        reason:
+          example: Parameter 'page' must be greater than 0
+          type: string
+      required:
+      - field
+      - name
+      - reason
+      type: object
+    inline_object_1:
+      properties:
+        problem:
+          $ref: '#/components/schemas/inline_object_1_problem'
+      type: object
+    task:
+      example:
+        task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        status: CREATED
+      properties:
+        task_id:
+          description: Task identifier
+          format: uuid
+          type: string
+        status:
+          description: Task status
+          enum:
+          - CREATED
+          - IN_PROGRESS
+          - COMPLETED
+          - FAILED
+          type: string
+      required:
+      - status
+      - task_id
+      type: object
+    inline_object_1_problem:
+      properties:
+        message:
+          example: Validation error
+          type: string
+        invalid_params:
+          items:
+            $ref: '#/components/schemas/inline_object_1_problem_invalid_params_inner'
+          type: array
+      required:
+      - invalid_params
+      - message
+      type: object
+    task-detail:
+      allOf:
+      - $ref: '#/components/schemas/task'
+      - properties:
+          generated:
+            items:
+              description: URL of the generated image
+              format: uri
+              type: string
+            type: array
+        required:
+        - generated
+        type: object
+      example:
+        generated:
+        - https://openapi-generator.tech
+        - https://openapi-generator.tech
+        task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        status: CREATED
+  examples:
+    200-task-completed:
+      summary: Success - Task completed
+      value:
+        data:
+          generated:
+          - https://ai-statics.freepik.com/completed_task_image.jpg
+          task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: COMPLETED
+    request-reimagine-flux-required-params:
+      summary: Request - Reimagine Flux required params
+      value:
+        image: iVBORw0KGgoAAAANSUhEUgAA...
+    request-reimagine-flux-all-params:
+      summary: Request - Reimagine Flux all params
+      value:
+        webhook_url: https://api.ejemplo.com/webhook
+        image: iVBORw0KGgoAAAANSUhEUgAA...
+        prompt: Un hermoso atardecer sobre un océano tranquilo
+        imagination: wild
+        aspect_ratio: square_1_1
+  responses:
+    401-unauthorized:
+      content:
+        application/json:
+          examples:
+            invalid_api_key:
+              summary: API key is not valid
+              value:
+                message: Invalid API key
+            missing_api_key:
+              summary: API key is not provided
+              value:
+                message: Missing API key
+          schema:
+            $ref: '#/components/schemas/inline_object'
+      description: Unauthorized - The client must authenticate itself to get the requested response.
+    500-internal-server-error:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_2'
+      description: Internal Server Error - The server has encountered a situation it doesn't know how to handle.
+    400-bad-request:
+      content:
+        application/json:
+          examples:
+            invalid_page:
+              summary: Parameter 'page' is not valid
+              value:
+                message: Parameter 'page' must be greater than 0
+            invalid_query:
+              summary: Parameter 'query' is not valid
+              value:
+                message: Parameter 'query' must not be empty
+            invalid_filter:
+              summary: Parameter 'filter' is not valid
+              value:
+                message: Parameter 'filter' is not valid
+            generic_bad_request:
+              summary: Bad Request
+              value:
+                message: Parameter ':attribute' is not valid
+          schema:
+            $ref: '#/components/schemas/inline_object'
+        application/problem+json:
+          examples:
+            invalid_page:
+              summary: Parameter 'page' is not valid
+              value:
+                message: Validation error
+                invalid_params:
+                - field: page
+                  reason: Parameter 'page' must be greater than 0
+                - field: per_page
+                  reason: Parameter 'per_page' must be greater than 0
+          schema:
+            $ref: '#/components/schemas/inline_object_1'
+      description: Bad Request - The server could not understand the request due to invalid syntax.
+    503-service-unavailable:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_3'
+      description: Service Unavailable
+  securitySchemes:
+    magnificApiKey:
+      description: 'Your Magnific API key. Required for authentication. [Learn how to obtain an API key](https://docs.magnific.com/quickstart)
+
+        '
+      in: header
+      name: x-magnific-api-key
+      type: apiKey

@@ -1,0 +1,339 @@
+openapi: 3.2.0
+info:
+  description: The Magnific API is your gateway to a vast collection of high-quality digital resources for your applications and projects. As a leading platform, it offers a wide range of graphics, including vectors, photos, illustrations, icons, PSD templates, and more, all curated by talented designers from around the world.
+  title: Magnific Kling V3 Omni 4k API
+  version: 1.0.0
+servers:
+- description: B2B API Production V1
+  url: https://api.magnific.com
+security:
+- magnificApiKey: []
+tags:
+- name: kling-v3-omni-4k
+paths:
+  /v1/ai/video/kling-v3-omni-4k:
+    post:
+      description: 'Generate AI video using Kling 3 Omni at 4K resolution, with the same multi-modal capabilities.
+
+
+        **Features:**
+
+        - **Text-to-video**: Generate videos from text prompts
+
+        - **Image-to-video**: Use start and/or end frame images to guide generation
+
+        - **Multi-shot**: Create videos with up to 6 shots (max 15s total)
+
+        - **Element control**: Include reference images for consistent character/style
+
+
+        **Duration:** 3-15 seconds
+
+        **Quality:** 4K is generated natively by the model, it is not an upscale of a lower resolution
+
+        output. Generation takes longer and is priced differently than Pro and Standard.
+
+
+        **Note:** For video-to-video generation using a reference video, use the `/ai/reference-to-video/kling-v3-omni-pro` endpoint instead.'
+      operationId: postAiVideoKlingV3Omni4k
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/kling-v3-omni-request'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/task-detail-200-default-response'
+          description: OK - Task created successfully
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Kling 3 Omni 4K - Generate 4K video from text or image
+      tags:
+      - kling-v3-omni-4k
+components:
+  schemas:
+    inline_object:
+      example:
+        message: message
+      properties:
+        message:
+          type: string
+      type: object
+    task-detail-200-default-response:
+      description: OK - The task exists and the status is returned
+    inline_object_3:
+      example:
+        message: Service Unavailable. Please try again later.
+      properties:
+        message:
+          example: Service Unavailable. Please try again later.
+          type: string
+      type: object
+    kling-v3-omni-request:
+      properties:
+        webhook_url:
+          description: 'Optional callback URL that receives asynchronous notifications when the task changes status.
+
+            The payload includes the task status and result URL when completed.
+
+            '
+          format: uri
+          type: string
+        prompt:
+          description: 'Text prompt describing the desired video content. Maximum 2500 characters.
+
+
+            **Usage by mode:**
+
+            - **Text-to-video:** Required unless multi_prompt is provided
+
+            - **Image-to-video:** Either prompt or multi_prompt must be provided, but not both
+
+            '
+          maxLength: 2500
+          type: string
+        multi_prompt:
+          description: 'List of prompts for multi-shot video generation. Each item is a string prompt for that shot.
+
+            Use with shot_type to control multi-shot behavior.
+
+
+            Only effective when shot_type is set. When multi_prompt is provided without an explicit shot_type, it defaults to "customize".
+
+            '
+          items:
+            type: string
+          maxItems: 6
+          type: array
+        shot_type:
+          default: customize
+          description: 'Controls how multi-shot video generation is segmented for Kling 3 Omni.
+
+            - `customize`: User provides explicit per-shot prompts via the multi_prompt array.
+
+
+            Currently only "customize" is supported for Omni endpoints.
+
+            '
+          enum:
+          - customize
+          type: string
+        image_url:
+          description: 'URL of the start frame image for image-to-video generation.
+
+            Required for image-to-video mode.
+
+
+            **Image requirements:**
+
+            - Minimum: 300x300 pixels
+
+            - Maximum: 10MB file size
+
+            - Formats: JPG, JPEG, PNG
+
+            '
+          type: string
+        start_image_url:
+          description: 'Image to use as the first frame of the video.
+
+            Use together with end_image_url to control both start and end frames in image-to-video mode.
+
+            '
+          type: string
+        end_image_url:
+          description: 'Image to use as the last frame of the video.
+
+            Optional for image-to-video mode to guide the final frame.
+
+            '
+          type: string
+        image_urls:
+          description: 'Reference images for style/appearance guidance.
+
+            Reference in your prompt as @Image1, @Image2, etc.
+
+            Maximum 4 reference images.
+
+            '
+          items:
+            type: string
+          type: array
+        generate_audio:
+          description: Whether to generate native audio for the video.
+          type: boolean
+        aspect_ratio:
+          $ref: '#/components/schemas/kling-v3-omni-aspect-ratio'
+        duration:
+          $ref: '#/components/schemas/kling-v3-duration'
+      type: object
+    inline_object_1_problem_invalid_params_inner:
+      properties:
+        name:
+          description: Name of the invalid parameter.
+          example: page
+          type: string
+        field:
+          description: Field of the invalid parameter. Mirrors `name`.
+          example: page
+          type: string
+        reason:
+          example: Parameter 'page' must be greater than 0
+          type: string
+      required:
+      - field
+      - name
+      - reason
+      type: object
+    inline_object_1:
+      properties:
+        problem:
+          $ref: '#/components/schemas/inline_object_1_problem'
+      type: object
+    kling-v3-duration:
+      default: '5'
+      description: 'Duration of the generated video in seconds.
+
+
+        **Range:** 3-15 seconds
+
+        **Note:** When using multi-shot mode, total duration across all shots cannot exceed 15 seconds.
+
+        '
+      enum:
+      - '3'
+      - '4'
+      - '5'
+      - '6'
+      - '7'
+      - '8'
+      - '9'
+      - '10'
+      - '11'
+      - '12'
+      - '13'
+      - '14'
+      - '15'
+      type: string
+    inline_object_1_problem:
+      properties:
+        message:
+          example: Validation error
+          type: string
+        invalid_params:
+          items:
+            $ref: '#/components/schemas/inline_object_1_problem_invalid_params_inner'
+          type: array
+      required:
+      - invalid_params
+      - message
+      type: object
+    kling-v3-omni-aspect-ratio:
+      default: 969
+      description: 'Aspect ratio for Kling V3 Omni video generation:
+
+        - `auto`: Automatically match the input image aspect ratio (image-to-video only)
+
+        - `16:9`: Landscape (widescreen)
+
+        - `9:16`: Portrait (vertical)
+
+        - `1:1`: Square
+
+        '
+      enum:
+      - auto
+      - 969
+      - 556
+      - 61
+      type: string
+    inline_object_2:
+      example:
+        message: Internal Server Error
+      properties:
+        message:
+          example: Internal Server Error
+          type: string
+      type: object
+  responses:
+    401-unauthorized:
+      content:
+        application/json:
+          examples:
+            invalid_api_key:
+              summary: API key is not valid
+              value:
+                message: Invalid API key
+            missing_api_key:
+              summary: API key is not provided
+              value:
+                message: Missing API key
+          schema:
+            $ref: '#/components/schemas/inline_object'
+      description: Unauthorized - The client must authenticate itself to get the requested response.
+    500-internal-server-error:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_2'
+      description: Internal Server Error - The server has encountered a situation it doesn't know how to handle.
+    400-bad-request:
+      content:
+        application/json:
+          examples:
+            invalid_page:
+              summary: Parameter 'page' is not valid
+              value:
+                message: Parameter 'page' must be greater than 0
+            invalid_query:
+              summary: Parameter 'query' is not valid
+              value:
+                message: Parameter 'query' must not be empty
+            invalid_filter:
+              summary: Parameter 'filter' is not valid
+              value:
+                message: Parameter 'filter' is not valid
+            generic_bad_request:
+              summary: Bad Request
+              value:
+                message: Parameter ':attribute' is not valid
+          schema:
+            $ref: '#/components/schemas/inline_object'
+        application/problem+json:
+          examples:
+            invalid_page:
+              summary: Parameter 'page' is not valid
+              value:
+                message: Validation error
+                invalid_params:
+                - field: page
+                  reason: Parameter 'page' must be greater than 0
+                - field: per_page
+                  reason: Parameter 'per_page' must be greater than 0
+          schema:
+            $ref: '#/components/schemas/inline_object_1'
+      description: Bad Request - The server could not understand the request due to invalid syntax.
+    503-service-unavailable:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_3'
+      description: Service Unavailable
+  securitySchemes:
+    magnificApiKey:
+      description: 'Your Magnific API key. Required for authentication. [Learn how to obtain an API key](https://docs.magnific.com/quickstart)
+
+        '
+      in: header
+      name: x-magnific-api-key
+      type: apiKey

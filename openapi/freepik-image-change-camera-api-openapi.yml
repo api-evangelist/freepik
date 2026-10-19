@@ -1,0 +1,470 @@
+openapi: 3.2.0
+info:
+  description: The Magnific API is your gateway to a vast collection of high-quality digital resources for your applications and projects. As a leading platform, it offers a wide range of graphics, including vectors, photos, illustrations, icons, PSD templates, and more, all curated by talented designers from around the world.
+  title: Magnific Image Change Camera API
+  version: 1.0.0
+servers:
+- description: B2B API Production V1
+  url: https://api.magnific.com
+security:
+- magnificApiKey: []
+tags:
+- name: image-change-camera
+paths:
+  /v1/ai/image-change-camera:
+    get:
+      description: Retrieve the status of all Change Camera tasks for the authenticated user. Returns a list of tasks with their current status, creation time, and result URLs for completed tasks.
+      operationId: get_all_change_camera_tasks
+      responses:
+        '200':
+          $ref: '#/components/responses/task-list-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Change Camera - List tasks
+      tags:
+      - image-change-camera
+    post:
+      description: 'Transform an image by changing the camera angle using AI. Adjust horizontal rotation (0-360 degrees), vertical tilt (-30 to 90 degrees), and zoom level (0-10) to generate a new image as if the camera had been repositioned around the subject.
+
+
+        This is an asynchronous endpoint. After submitting a request, use the task ID to poll for results or provide a `webhook_url` to receive a notification when processing completes.
+
+
+        **Camera controls:**
+
+        - **Horizontal angle** (`horizontal_angle`): Rotate the viewpoint 0-360 degrees around the subject. `0` = front view, `90` = right side, `180` = back view, `270` = left side.
+
+        - **Vertical angle** (`vertical_angle`): Tilt the camera from -30 (looking up) to 90 (bird''s eye view). `0` = eye level.
+
+        - **Zoom** (`zoom`): Adjust from `0` (wide shot, full scene) to `10` (close-up).
+
+
+        **Use cases:** Product photography with multiple angle views, architectural visualization, creative image manipulation, and generating consistent multi-angle views of objects and scenes.'
+      operationId: create_change_camera_task
+      requestBody:
+        content:
+          application/json:
+            examples:
+              required-params:
+                $ref: '#/components/examples/request-change-camera-required-params'
+              all-params:
+                $ref: '#/components/examples/request-change-camera-all-params'
+            schema:
+              $ref: '#/components/schemas/change-camera-request'
+        required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Change Camera - Transform image perspective
+      tags:
+      - image-change-camera
+  /v1/ai/image-change-camera/{task-id}:
+    get:
+      description: Retrieve the status and result of a specific Change Camera task by its task ID. When the task status is `completed`, the response includes the URL of the generated image with the new camera angle.
+      operationId: get_change_camera_task
+      parameters:
+      - description: ID of the task
+        in: path
+        name: task-id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Change Camera - Get task status
+      tags:
+      - image-change-camera
+components:
+  schemas:
+    inline_object_4:
+      example:
+        data:
+          generated:
+          - https://openapi-generator.tech
+          - https://openapi-generator.tech
+          task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: CREATED
+      properties:
+        data:
+          $ref: '#/components/schemas/task-detail_1'
+      required:
+      - data
+      type: object
+    inline_object_1_problem_invalid_params_inner:
+      properties:
+        name:
+          description: Name of the invalid parameter.
+          example: page
+          type: string
+        field:
+          description: Field of the invalid parameter. Mirrors `name`.
+          example: page
+          type: string
+        reason:
+          example: Parameter 'page' must be greater than 0
+          type: string
+      required:
+      - field
+      - name
+      - reason
+      type: object
+    task:
+      example:
+        task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        status: CREATED
+      properties:
+        task_id:
+          description: Task identifier
+          format: uuid
+          type: string
+        status:
+          description: Task status
+          enum:
+          - CREATED
+          - IN_PROGRESS
+          - COMPLETED
+          - FAILED
+          type: string
+      required:
+      - status
+      - task_id
+      type: object
+    output-format_1:
+      default: png
+      description: 'Output image format.
+
+        - `png`: Lossless compression, best for high-quality results
+
+        - `jpeg`: Lossy compression, smaller file size suitable for web use
+
+        '
+      enum:
+      - png
+      - jpeg
+      type: string
+    inline_object_1:
+      properties:
+        problem:
+          $ref: '#/components/schemas/inline_object_1_problem'
+      type: object
+    inline_object_1_problem:
+      properties:
+        message:
+          example: Validation error
+          type: string
+        invalid_params:
+          items:
+            $ref: '#/components/schemas/inline_object_1_problem_invalid_params_inner'
+          type: array
+      required:
+      - invalid_params
+      - message
+      type: object
+    inline_object_2:
+      example:
+        message: Internal Server Error
+      properties:
+        message:
+          example: Internal Server Error
+          type: string
+      type: object
+    inline_object:
+      example:
+        message: message
+      properties:
+        message:
+          type: string
+      type: object
+    change-camera-request:
+      properties:
+        image:
+          description: 'Input image to transform. Provide as a publicly accessible HTTPS URL.
+
+            Supported formats: JPG, PNG, WebP.
+
+            '
+          example: https://example.com/input-image.jpg
+          type: string
+        horizontal_angle:
+          default: 0
+          description: 'Horizontal rotation angle in degrees. Controls the left-right rotation of the camera around the subject.
+
+            - `0`: Front view (no rotation)
+
+            - `90`: Right side view
+
+            - `180`: Back view
+
+            - `270`: Left side view
+
+            - `360`: Full rotation (equivalent to 0)
+
+
+            Valid values: `0` to `360`. Default: `0`.
+
+            '
+          example: 45
+          maximum: 360
+          minimum: 0
+          type: integer
+        vertical_angle:
+          default: 0
+          description: 'Vertical tilt angle in degrees. Controls the up-down tilt of the camera relative to the subject.
+
+            - `-30`: Looking up at the subject from below
+
+            - `0`: Eye-level view (no tilt)
+
+            - `45`: Moderate downward angle
+
+            - `90`: Bird''s eye view (directly above)
+
+
+            Valid values: `-30` to `90`. Default: `0`.
+
+            '
+          example: 15
+          maximum: 90
+          minimum: -30
+          type: integer
+        zoom:
+          default: 5
+          description: 'Zoom level controlling how close the camera appears to the subject.
+
+            - `0`: Wide shot (far away, full scene visible)
+
+            - `5`: Medium shot (standard framing)
+
+            - `10`: Close-up (very close to the subject)
+
+
+            Valid values: `0` to `10`. Default: `5`.
+
+            '
+          example: 5
+          maximum: 10
+          minimum: 0
+          type: integer
+        seed:
+          description: 'Seed for the random number generator. Using the same seed with identical parameters produces the same output, enabling reproducible results across multiple requests.
+
+            '
+          example: 42
+          minimum: 1
+          type: integer
+        output_format:
+          $ref: '#/components/schemas/output-format_1'
+        webhook_url:
+          description: 'Optional callback URL that will receive asynchronous notifications whenever the task changes status. The payload sent to this URL is the same as the corresponding GET endpoint response, but without the data field.
+
+            '
+          example: https://www.example.com/webhook
+          format: uri
+          type: string
+      required:
+      - image
+      type: object
+    inline_object_3:
+      example:
+        message: Service Unavailable. Please try again later.
+      properties:
+        message:
+          example: Service Unavailable. Please try again later.
+          type: string
+      type: object
+    get_all_style_transfer_tasks_200_response:
+      example:
+        data:
+        - task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: CREATED
+        - task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: CREATED
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/task'
+          type: array
+      required:
+      - data
+      type: object
+    task-detail_1:
+      allOf:
+      - $ref: '#/components/schemas/task'
+      - properties:
+          generated:
+            items:
+              description: URL of the generated image
+              format: uri
+              type: string
+            type: array
+        required:
+        - generated
+        type: object
+      example:
+        generated:
+        - https://openapi-generator.tech
+        - https://openapi-generator.tech
+        task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        status: CREATED
+  responses:
+    401-unauthorized:
+      content:
+        application/json:
+          examples:
+            invalid_api_key:
+              summary: API key is not valid
+              value:
+                message: Invalid API key
+            missing_api_key:
+              summary: API key is not provided
+              value:
+                message: Missing API key
+          schema:
+            $ref: '#/components/schemas/inline_object'
+      description: Unauthorized - The client must authenticate itself to get the requested response.
+    503-service-unavailable:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_3'
+      description: Service Unavailable
+    task-detail-200-default-response:
+      content:
+        application/json:
+          examples:
+            success - created task:
+              $ref: '#/components/examples/200-task-created'
+            success - in progress task:
+              $ref: '#/components/examples/200-task-in-progress'
+            success - completed task:
+              $ref: '#/components/examples/200-task-completed'
+            success - failed task:
+              $ref: '#/components/examples/200-task-failed'
+          schema:
+            $ref: '#/components/schemas/inline_object_4'
+      description: OK - The task exists and the status is returned
+    400-bad-request:
+      content:
+        application/json:
+          examples:
+            invalid_page:
+              summary: Parameter 'page' is not valid
+              value:
+                message: Parameter 'page' must be greater than 0
+            invalid_query:
+              summary: Parameter 'query' is not valid
+              value:
+                message: Parameter 'query' must not be empty
+            invalid_filter:
+              summary: Parameter 'filter' is not valid
+              value:
+                message: Parameter 'filter' is not valid
+            generic_bad_request:
+              summary: Bad Request
+              value:
+                message: Parameter ':attribute' is not valid
+          schema:
+            $ref: '#/components/schemas/inline_object'
+        application/problem+json:
+          examples:
+            invalid_page:
+              summary: Parameter 'page' is not valid
+              value:
+                message: Validation error
+                invalid_params:
+                - field: page
+                  reason: Parameter 'page' must be greater than 0
+                - field: per_page
+                  reason: Parameter 'per_page' must be greater than 0
+          schema:
+            $ref: '#/components/schemas/inline_object_1'
+      description: Bad Request - The server could not understand the request due to invalid syntax.
+    500-internal-server-error:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_2'
+      description: Internal Server Error - The server has encountered a situation it doesn't know how to handle.
+    task-list-200-default-response:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/get_all_style_transfer_tasks_200_response'
+      description: OK - Returns a list of tasks for the current type of Task
+  examples:
+    200-task-failed:
+      summary: Success - Task failed
+      value:
+        data:
+          generated: []
+          task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: FAILED
+    200-task-in-progress:
+      summary: Success - Task in progress
+      value:
+        data:
+          generated: []
+          task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: IN_PROGRESS
+    200-task-created:
+      summary: Success - Task created
+      value:
+        data:
+          generated: []
+          task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: CREATED
+    request-change-camera-all-params:
+      description: Full request with all available parameters including camera angle rotation, tilt, zoom, seed for reproducibility, output format, and webhook notification.
+      summary: Change Camera - All parameters
+      value:
+        image: https://example.com/product-photo.jpg
+        horizontal_angle: 45
+        vertical_angle: 15
+        zoom: 7
+        seed: 42
+        output_format: png
+        webhook_url: https://www.example.com/webhook
+    200-task-completed:
+      summary: Success - Task completed
+      value:
+        data:
+          generated:
+          - https://ai-statics.freepik.com/completed_task_image.jpg
+          task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: COMPLETED
+    request-change-camera-required-params:
+      description: Minimal request with only the required image parameter. Uses default values for all other settings (horizontal_angle=0, vertical_angle=0, zoom=5, output_format=png).
+      summary: Change Camera - Required parameters only
+      value:
+        image: https://example.com/product-photo.jpg
+  securitySchemes:
+    magnificApiKey:
+      description: 'Your Magnific API key. Required for authentication. [Learn how to obtain an API key](https://docs.magnific.com/quickstart)
+
+        '
+      in: header
+      name: x-magnific-api-key
+      type: apiKey

@@ -1,0 +1,268 @@
+openapi: 3.2.0
+info:
+  description: The Magnific API is your gateway to a vast collection of high-quality digital resources for your applications and projects. As a leading platform, it offers a wide range of graphics, including vectors, photos, illustrations, icons, PSD templates, and more, all curated by talented designers from around the world.
+  title: Magnific Kling O1 Std API
+  version: 1.0.0
+servers:
+- description: B2B API Production V1
+  url: https://api.magnific.com
+security:
+- magnificApiKey: []
+tags:
+- name: kling-o1-std
+paths:
+  /v1/ai/image-to-video/kling-o1-std:
+    post:
+      operationId: postAiImageToVideoKlingO1Std
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/itvko1-image-to-video-request'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/task-detail-200-default-response'
+          description: OK
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+      summary: Kling O1 Standard - Create video from image
+      tags:
+      - kling-o1-std
+components:
+  schemas:
+    inline_object:
+      example:
+        message: message
+      properties:
+        message:
+          type: string
+      type: object
+    task-detail-200-default-response:
+      description: OK - The task exists and the status is returned
+    inline_object_1_problem_invalid_params_inner:
+      properties:
+        name:
+          description: Name of the invalid parameter.
+          example: page
+          type: string
+        field:
+          description: Field of the invalid parameter. Mirrors `name`.
+          example: page
+          type: string
+        reason:
+          example: Parameter 'page' must be greater than 0
+          type: string
+      required:
+      - field
+      - name
+      - reason
+      type: object
+    inline_object_1:
+      properties:
+        problem:
+          $ref: '#/components/schemas/inline_object_1_problem'
+      type: object
+    itvko1-image-to-video-request:
+      description: 'Generate video using Kling O1 with first frame to last frame interpolation.
+
+
+        **Best for:**
+
+        - Creating smooth transitions between two images
+
+        - Animating static images with controlled start/end points
+
+        - Creating cinematic video sequences
+
+
+        **Tips:**
+
+        - Provide at least one frame (first_frame or last_frame)
+
+        - For best results, provide both frames with similar compositions
+
+        - Add a descriptive prompt to guide the motion
+
+        '
+      properties:
+        webhook_url:
+          description: 'Optional callback URL that will receive asynchronous notifications whenever the task changes status. The payload sent to this URL is the same as the corresponding GET endpoint response, but without the data field.
+
+            '
+          example: https://www.example.com/webhook
+          format: uri
+          type: string
+        prompt:
+          description: 'Text prompt describing the desired motion in the video.
+
+
+            **Examples:**
+
+            - "Camera slowly pans across the landscape"
+
+            - "Person walks toward the camera with soft wind blowing"
+
+            - "Gentle zoom into the subject with bokeh effect"
+
+            '
+          maxLength: 2500
+          type: string
+        first_frame:
+          description: 'First frame image (starting point of the video).
+
+
+            **Supported formats:**
+
+            - URL (must be publicly accessible)
+
+            - Base64 encoded image
+
+
+            **Requirements:**
+
+            - Minimum resolution: 300x300px
+
+            - Maximum file size: 10MB
+
+            '
+          example: https://example.com/start-image.jpg
+          type: string
+        last_frame:
+          description: 'Last frame image (ending point of the video).
+
+
+            **Supported formats:**
+
+            - URL (must be publicly accessible)
+
+            - Base64 encoded image
+
+            '
+          example: https://example.com/end-image.jpg
+          type: string
+        aspect_ratio:
+          default: 969
+          description: 'Video aspect ratio:
+
+            - `16:9`: Widescreen
+
+            - `9:16`: Vertical
+
+            - `1:1`: Square
+
+            '
+          enum:
+          - 969
+          - 556
+          - 61
+          type: string
+        duration:
+          default: '5'
+          description: 'Video duration in seconds.
+
+            - `5`: 5-second video
+
+            - `10`: 10-second video
+
+            '
+          enum:
+          - '5'
+          - '10'
+          type: string
+      title: Kling O1 Image to Video
+      type: object
+    inline_object_1_problem:
+      properties:
+        message:
+          example: Validation error
+          type: string
+        invalid_params:
+          items:
+            $ref: '#/components/schemas/inline_object_1_problem_invalid_params_inner'
+          type: array
+      required:
+      - invalid_params
+      - message
+      type: object
+    inline_object_2:
+      example:
+        message: Internal Server Error
+      properties:
+        message:
+          example: Internal Server Error
+          type: string
+      type: object
+  responses:
+    401-unauthorized:
+      content:
+        application/json:
+          examples:
+            invalid_api_key:
+              summary: API key is not valid
+              value:
+                message: Invalid API key
+            missing_api_key:
+              summary: API key is not provided
+              value:
+                message: Missing API key
+          schema:
+            $ref: '#/components/schemas/inline_object'
+      description: Unauthorized - The client must authenticate itself to get the requested response.
+    500-internal-server-error:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_2'
+      description: Internal Server Error - The server has encountered a situation it doesn't know how to handle.
+    400-bad-request:
+      content:
+        application/json:
+          examples:
+            invalid_page:
+              summary: Parameter 'page' is not valid
+              value:
+                message: Parameter 'page' must be greater than 0
+            invalid_query:
+              summary: Parameter 'query' is not valid
+              value:
+                message: Parameter 'query' must not be empty
+            invalid_filter:
+              summary: Parameter 'filter' is not valid
+              value:
+                message: Parameter 'filter' is not valid
+            generic_bad_request:
+              summary: Bad Request
+              value:
+                message: Parameter ':attribute' is not valid
+          schema:
+            $ref: '#/components/schemas/inline_object'
+        application/problem+json:
+          examples:
+            invalid_page:
+              summary: Parameter 'page' is not valid
+              value:
+                message: Validation error
+                invalid_params:
+                - field: page
+                  reason: Parameter 'page' must be greater than 0
+                - field: per_page
+                  reason: Parameter 'per_page' must be greater than 0
+          schema:
+            $ref: '#/components/schemas/inline_object_1'
+      description: Bad Request - The server could not understand the request due to invalid syntax.
+  securitySchemes:
+    magnificApiKey:
+      description: 'Your Magnific API key. Required for authentication. [Learn how to obtain an API key](https://docs.magnific.com/quickstart)
+
+        '
+      in: header
+      name: x-magnific-api-key
+      type: apiKey

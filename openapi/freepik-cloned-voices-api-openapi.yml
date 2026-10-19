@@ -1,0 +1,670 @@
+openapi: 3.2.0
+info:
+  description: The Magnific API is your gateway to a vast collection of high-quality digital resources for your applications and projects. As a leading platform, it offers a wide range of graphics, including vectors, photos, illustrations, icons, PSD templates, and more, all curated by talented designers from around the world.
+  title: Magnific Cloned Voices API
+  version: 1.0.0
+servers:
+- description: B2B API Production V1
+  url: https://api.magnific.com
+security:
+- magnificApiKey: []
+tags:
+- name: cloned-voices
+paths:
+  /v1/cloned-voices:
+    get:
+      description: 'Retrieve all cloned voices belonging to the authenticated user.
+
+
+        Returns completed cloned voices created via the ElevenLabs voice cloning feature.
+
+        Each voice includes metadata such as name, gender, language, provider, and preview audio URL.
+
+
+        **Enterprise only** — this endpoint is available exclusively for Enterprise API key plans.'
+      operationId: list_cloned_voices
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                - id: 42
+                  name: My Custom Voice
+                  description: A warm, professional tone
+                  preview_image_url: null
+                  example_mp3_url: https://example.com/sample.mp3
+                  gender: female
+                  accent_id: null
+                  provider: elevenlabs
+                  eleven_labs_voice: pNInz6obpgDQGcFmaJgB
+                  main_languages:
+                  - id: 1
+                    identifier: en
+                    name: English
+                  is_cloned: true
+                  is_active: true
+                  status: completed
+                  last_used_at: 2026-06-01 10:30:00+00:00
+                  deleted_at: null
+              schema:
+                $ref: '#/components/schemas/list_cloned_voices_200_response'
+          description: List of cloned voices
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '403':
+          $ref: '#/components/responses/403-forbidden'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Cloned Voices - List user's cloned voices
+      tags:
+      - cloned-voices
+    post:
+      description: 'Create a cloned voice from one or more audio samples, using the ElevenLabs
+
+        voice cloning feature. It behaves and is billed exactly like the web flow:
+
+        the same limit of 30 active voices, the same credit consumption and the
+
+        same lifecycle.
+
+
+        Audio samples are provided as **public https URLs** (1 to 5). Each URL is
+
+        downloaded server-side; the combined downloaded size must not exceed 200 MB.
+
+
+        Creation is asynchronous: the endpoint returns `202` with the new voice in
+
+        `pending` status. Poll `GET /v1/cloned-voices` until the voice reaches
+
+        `completed`.
+
+
+        **Enterprise only** — this endpoint is available exclusively for Enterprise API key plans.'
+      operationId: create_cloned_voice
+      requestBody:
+        content:
+          application/json:
+            example:
+              name: My Custom Voice
+              description: A warm, professional tone
+              remove_background_noise: true
+              audios:
+              - https://example.com/sample1.mp3
+              - https://example.com/sample2.mp3
+            schema:
+              $ref: '#/components/schemas/create_cloned_voice_request'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              example:
+                success: true
+                data:
+                  id: 42
+                  sqid: a1b2c3
+                  name: My Custom Voice
+                  status: pending
+              schema:
+                $ref: '#/components/schemas/create_cloned_voice_202_response'
+          description: Cloned voice creation accepted; processing asynchronously
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '403':
+          $ref: '#/components/responses/403-forbidden'
+        '422':
+          $ref: '#/components/responses/422-unprocessable-entity'
+        '429':
+          $ref: '#/components/responses/429-too-many-requests'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Cloned Voices - Create a cloned voice
+      tags:
+      - cloned-voices
+  /v1/cloned-voices/{voice_id}:
+    delete:
+      description: 'Delete a cloned voice belonging to the authenticated user. The voice is
+
+        removed at the provider (ElevenLabs) first and then soft-deleted.
+
+
+        `{voice_id}` is the **provider voice id** — the `eleven_labs_voice` value
+
+        returned by `GET /v1/cloned-voices`, not the internal numeric `id`. A voice
+
+        that does not exist or does not belong to the caller returns `404`.
+
+
+        **Enterprise only** — this endpoint is available exclusively for Enterprise API key plans.'
+      operationId: delete_cloned_voice
+      parameters:
+      - description: Provider voice id (the `eleven_labs_voice` from the list endpoint)
+        in: path
+        name: voice_id
+        required: true
+        schema:
+          example: pNInz6obpgDQGcFmaJgB
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                success: true
+              schema:
+                $ref: '#/components/schemas/delete_cloned_voice_200_response'
+          description: Cloned voice deleted
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '403':
+          $ref: '#/components/responses/403-forbidden'
+        '404':
+          $ref: '#/components/responses/404-not-found'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Cloned Voices - Delete a cloned voice
+      tags:
+      - cloned-voices
+components:
+  responses:
+    401-unauthorized:
+      content:
+        application/json:
+          examples:
+            invalid_api_key:
+              summary: API key is not valid
+              value:
+                message: Invalid API key
+            missing_api_key:
+              summary: API key is not provided
+              value:
+                message: Missing API key
+          schema:
+            $ref: '#/components/schemas/inline_object'
+      description: Unauthorized - The client must authenticate itself to get the requested response.
+    403-forbidden:
+      content:
+        application/json:
+          examples:
+            user_not_authorized:
+              summary: User has not privileges to access some resource
+              value:
+                message: User is not authorized to access this resource
+            user_not_owner:
+              summary: Collection author id is different from current user's id
+              value:
+                message: User is not owner of requested collection
+            item_is_premium:
+              summary: The user cannot download this item because it is premium
+              value:
+                message: The user cannot download this item because it is premium
+            creator_not_authorized:
+              summary: Creator has not privileges to access some resource
+              value:
+                message: Creator is not authorized to access this resource
+            transaction_stats_access_denied:
+              summary: Group admin is not allowed to access the requested transaction stats
+              value:
+                message: Access denied to transaction stats for the current role
+            credit_filter_not_allowed:
+              summary: Group admin tried to use a credit-usage filter dimension not allowed for their role
+              value:
+                message: Credit filter not allowed for the current role
+          schema:
+            $ref: '#/components/schemas/inline_object'
+      description: Forbidden - The client does not have permission to access the requested resource.
+    422-unprocessable-entity:
+      content:
+        application/json:
+          examples:
+            generic:
+              summary: Generic message for 422 errors
+              value:
+                message: Unprocessable entity
+          schema:
+            $ref: '#/components/schemas/inline_object'
+      description: Unprocessable Entity
+    503-service-unavailable:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_3'
+      description: Service Unavailable
+    400-bad-request:
+      content:
+        application/json:
+          examples:
+            invalid_page:
+              summary: Parameter 'page' is not valid
+              value:
+                message: Parameter 'page' must be greater than 0
+            invalid_query:
+              summary: Parameter 'query' is not valid
+              value:
+                message: Parameter 'query' must not be empty
+            invalid_filter:
+              summary: Parameter 'filter' is not valid
+              value:
+                message: Parameter 'filter' is not valid
+            generic_bad_request:
+              summary: Bad Request
+              value:
+                message: Parameter ':attribute' is not valid
+          schema:
+            $ref: '#/components/schemas/inline_object'
+        application/problem+json:
+          examples:
+            invalid_page:
+              summary: Parameter 'page' is not valid
+              value:
+                message: Validation error
+                invalid_params:
+                - field: page
+                  reason: Parameter 'page' must be greater than 0
+                - field: per_page
+                  reason: Parameter 'per_page' must be greater than 0
+          schema:
+            $ref: '#/components/schemas/inline_object_1'
+      description: Bad Request - The server could not understand the request due to invalid syntax.
+    404-not-found:
+      content:
+        application/json:
+          examples:
+            ai_resource_not_found:
+              summary: AI resource with provided id does not exist
+              value:
+                message: AI resource not found
+            collection_not_found:
+              summary: Collection with provided id does not exist
+              value:
+                message: Collection not found
+            resource_not_found:
+              summary: Resource with provided id does not exist
+              value:
+                message: Resource not found
+            resources_not_found:
+              summary: Resources not found
+              value:
+                message: Resources not found
+            user_not_found:
+              summary: User with provided id does not exist
+              value:
+                message: User not found
+            video_not_found:
+              summary: Video with provided id does not exist
+              value:
+                message: Video not found
+            video_assets_not_found:
+              summary: Video with provided id has not associated assets
+              value:
+                message: Video not found
+            icon_not_found:
+              summary: Icon with provided id does not exist
+              value:
+                message: Icon not found
+            author_not_found:
+              summary: Author with provided id does not exist
+              value:
+                message: Author not found
+            developer_not_found:
+              summary: Developer with provided email does not exist
+              value:
+                message: Developer not found
+            country_not_found:
+              summary: Country with provided code does not exist
+              value:
+                message: Country not found
+            generic_not_found:
+              summary: Not Found
+              value:
+                message: Not found
+          schema:
+            $ref: '#/components/schemas/inline_object'
+      description: Not Found - The server can not find the requested resource.
+    500-internal-server-error:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_2'
+      description: Internal Server Error - The server has encountered a situation it doesn't know how to handle.
+    429-too-many-requests:
+      content:
+        application/json:
+          examples:
+            generic:
+              summary: Generic message for 429 errors
+              value:
+                message: Too many requests
+            download_limit_reached:
+              summary: The download limits has been reached.
+              value:
+                message: The user can't download more items because the download limits has been reached.
+            edit_limit_reached:
+              summary: Free user icon edit limits has been reached.
+              value:
+                message: Limit for free users reached.
+          schema:
+            $ref: '#/components/schemas/inline_object'
+      description: Too Many Requests - The client has sent too many requests in a given amount of time.
+  schemas:
+    inline_object_1_problem_invalid_params_inner:
+      properties:
+        name:
+          description: Name of the invalid parameter.
+          example: page
+          type: string
+        field:
+          description: Field of the invalid parameter. Mirrors `name`.
+          example: page
+          type: string
+        reason:
+          example: Parameter 'page' must be greater than 0
+          type: string
+      required:
+      - field
+      - name
+      - reason
+      type: object
+    list_cloned_voices_200_response_data_inner:
+      example:
+        example_mp3_url: example_mp3_url
+        eleven_labs_voice: pNInz6obpgDQGcFmaJgB
+        is_cloned: true
+        main_languages:
+        - identifier: en
+          name: English
+          id: 0
+        - identifier: en
+          name: English
+          id: 0
+        is_active: true
+        gender: female
+        description: A warm, professional tone
+        deleted_at: 2000-01-23 04:56:07+00:00
+        last_used_at: 2000-01-23 04:56:07+00:00
+        provider: elevenlabs
+        preview_image_url: preview_image_url
+        name: My Custom Voice
+        accent_id: accent_id
+        id: 42
+        status: completed
+      properties:
+        id:
+          description: Unique voice identifier
+          example: 42
+          type: integer
+        name:
+          description: User-defined voice name
+          example: My Custom Voice
+          type: string
+        description:
+          description: Optional voice description
+          example: A warm, professional tone
+          type:
+          - string
+          - 'null'
+        preview_image_url:
+          description: URL of the voice's preview image
+          type:
+          - string
+          - 'null'
+        example_mp3_url:
+          description: URL of a sample audio clip
+          type:
+          - string
+          - 'null'
+        gender:
+          description: Voice gender
+          example: female
+          type:
+          - string
+          - 'null'
+        accent_id:
+          description: Accent identifier
+          type:
+          - string
+          - 'null'
+        provider:
+          description: Voice provider
+          example: elevenlabs
+          type: string
+        eleven_labs_voice:
+          description: Provider-specific voice ID
+          example: pNInz6obpgDQGcFmaJgB
+          type: string
+        main_languages:
+          items:
+            $ref: '#/components/schemas/list_cloned_voices_200_response_data_inner_main_languages_inner'
+          type: array
+        is_cloned:
+          example: true
+          type: boolean
+        is_active:
+          example: true
+          type: boolean
+        status:
+          description: Voice cloning status
+          example: completed
+          type: string
+        last_used_at:
+          description: ISO 8601 timestamp of last usage
+          format: date-time
+          type:
+          - string
+          - 'null'
+        deleted_at:
+          description: ISO 8601 timestamp if soft-deleted
+          format: date-time
+          type:
+          - string
+          - 'null'
+      type: object
+    list_cloned_voices_200_response:
+      example:
+        data:
+        - example_mp3_url: example_mp3_url
+          eleven_labs_voice: pNInz6obpgDQGcFmaJgB
+          is_cloned: true
+          main_languages:
+          - identifier: en
+            name: English
+            id: 0
+          - identifier: en
+            name: English
+            id: 0
+          is_active: true
+          gender: female
+          description: A warm, professional tone
+          deleted_at: 2000-01-23 04:56:07+00:00
+          last_used_at: 2000-01-23 04:56:07+00:00
+          provider: elevenlabs
+          preview_image_url: preview_image_url
+          name: My Custom Voice
+          accent_id: accent_id
+          id: 42
+          status: completed
+        - example_mp3_url: example_mp3_url
+          eleven_labs_voice: pNInz6obpgDQGcFmaJgB
+          is_cloned: true
+          main_languages:
+          - identifier: en
+            name: English
+            id: 0
+          - identifier: en
+            name: English
+            id: 0
+          is_active: true
+          gender: female
+          description: A warm, professional tone
+          deleted_at: 2000-01-23 04:56:07+00:00
+          last_used_at: 2000-01-23 04:56:07+00:00
+          provider: elevenlabs
+          preview_image_url: preview_image_url
+          name: My Custom Voice
+          accent_id: accent_id
+          id: 42
+          status: completed
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/list_cloned_voices_200_response_data_inner'
+          type: array
+      type: object
+    inline_object_1:
+      properties:
+        problem:
+          $ref: '#/components/schemas/inline_object_1_problem'
+      type: object
+    inline_object_1_problem:
+      properties:
+        message:
+          example: Validation error
+          type: string
+        invalid_params:
+          items:
+            $ref: '#/components/schemas/inline_object_1_problem_invalid_params_inner'
+          type: array
+      required:
+      - invalid_params
+      - message
+      type: object
+    inline_object_2:
+      example:
+        message: Internal Server Error
+      properties:
+        message:
+          example: Internal Server Error
+          type: string
+      type: object
+    inline_object:
+      example:
+        message: message
+      properties:
+        message:
+          type: string
+      type: object
+    inline_object_3:
+      example:
+        message: Service Unavailable. Please try again later.
+      properties:
+        message:
+          example: Service Unavailable. Please try again later.
+          type: string
+      type: object
+    delete_cloned_voice_200_response:
+      example:
+        success: true
+      properties:
+        success:
+          example: true
+          type: boolean
+      type: object
+    create_cloned_voice_request:
+      properties:
+        name:
+          description: User-defined voice name
+          example: My Custom Voice
+          maxLength: 100
+          type: string
+        description:
+          description: Optional voice description
+          example: A warm, professional tone
+          maxLength: 500
+          type:
+          - string
+          - 'null'
+        remove_background_noise:
+          default: false
+          description: Whether to remove background noise from the samples
+          type: boolean
+        audios:
+          description: '1 to 5 audio samples, each a public https URL (max 2048 chars).
+
+            The URLs are downloaded server-side (SSRF-protected, https only,
+
+            no redirects); the combined downloaded size must not exceed 200 MB.
+
+            '
+          items:
+            example: https://example.com/sample.mp3
+            format: uri
+            maxLength: 2048
+            type: string
+          maxItems: 5
+          minItems: 1
+          type: array
+      required:
+      - audios
+      - name
+      type: object
+    create_cloned_voice_202_response:
+      example:
+        data:
+          name: My Custom Voice
+          id: 42
+          sqid: a1b2c3
+          status: pending
+        success: true
+      properties:
+        success:
+          example: true
+          type: boolean
+        data:
+          $ref: '#/components/schemas/create_cloned_voice_202_response_data'
+      type: object
+    list_cloned_voices_200_response_data_inner_main_languages_inner:
+      example:
+        identifier: en
+        name: English
+        id: 0
+      properties:
+        id:
+          type: integer
+        identifier:
+          example: en
+          type: string
+        name:
+          example: English
+          type: string
+      type: object
+    create_cloned_voice_202_response_data:
+      example:
+        name: My Custom Voice
+        id: 42
+        sqid: a1b2c3
+        status: pending
+      properties:
+        id:
+          description: Unique voice identifier
+          example: 42
+          type: integer
+        sqid:
+          description: Public short identifier of the voice
+          example: a1b2c3
+          type: string
+        name:
+          example: My Custom Voice
+          type: string
+        status:
+          description: Voice cloning status
+          example: pending
+          type: string
+      type: object
+  securitySchemes:
+    magnificApiKey:
+      description: 'Your Magnific API key. Required for authentication. [Learn how to obtain an API key](https://docs.magnific.com/quickstart)
+
+        '
+      in: header
+      name: x-magnific-api-key
+      type: apiKey

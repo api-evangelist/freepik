@@ -1,0 +1,931 @@
+openapi: 3.2.0
+info:
+  description: The Magnific API is your gateway to a vast collection of high-quality digital resources for your applications and projects. As a leading platform, it offers a wide range of graphics, including vectors, photos, illustrations, icons, PSD templates, and more, all curated by talented designers from around the world.
+  title: Magnific Sound Effects API
+  version: 1.0.0
+servers:
+- description: B2B API Production V1
+  url: https://api.magnific.com
+security:
+- magnificApiKey: []
+tags:
+- name: Sound Effects
+paths:
+  /v1/sound-effects:
+    get:
+      description: Search the Magnific Sound Effects catalog. Filter by category, duration range, premium status, and creation date. Returns paginated results sorted by popularity by default.
+      operationId: search_sound_effects
+      parameters:
+      - description: Full-text search query for sound effect titles, tags, and categories
+        example: thunder
+        in: query
+        name: q
+        required: false
+        schema:
+          type: string
+      - description: Filter by category slug. Use a parent category to include all its subcategories
+        example: ambience
+        in: query
+        name: category
+        required: false
+        schema:
+          enum:
+          - ambience
+          - forest
+          - city-ambience
+          - room-tones
+          - rain-and-storm
+          - beach-and-ocean
+          - wind
+          - foley
+          - weapons-and-warfare
+          - footsteps
+          - explosions-and-crashes
+          - kicks-and-punches
+          - clothing
+          - debris
+          - human-sounds
+          - genre
+          - glitch-and-noise
+          - cartoon-voices-and-sounds
+          - sci-fi-sounds
+          - ghosts-and-horror-transitions
+          - gaming-and-fantasy
+          - interface-and-alerts
+          - user-interface
+          - musical
+          - drum-and-percussion-loops
+          - vocal-phrases
+          - one-shots
+          - melodic-loops
+          - realistic
+          - wildlife
+          - machines-and-tools
+          - household-objects
+          - cars-and-airplanes
+          - water
+          - electronic-devices
+          - pets-and-farm-animals
+          - transitions
+          - epic-transitions
+          - cinematic-impacts
+          - whooshes
+          - risers
+          - intros-and-outros
+          type: string
+      - description: Include premium sound effects in search results. When false, only free sound effects are returned
+        in: query
+        name: include-premium
+        required: false
+        schema:
+          default: false
+          type: boolean
+      - description: Sort order for results. Prefix with "-" for descending. Defaults to "relevance" when a search query (q) is provided, otherwise defaults to "-popularity".
+        in: query
+        name: order_by
+        required: false
+        schema:
+          enum:
+          - relevance
+          - popularity
+          - -popularity
+          - download_count
+          - -download_count
+          - created_at
+          - -created_at
+          - duration
+          - -duration
+          - title
+          - -title
+          type: string
+      - description: Number of results to return per page
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 10
+          maximum: 1000
+          minimum: 1
+          type: integer
+      - description: Number of results to skip for pagination
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSfxListResponse'
+          description: OK
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+      summary: Search and filter sound effects
+      tags:
+      - Sound Effects
+  /v1/sound-effects/{sfx-id}:
+    get:
+      description: Retrieve full details for a sound effect including category hierarchy, tags, duration, popularity, and download statistics.
+      operationId: get_sound_effect_detail
+      parameters:
+      - description: Unique numeric identifier of the sound effect
+        example: 1
+        in: path
+        name: sfx-id
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SfxDetail'
+          description: OK
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '404':
+          $ref: '#/components/responses/404-not-found'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+      summary: Get detailed sound effect information by ID
+      tags:
+      - Sound Effects
+  /v1/sound-effects/{sfx-id}/download:
+    get:
+      description: Get a direct download URL for a sound effect audio file. Returns the sound effect ID, title, and a CDN-hosted download link.
+      operationId: download_sound_effect
+      parameters:
+      - description: Unique numeric identifier of the sound effect
+        example: 1
+        in: path
+        name: sfx-id
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SfxDownloadResponse'
+          description: OK
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '404':
+          $ref: '#/components/responses/404-not-found'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+      summary: Download a sound effect
+      tags:
+      - Sound Effects
+  /v1/ai/sound-effects:
+    get:
+      description: Get the status of all sound-effects tasks
+      operationId: get_all_sound_effects_tasks
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                success:
+                  $ref: '#/components/examples/200-tasks-list'
+              schema:
+                $ref: '#/components/schemas/get_all_sound_effects_tasks_200_response'
+          description: OK - Get the status of all sound-effects tasks
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Sound Effects - List tasks
+      tags:
+      - Sound Effects
+    post:
+      description: 'Create realistic sound effects from text descriptions using AI.
+
+
+        Generate high-quality audio sound effects based on your text prompts. Perfect for video production, game development, podcasts, and multimedia projects.'
+      operationId: create_sound_effects_task
+      requestBody:
+        content:
+          application/json:
+            examples:
+              basic:
+                summary: Basic sound effect generation
+                value:
+                  text: A cat meowing
+                  duration_seconds: 5
+              advanced:
+                summary: Advanced with loop and influence
+                value:
+                  text: Ocean waves crashing on the beach
+                  duration_seconds: 10
+                  loop: true
+                  prompt_influence: 0.7
+            schema:
+              $ref: '#/components/schemas/request_13'
+        required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/task-detail-200-default-response'
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Sound Effects - Generate from text
+      tags:
+      - Sound Effects
+  /v1/ai/sound-effects/{task-id}:
+    get:
+      description: Get the status of one sound-effects task
+      operationId: get_sound_effects_task_status
+      parameters:
+      - description: ID of the task
+        in: path
+        name: task-id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                success - completed task:
+                  $ref: '#/components/examples/200-task-completed'
+                success - in progress task:
+                  $ref: '#/components/examples/200-task-in-progress'
+              schema:
+                $ref: '#/components/schemas/get_style_transfer_task_status_200_response'
+          description: OK - The task exists and the status is returned
+        '400':
+          $ref: '#/components/responses/400-bad-request'
+        '401':
+          $ref: '#/components/responses/401-unauthorized'
+        '500':
+          $ref: '#/components/responses/500-internal-server-error'
+        '503':
+          $ref: '#/components/responses/503-service-unavailable'
+      summary: Sound Effects - Get task status
+      tags:
+      - Sound Effects
+components:
+  schemas:
+    inline_object:
+      example:
+        message: message
+      properties:
+        message:
+          type: string
+      type: object
+    SfxCategory_parent:
+      description: Parent category, if this is a subcategory
+      example:
+        name: Nature
+        id: 1
+      properties:
+        id:
+          example: 1
+          type: integer
+        name:
+          example: Nature
+          type: string
+      required:
+      - id
+      - name
+      type:
+      - object
+      - 'null'
+    PaginatedSfxListResponse:
+      example:
+        count: 250
+        results:
+        - duration: 5.2
+          file_url: file_url
+          is_premium: true
+          popularity: 72
+          created_at: 2000-01-23 04:56:07+00:00
+          id: 1
+          title: Thunder Rumble
+          category:
+            parent:
+              name: Nature
+              id: 1
+            name: Weather
+            id: 5
+          tags:
+          - thunder
+          - storm
+          - weather
+          download_count: 580
+        - duration: 5.2
+          file_url: file_url
+          is_premium: true
+          popularity: 72
+          created_at: 2000-01-23 04:56:07+00:00
+          id: 1
+          title: Thunder Rumble
+          category:
+            parent:
+              name: Nature
+              id: 1
+            name: Weather
+            id: 5
+          tags:
+          - thunder
+          - storm
+          - weather
+          download_count: 580
+      properties:
+        count:
+          description: Total number of results matching the query
+          example: 250
+          type: integer
+        results:
+          items:
+            $ref: '#/components/schemas/SfxListItem'
+          type: array
+      required:
+      - count
+      - results
+      type: object
+    inline_object_1_problem_invalid_params_inner:
+      properties:
+        name:
+          description: Name of the invalid parameter.
+          example: page
+          type: string
+        field:
+          description: Field of the invalid parameter. Mirrors `name`.
+          example: page
+          type: string
+        reason:
+          example: Parameter 'page' must be greater than 0
+          type: string
+      required:
+      - field
+      - name
+      - reason
+      type: object
+    inline_object_1:
+      properties:
+        problem:
+          $ref: '#/components/schemas/inline_object_1_problem'
+      type: object
+    SfxDetail:
+      description: Full details of a sound effect
+      example:
+        duration: 5.2
+        file_url: file_url
+        is_premium: true
+        popularity: 72
+        created_at: 2000-01-23 04:56:07+00:00
+        id: 1
+        title: Thunder Rumble
+        category:
+          parent:
+            name: Nature
+            id: 1
+          name: Weather
+          id: 5
+        tags:
+        - thunder
+        - storm
+        - weather
+        download_count: 580
+      properties:
+        id:
+          description: Unique identifier of the sound effect
+          example: 1
+          type: integer
+        title:
+          description: Sound effect title
+          example: Thunder Rumble
+          type: string
+        tags:
+          description: Tags associated with the sound effect
+          example:
+          - thunder
+          - storm
+          - weather
+          items:
+            type: string
+          type: array
+        category:
+          $ref: '#/components/schemas/SfxCategory'
+        duration:
+          description: Duration in seconds
+          example: 5.2
+          format: float
+          type: number
+        is_premium:
+          description: Whether the sound effect is premium
+          type: boolean
+        popularity:
+          description: Popularity score
+          example: 72
+          type: integer
+        download_count:
+          description: Total number of downloads
+          example: 580
+          type: integer
+        file_url:
+          description: Direct CDN URL to the audio file
+          type:
+          - string
+          - 'null'
+        created_at:
+          description: Creation timestamp
+          format: date-time
+          type: string
+      required:
+      - id
+      - title
+      type: object
+    SfxCategory:
+      description: Category of the sound effect, with optional parent category
+      example:
+        parent:
+          name: Nature
+          id: 1
+        name: Weather
+        id: 5
+      properties:
+        id:
+          description: Category identifier
+          example: 5
+          type: integer
+        name:
+          description: Category name
+          example: Weather
+          type: string
+        parent:
+          $ref: '#/components/schemas/SfxCategory_parent'
+      required:
+      - id
+      - name
+      type: object
+    SfxListItem:
+      description: Sound effect item returned by search results. Fields are only included when non-null in the search index.
+      example:
+        duration: 5.2
+        file_url: file_url
+        is_premium: true
+        popularity: 72
+        created_at: 2000-01-23 04:56:07+00:00
+        id: 1
+        title: Thunder Rumble
+        category:
+          parent:
+            name: Nature
+            id: 1
+          name: Weather
+          id: 5
+        tags:
+        - thunder
+        - storm
+        - weather
+        download_count: 580
+      properties:
+        id:
+          description: Unique identifier of the sound effect
+          example: 1
+          type: integer
+        title:
+          description: Sound effect title
+          example: Thunder Rumble
+          type: string
+        tags:
+          description: Tags associated with the sound effect
+          example:
+          - thunder
+          - storm
+          - weather
+          items:
+            type: string
+          type: array
+        category:
+          $ref: '#/components/schemas/SfxCategory'
+        duration:
+          description: Duration in seconds
+          example: 5.2
+          format: float
+          type: number
+        is_premium:
+          description: Whether the sound effect is premium
+          type: boolean
+        popularity:
+          description: Popularity score
+          example: 72
+          type: integer
+        download_count:
+          description: Total number of downloads
+          example: 580
+          type: integer
+        file_url:
+          description: Direct CDN URL to the audio file
+          type:
+          - string
+          - 'null'
+        created_at:
+          description: Creation timestamp
+          format: date-time
+          type: string
+      required:
+      - id
+      - title
+      type: object
+    SfxDownloadResponse:
+      example:
+        download_url: https://cdn.freepik.com/sfx/thunder-rumble.mp3
+        id: 1
+        title: Thunder Rumble
+      properties:
+        id:
+          description: Unique identifier of the sound effect
+          example: 1
+          type: integer
+        title:
+          description: Sound effect title
+          example: Thunder Rumble
+          type: string
+        download_url:
+          description: Direct URL to download the sound effect file
+          example: https://cdn.freepik.com/sfx/thunder-rumble.mp3
+          type: string
+      required:
+      - download_url
+      - id
+      - title
+      type: object
+    inline_object_1_problem:
+      properties:
+        message:
+          example: Validation error
+          type: string
+        invalid_params:
+          items:
+            $ref: '#/components/schemas/inline_object_1_problem_invalid_params_inner'
+          type: array
+      required:
+      - invalid_params
+      - message
+      type: object
+    inline_object_2:
+      example:
+        message: Internal Server Error
+      properties:
+        message:
+          example: Internal Server Error
+          type: string
+      type: object
+    inline_object_4:
+      example:
+        data:
+          generated:
+          - https://openapi-generator.tech
+          - https://openapi-generator.tech
+          task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: CREATED
+      properties:
+        data:
+          $ref: '#/components/schemas/task-detail_1'
+      required:
+      - data
+      type: object
+    task:
+      example:
+        task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        status: CREATED
+      properties:
+        task_id:
+          description: Task identifier
+          format: uuid
+          type: string
+        status:
+          description: Task status
+          enum:
+          - CREATED
+          - IN_PROGRESS
+          - COMPLETED
+          - FAILED
+          type: string
+      required:
+      - status
+      - task_id
+      type: object
+    request_13:
+      properties:
+        text:
+          description: The text to convert to sound effects
+          example: A cat meowing
+          maxLength: 2500
+          type: string
+        loop:
+          default: false
+          description: Whether to create a sound effect that loops smoothly
+          type: boolean
+        duration_seconds:
+          description: The duration of the generated audio in seconds
+          example: 5
+          maximum: 22
+          minimum: 0.5
+          type: number
+        prompt_influence:
+          default: 0.3
+          description: The influence of the prompt on the generated audio. A value between 0 and 1.
+          example: 0.3
+          maximum: 1
+          minimum: 0
+          type: number
+        webhook_url:
+          description: 'Optional callback URL that will receive asynchronous notifications whenever the task changes status. The payload sent to this URL is the same as the corresponding GET endpoint response, but without the data field.
+
+            '
+          example: https://www.example.com/webhook
+          format: uri
+          type: string
+      required:
+      - duration_seconds
+      - text
+      type: object
+    get_style_transfer_task_status_200_response:
+      example:
+        data:
+          generated:
+          - https://openapi-generator.tech
+          - https://openapi-generator.tech
+          task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: CREATED
+      properties:
+        data:
+          $ref: '#/components/schemas/task-detail'
+      required:
+      - data
+      type: object
+    inline_object_3:
+      example:
+        message: Service Unavailable. Please try again later.
+      properties:
+        message:
+          example: Service Unavailable. Please try again later.
+          type: string
+      type: object
+    get_all_sound_effects_tasks_200_response:
+      example:
+        data:
+        - generated:
+          - https://openapi-generator.tech
+          - https://openapi-generator.tech
+          task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: CREATED
+        - generated:
+          - https://openapi-generator.tech
+          - https://openapi-generator.tech
+          task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: CREATED
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/task-detail'
+          type: array
+      type: object
+    task-detail:
+      allOf:
+      - $ref: '#/components/schemas/task'
+      - properties:
+          generated:
+            items:
+              description: URL of the generated image
+              format: uri
+              type: string
+            type: array
+        required:
+        - generated
+        type: object
+      example:
+        generated:
+        - https://openapi-generator.tech
+        - https://openapi-generator.tech
+        task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        status: CREATED
+    task-detail_1:
+      allOf:
+      - $ref: '#/components/schemas/task'
+      - properties:
+          generated:
+            items:
+              description: URL of the generated image
+              format: uri
+              type: string
+            type: array
+        required:
+        - generated
+        type: object
+      example:
+        generated:
+        - https://openapi-generator.tech
+        - https://openapi-generator.tech
+        task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        status: CREATED
+  responses:
+    404-not-found:
+      content:
+        application/json:
+          examples:
+            ai_resource_not_found:
+              summary: AI resource with provided id does not exist
+              value:
+                message: AI resource not found
+            collection_not_found:
+              summary: Collection with provided id does not exist
+              value:
+                message: Collection not found
+            resource_not_found:
+              summary: Resource with provided id does not exist
+              value:
+                message: Resource not found
+            resources_not_found:
+              summary: Resources not found
+              value:
+                message: Resources not found
+            user_not_found:
+              summary: User with provided id does not exist
+              value:
+                message: User not found
+            video_not_found:
+              summary: Video with provided id does not exist
+              value:
+                message: Video not found
+            video_assets_not_found:
+              summary: Video with provided id has not associated assets
+              value:
+                message: Video not found
+            icon_not_found:
+              summary: Icon with provided id does not exist
+              value:
+                message: Icon not found
+            author_not_found:
+              summary: Author with provided id does not exist
+              value:
+                message: Author not found
+            developer_not_found:
+              summary: Developer with provided email does not exist
+              value:
+                message: Developer not found
+            country_not_found:
+              summary: Country with provided code does not exist
+              value:
+                message: Country not found
+            generic_not_found:
+              summary: Not Found
+              value:
+                message: Not found
+          schema:
+            $ref: '#/components/schemas/inline_object'
+      description: Not Found - The server can not find the requested resource.
+    401-unauthorized:
+      content:
+        application/json:
+          examples:
+            invalid_api_key:
+              summary: API key is not valid
+              value:
+                message: Invalid API key
+            missing_api_key:
+              summary: API key is not provided
+              value:
+                message: Missing API key
+          schema:
+            $ref: '#/components/schemas/inline_object'
+      description: Unauthorized - The client must authenticate itself to get the requested response.
+    500-internal-server-error:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_2'
+      description: Internal Server Error - The server has encountered a situation it doesn't know how to handle.
+    400-bad-request:
+      content:
+        application/json:
+          examples:
+            invalid_page:
+              summary: Parameter 'page' is not valid
+              value:
+                message: Parameter 'page' must be greater than 0
+            invalid_query:
+              summary: Parameter 'query' is not valid
+              value:
+                message: Parameter 'query' must not be empty
+            invalid_filter:
+              summary: Parameter 'filter' is not valid
+              value:
+                message: Parameter 'filter' is not valid
+            generic_bad_request:
+              summary: Bad Request
+              value:
+                message: Parameter ':attribute' is not valid
+          schema:
+            $ref: '#/components/schemas/inline_object'
+        application/problem+json:
+          examples:
+            invalid_page:
+              summary: Parameter 'page' is not valid
+              value:
+                message: Validation error
+                invalid_params:
+                - field: page
+                  reason: Parameter 'page' must be greater than 0
+                - field: per_page
+                  reason: Parameter 'per_page' must be greater than 0
+          schema:
+            $ref: '#/components/schemas/inline_object_1'
+      description: Bad Request - The server could not understand the request due to invalid syntax.
+    503-service-unavailable:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_3'
+      description: Service Unavailable
+    task-detail-200-default-response:
+      content:
+        application/json:
+          examples:
+            success - created task:
+              $ref: '#/components/examples/200-task-created'
+            success - in progress task:
+              $ref: '#/components/examples/200-task-in-progress'
+            success - completed task:
+              $ref: '#/components/examples/200-task-completed'
+            success - failed task:
+              $ref: '#/components/examples/200-task-failed'
+          schema:
+            $ref: '#/components/schemas/inline_object_4'
+      description: OK - The task exists and the status is returned
+  examples:
+    200-task-failed:
+      summary: Success - Task failed
+      value:
+        data:
+          generated: []
+          task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: FAILED
+    200-tasks-list:
+      summary: Success - Return all tasks
+      value:
+        data:
+        - task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: IN_PROGRESS
+        - task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee92
+          status: COMPLETED
+        - task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee93
+          status: COMPLETED
+        - task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee93
+          status: CREATED
+    200-task-in-progress:
+      summary: Success - Task in progress
+      value:
+        data:
+          generated: []
+          task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: IN_PROGRESS
+    200-task-created:
+      summary: Success - Task created
+      value:
+        data:
+          generated: []
+          task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: CREATED
+    200-task-completed:
+      summary: Success - Task completed
+      value:
+        data:
+          generated:
+          - https://ai-statics.freepik.com/completed_task_image.jpg
+          task_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: COMPLETED
+  securitySchemes:
+    magnificApiKey:
+      description: 'Your Magnific API key. Required for authentication. [Learn how to obtain an API key](https://docs.magnific.com/quickstart)
+
+        '
+      in: header
+      name: x-magnific-api-key
+      type: apiKey
