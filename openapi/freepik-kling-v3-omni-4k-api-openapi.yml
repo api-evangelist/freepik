@@ -337,3 +337,9 @@ components:
       in: header
       name: x-magnific-api-key
       type: apiKey
+x-provenance:
+  method: harvested
+  publisher: Freepik
+  source: https://storage.googleapis.com/fc-freepik-pro-rev1-eu-api-specs/magnific-api-v1-openapi.yaml?v=46\
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
