@@ -45,6 +45,31 @@ edges:
   detected: '2026-10-23'
   detected_by: mirror-platform-listings.py
   category: Adobe Exchange Creative Cloud listing (Photoshop)
+- partner_name: Hugging Face (hugging-face-hub)
+  partner: hugging-face
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: hugging-face-hub
+  evidence: https://huggingface.co/Freepik
+  mirror_of: hugging-face/integrations/hugging-face-integration-edges.yml
+  apps:
+  - Freepik/nsfw_image_detector
+  - Freepik/flux.1-lite-8B
+  - Freepik/flux.1-lite-8B-alpha
+  - Freepik/F-Lite
+  - Freepik/F-Lite-7B
+  - Freepik/F-Lite-Texture
+  - Freepik/arena-space
+  listing_count: 2
+  detected: '2026-10-23'
+  detected_by: mirror-platform-listings.py
+  category: Hugging Face Hub models
+  badges:
+  - Verified publisher (Hugging Face verified organisation)
 generated: '2026-10-20'
 method: searched
 source:
@@ -52,3 +77,4 @@ source:
 checked:
 - https://aws.amazon.com/marketplace/search/results?FULFILLMENT_OPTION_TYPE=DATA_EXCHANGE
 - adobe-photoshop/integrations/adobe-photoshop-integration-edges.yml
+- hugging-face/integrations/hugging-face-integration-edges.yml
