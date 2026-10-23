@@ -30,3 +30,16 @@
     detected: '2026-10-20'
   status: not-a-workflow
   arazzo: null
+- slug: freepik-adobe-photoshop-own
+  label: Adobe Photoshop (own)
+  partner: adobe-photoshop
+  partner_name: Adobe Photoshop (own)
+  category: Adobe Exchange Creative Cloud listing (Photoshop)
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://exchange.adobe.com/apps/cc/234a7e6c/mockup-baker-plugin
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
