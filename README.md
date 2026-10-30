@@ -1,4 +1,4 @@
-# Freepik (freepik)
+# Freepik
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,62 +66,133 @@
 
 Freepik is a leading platform that provides high-quality graphic resources for designers, marketers, and creative professionals. Its developer platform (operated through Magnific) offers AI image, video, audio generation, image editing, and access to the Freepik stock library.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/freepik/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/freepik/refs/heads/main/apis.yml)
+**Areas:** Artificial Intelligence · Graphics · Illustrations · Image Generation · Photos · Video Generation
 
-## Scope
+## Freepik on APIs.io
 
-- **Type:** Index
-- **Position:** Consumer
-- **Access:** 3rd-Party
+Everything profiled for Freepik is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/freepik/](https://apis.io/providers/freepik/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (6)
 
-- AI
-- Graphics
-- Illustrations
-- Image Generation
-- Photos
-- Video Generation
+- [Freepik Audio API](https://apis.io/apis/freepik/freepik-audio-api/) — Generate music and sound effects.
+- [Freepik Image Editing API](https://apis.io/apis/freepik/freepik-image-editing-api/) — Upscale, relight, restyle, or edit images.
+- [Freepik Image Generation API](https://apis.io/apis/freepik/freepik-image-generation-api/) — Generate images from text or reference inputs.
+- [Freepik Resources API](https://apis.io/apis/freepik/freepik-resources-api/) — Search Freepik's stock library.
+- [Freepik Tasks API](https://apis.io/apis/freepik/freepik-tasks-api/) — Poll asynchronous task status.
+- [Freepik Video Generation API](https://apis.io/apis/freepik/freepik-video-generation-api/) — Generate video from images or text.
 
-## Timestamps
+### Published properties
 
-- **Created:** 2025-01-07
-- **Modified:** 2026-05-19
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### MCP servers (1)
 
-### Freepik
+Model Context Protocol servers that expose the API to agents.
 
-Freepik's developer platform provides AI-powered image generation, video generation, image editing, audio generation, and access to a vast stock library of vectors, photos, icons, and templates.
+- [freepik](https://apis.io/servers/freepik/freepik/)
 
-- **Human URL:** [https://docs.freepik.com/](https://docs.freepik.com/)
-- **Base URL:** `https://api.magnific.com`
+#### Agentic access (1)
 
-#### Tags
+Which operations an agent can call, which act, and which need a human in the loop.
 
-- AI
-- Graphics
-- Illustrations
-- Image Generation
-- Photos
-- Video Generation
+- [Freepik Agentic Access](https://apis.io/agentic-access/freepik/freepik-agentic-access/)
 
-#### Properties
+#### Collections (7)
 
-- [Documentation](https://docs.freepik.com/)
-- [OpenAPI](https://raw.githubusercontent.com/api-evangelist/freepik/refs/heads/main/openapi/freepik-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/freepik.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/freepik.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+Postman and Open Collection request collections.
 
-## Common Properties
+- [Freepik / Magnific API](https://apis.io/collections/freepik/open-freepik/)
+- [Freepik / Magnific Audio API](https://apis.io/collections/freepik/open-freepik-audio-api/)
+- [Freepik / Magnific Audio Image Editing API](https://apis.io/collections/freepik/open-freepik-image-editing-api/)
+- [Freepik / Magnific Audio Image Generation API](https://apis.io/collections/freepik/open-freepik-image-generation-api/)
+- [Freepik / Magnific Audio Resources API](https://apis.io/collections/freepik/open-freepik-resources-api/)
+- [Freepik / Magnific Audio Tasks API](https://apis.io/collections/freepik/open-freepik-tasks-api/)
+- [Freepik / Magnific Audio Video Generation API](https://apis.io/collections/freepik/open-freepik-video-generation-api/)
 
-- [GitHub Organization](https://github.com/freepik-company)
-- [LinkedIn](https://www.linkedin.com/company/freepik-company)
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Freepik Authentication](https://apis.io/security/freepik/freepik-authentication/)
+- [Freepik Domain Security](https://apis.io/security/freepik/freepik-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Freepik Plans Pricing](https://apis.io/plans/freepik/freepik-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Freepik Rate Limits](https://apis.io/rate-limits/freepik/freepik-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Freepik Finops](https://apis.io/finops/freepik/freepik-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
 - [Website](https://www.freepik.com/)
 - [Documentation](https://docs.freepik.com/)
-- [Sign Up](https://www.freepik.com/profile/signup)
+- [GitHub](https://github.com/freepik-company)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 27.4** — thin · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 68.3 |
+| Contract quality | 49.7 |
+| Contract governance | 0.0 |
+| Operational transparency | 10.5 |
+| Developer ergonomics | 21.4 |
+| Access clarity | 21.1 |
+
+**Agent readiness 29.5** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | verified |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 10.9** — AI & Biometrics
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/freepik/](https://apis.io/providers/freepik/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Freepik: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/freepik/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
